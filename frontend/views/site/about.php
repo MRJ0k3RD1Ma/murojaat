@@ -16,3 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <code><?= __FILE__ ?></code>
 </div>
+
+<script>
+    function getFirstValue(ar){
+        return ar[0];
+    }
+</script>

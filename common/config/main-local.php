@@ -4,7 +4,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=admin_murojaat',
+            'dsn' => 'mysql:host=89.236.217.116;dbname=admin_murojaat',
             'username' => 'admin_murojaat',
             'password' => '2Z76cbLTTm',
             'charset' => 'utf8',

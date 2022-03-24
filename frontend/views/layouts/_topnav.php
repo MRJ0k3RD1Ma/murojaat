@@ -39,7 +39,7 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="/site/logout">
+            <a class="nav-link dropdown-toggle" href="<?= Yii::$app->urlManager->createUrl(['/site/logout'])?>" data-method="post">
                 <span class="mr-2 d-lg-inline text-gray-600 small text-right">Тизимдан чиқиш</span>
             </a>
             <!-- Dropdown - User Information -->
