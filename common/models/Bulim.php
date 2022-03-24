@@ -1,24 +1,25 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
 /**
- * This is the model class for table "nation".
+ * This is the model class for table "bulim".
  *
  * @property int $id
  * @property string $name
- * @property int $count
+ *
+ * @property User[] $users
  */
-class Nation extends \yii\db\ActiveRecord
+class Bulim extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'nation';
+        return 'bulim';
     }
 
     /**
@@ -28,7 +29,6 @@ class Nation extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['count'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -41,7 +41,16 @@ class Nation extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'count' => 'Count',
         ];
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['bulim_id' => 'id']);
     }
 }

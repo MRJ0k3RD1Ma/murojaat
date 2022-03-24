@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -11,6 +11,8 @@ use Yii;
  * @property int $group_id
  * @property string $code
  * @property string $name
+ *
+ * @property AppealQuestionGroup $group
  */
 class AppealQuestion extends \yii\db\ActiveRecord
 {
@@ -31,6 +33,7 @@ class AppealQuestion extends \yii\db\ActiveRecord
             [['group_id', 'code', 'name'], 'required'],
             [['group_id'], 'integer'],
             [['code', 'name'], 'string', 'max' => 255],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealQuestionGroup::className(), 'targetAttribute' => ['group_id' => 'id']],
         ];
     }
 
@@ -41,12 +44,19 @@ class AppealQuestion extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group_id' => 'Гуруҳ номи',
-            'code' => 'Нод',
-            'name' => 'Савол',
+            'group_id' => 'Гуруҳи',
+            'code' => 'Код',
+            'name' => 'Номи',
         ];
     }
-    public function getGroup(){
-        return $this->hasOne(AppealQuestionGroup::className(),['id'=>'group_id']);
+
+    /**
+     * Gets query for [[Group]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(AppealQuestionGroup::className(), ['id' => 'group_id']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ *
+ * @property AppealBoshqaTashkilot[] $appealBoshqaTashkilots
  */
 class AppealBoshqaTashkilotGroup extends \yii\db\ActiveRecord
 {
@@ -41,7 +43,14 @@ class AppealBoshqaTashkilotGroup extends \yii\db\ActiveRecord
             'name' => 'Номи',
         ];
     }
-    public function getTashkilotlar(){
-        return $this->hasMany(AppealBoshqaTashkilot::className(),['group_id'=>'id']);
+
+    /**
+     * Gets query for [[AppealBoshqaTashkilots]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTashkilotlar()
+    {
+        return $this->hasMany(AppealBoshqaTashkilot::className(), ['group_id' => 'id']);
     }
 }

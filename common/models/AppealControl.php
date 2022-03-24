@@ -1,23 +1,23 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
 /**
- * This is the model class for table "role".
+ * This is the model class for table "appeal_control".
  *
  * @property int $id
  * @property string $name
  */
-class Role extends \yii\db\ActiveRecord
+class AppealControl extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'user_role';
+        return 'appeal_control';
     }
 
     /**
@@ -38,7 +38,7 @@ class Role extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Фойдаланувчи ҳуқуқи',
+            'name' => 'Номи',
         ];
     }
 }

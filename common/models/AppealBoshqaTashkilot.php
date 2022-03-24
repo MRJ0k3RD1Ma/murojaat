@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -11,6 +11,8 @@ use Yii;
  * @property string $name
  * @property int $group_id
  * @property int $isdelete
+ *
+ * @property AppealBoshqaTashkilotGroup $group
  */
 class AppealBoshqaTashkilot extends \yii\db\ActiveRecord
 {
@@ -31,6 +33,7 @@ class AppealBoshqaTashkilot extends \yii\db\ActiveRecord
             [['name', 'group_id'], 'required'],
             [['group_id', 'isdelete'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealBoshqaTashkilotGroup::className(), 'targetAttribute' => ['group_id' => 'id']],
         ];
     }
 
@@ -43,10 +46,17 @@ class AppealBoshqaTashkilot extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Номи',
             'group_id' => 'Гуруҳи',
-            'isdelete' => 'Ўчирилган',
+            'isdelete' => 'Ўчирилганлик',
         ];
     }
-    public function getGroup(){
-        return $this->hasOne(AppealBoshqaTashkilotGroup::className(),['id'=>'group_id']);
+
+    /**
+     * Gets query for [[Group]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(AppealBoshqaTashkilotGroup::className(), ['id' => 'group_id']);
     }
 }

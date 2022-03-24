@@ -1,8 +1,7 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
-use Symfony\Component\Console\Question\Question;
 use Yii;
 
 /**
@@ -11,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string $code
  * @property string $name
+ *
+ * @property AppealQuestion[] $appealQuestions
  */
 class AppealQuestionGroup extends \yii\db\ActiveRecord
 {
@@ -44,7 +45,14 @@ class AppealQuestionGroup extends \yii\db\ActiveRecord
             'name' => 'Номи',
         ];
     }
-    public function getQuestion(){
-        return $this->hasMany(AppealQuestion::className(),['group_id'=>'id']);
+
+    /**
+     * Gets query for [[AppealQuestions]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuestion()
+    {
+        return $this->hasMany(AppealQuestion::className(), ['group_id' => 'id']);
     }
 }

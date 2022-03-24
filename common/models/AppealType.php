@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ *
+ * @property Appeal[] $appeals
  */
 class AppealType extends \yii\db\ActiveRecord
 {
@@ -40,5 +42,15 @@ class AppealType extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
         ];
+    }
+
+    /**
+     * Gets query for [[Appeals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAppeals()
+    {
+        return $this->hasMany(Appeal::className(), ['type_id' => 'id']);
     }
 }

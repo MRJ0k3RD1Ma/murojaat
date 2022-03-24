@@ -60,7 +60,13 @@ AppAsset::register($this);
     </div>
 
 
-
+<?php
+$this->registerJs("
+    $(document).ready(function(){
+        $('.select2list').select2()
+    })
+")
+?>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">

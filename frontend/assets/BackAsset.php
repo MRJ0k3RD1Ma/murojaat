@@ -21,6 +21,7 @@ class BackAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
 //        'css/site.css',
+        '/theme/dist/css/adminlte.min.css',
         '/theme/plugins/fontawesome-free/css/all.min.css',
         '/theme/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
         'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700',
@@ -75,6 +76,6 @@ class BackAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+//        'yii\bootstrap\BootstrapAsset',
     ];
 }

@@ -1,23 +1,25 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
 /**
- * This is the model class for table "bulim".
+ * This is the model class for table "appeal_shakl".
  *
  * @property int $id
  * @property string $name
+ *
+ * @property Appeal[] $appeals
  */
-class Bulim extends \yii\db\ActiveRecord
+class AppealShakl extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'bulim';
+        return 'appeal_shakl';
     }
 
     /**
@@ -38,7 +40,17 @@ class Bulim extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'бўлим номи',
+            'name' => 'Name',
         ];
+    }
+
+    /**
+     * Gets query for [[Appeals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAppeals()
+    {
+        return $this->hasMany(Appeal::className(), ['shakl_id' => 'id']);
     }
 }
