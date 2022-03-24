@@ -10,14 +10,14 @@ $this->title = 'Bosh sahifa';
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Менга келган топшириқлар рўйхати</h1>
     <div class="float-right">
-        <a href="blank.html" class="btn btn-success btn-icon-split mr-3">
+        <a href="#" class="btn btn-success btn-icon-split mr-3">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-plus"></i>
                                 </span>
             <span class="text">Янги мурожаат қўшиш</span>
         </a>
 
-        <a href="/appeal/notregister" class="btn btn-danger btn-icon-split">
+        <a href="#" class="btn btn-danger btn-icon-split">
             <span class="text">Рўйхатга олинмаган</span>
         </a>
     </div>
@@ -153,9 +153,6 @@ $this->title = 'Bosh sahifa';
 
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
-
-
-
 
 
 
