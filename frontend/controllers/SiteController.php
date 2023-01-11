@@ -2,6 +2,9 @@
 
 namespace frontend\controllers;
 
+use common\models\User;
+use common\models\UserAccesItem;
+use common\models\UserOld;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -77,6 +80,54 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
+    /*public function actionPro(){
+        $user = UserOld::find()->all();
+
+        foreach ($user as $item){
+            //
+            $a = new \common\models\User();
+            $a->id = $item->id;
+            $a->role_id = $item->role_id;
+            $a->company_id = $item->company_id;
+            $a->lavozim_id = $item->lavozim_id;
+            $a->bulim_id = $item->bulim_id;
+            $a->name = $item->name;
+            $a->image = $item->image;
+            $a->username  = $item->username ;
+            $a->password = $item->password;
+            $a->phone = $item->phone;
+            $a->status = $item->status;
+            $a->created = $item->created;
+            $a->updated = $item->updated;
+            $a->active = $item->active;
+            $a->save();
+            // 1 - Rahbar
+            // 2 - registrator
+            // 3 - Mahalla
+            if($item->is_rahbar == 1){
+                $t = new UserAccesItem();
+                $t->user_id = $a->id;
+                $t->access_id = 1;
+                $t->status = 1;
+                $t->save();
+            }
+            if($item->is_registration == 1){
+                $t = new UserAccesItem();
+                $t->user_id = $a->id;
+                $t->access_id = 2;
+                $t->status = 1;
+                $t->save();
+            }
+            if($item->is_village == 1){
+                $t = new UserAccesItem();
+                $t->user_id = $a->id;
+                $t->access_id = 3;
+                $t->status = 1;
+                $t->save();
+            }
+        }
+    }*/
 
     /**
      * Logs in a user.

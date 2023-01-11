@@ -12,6 +12,8 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property int $role_id
  * @property int|null $company_id
+ * @property int $lavozim_id
+ * @property int $bulim_id
  * @property string $name
  * @property string|null $image
  * @property string $username
@@ -31,6 +33,7 @@ use yii\web\IdentityInterface;
  *
  * @property Company $company
  * @property UserRole $role
+ * @property UserAccesItem $userAccesItem
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -48,8 +51,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['role_id'], 'required'],
-            [['role_id', 'company_id', 'status', 'active'], 'integer'],
+            [['role_id', 'lavozim_id', 'bulim_id'], 'required'],
+            [['role_id', 'company_id', 'lavozim_id', 'bulim_id', 'status', 'active'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['name', 'image', 'username', 'phone', 'auth_key', 'token', 'telegram', 'telegram_username', 'telegram_chat_id', 'sms_code'], 'string', 'max' => 255],
             [['password'], 'string', 'max' => 500],
@@ -69,7 +72,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'role_id' => 'Rol',
             'company_id' => 'Tashkilot',
-            'name' => 'Nomi',
+            'lavozim_id' => 'Lavozim',
+            'bulim_id' => 'Bo`lim',
+            'name' => 'FIO',
             'image' => 'Rasm',
             'username' => 'Login',
             'password' => 'Parol',
@@ -78,8 +83,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'token' => 'Token',
             'email' => 'Email',
             'status' => 'Status',
-            'created' => 'Created',
-            'updated' => 'Updated',
+            'created' => 'Yaratildi',
+            'updated' => 'O`zgartirildi',
             'telegram' => 'Telegram',
             'telegram_username' => 'Telegram Username',
             'telegram_chat_id' => 'Telegram Chat ID',
@@ -109,11 +114,21 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Gets query for [[UserAccesItem]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserAccesItem()
+    {
+        return $this->hasOne(UserAccesItem::class, ['user_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, ]);
+        return static::findOne(['id' => $id, /*'status' => self::STATUS_ACTIVE*/]);
     }
 
     /**
@@ -132,7 +147,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, ]);
+        return static::findOne(['username' => $username,/* 'status' => self::STATUS_ACTIVE*/]);
     }
 
     /**
@@ -149,6 +164,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
+//            'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -195,7 +211,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->auth_key;
+        return $this->password;
     }
 
     /**
@@ -214,7 +230,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password);
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -224,7 +240,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password = Yii::$app->security->generatePasswordHash($password);
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
