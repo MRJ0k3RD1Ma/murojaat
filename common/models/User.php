@@ -163,7 +163,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
+            'token' => $token,
 //            'status' => self::STATUS_ACTIVE,
         ]);
     }
@@ -176,7 +176,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByVerificationToken($token) {
         return static::findOne([
-            'verification_token' => $token,
+            'token' => $token,
 //            'status' => self::STATUS_INACTIVE
         ]);
     }
@@ -230,7 +230,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     /**
@@ -240,7 +240,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
@@ -256,7 +256,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -264,7 +264,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function generateEmailVerificationToken()
     {
-        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
@@ -272,6 +272,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function removePasswordResetToken()
     {
-        $this->password_reset_token = null;
+        $this->token = null;
     }
 }
