@@ -39,6 +39,7 @@ class AppAsset extends AssetBundle
         '/theme/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         '/theme/plugins/sweetalert2/sweetalert2.min.css',
         '/theme/dist/css/style.css',
+        '/theme/dist/css/adminlte.css',
     ];
     public $js = [
 //        '/theme/plugins/jquery/jquery.min.js',
@@ -50,7 +51,7 @@ class AppAsset extends AssetBundle
         '/theme/plugins/raphael/raphael.min.js',
         '/theme/plugins/jquery-mapael/jquery.mapael.min.js',
         '/theme/plugins/jquery-mapael/maps/usa_states.min.js',
-        '/theme/plugins/chart.js/Chart.min.js',
+//        '/theme/plugins/chart.js/Chart.min.js',
 //        '/theme/dist/js/pages/dashboard2.js',
         '/theme/dist/js/pages/dashboard3.js',
 //        '/theme/plugins/select2/js/select2.full.min.js',
@@ -76,6 +77,6 @@ class AppAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+//        'yii\bootstrap5\BootstrapAsset',
     ];
 }
