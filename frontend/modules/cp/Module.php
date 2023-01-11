@@ -15,7 +15,7 @@ class Module extends \yii\base\Module
      * {@inheritdoc}
      */
     public $controllerNamespace = 'frontend\modules\cp\controllers';
-   /* public function behaviors()
+    public function behaviors()
     {
         return [
             'access' => [
@@ -36,7 +36,7 @@ class Module extends \yii\base\Module
                 ],
             ],
         ];
-    }*/
+    }
     /**
      * {@inheritdoc}
      */

@@ -25,6 +25,7 @@ use Yii;
  * @property string|null $long
  * @property int|null $parent_id
  * @property string|null $ads
+ * @property string|null $cadastre
  *
  * @property Soato $soato
  * @property CompanyStatus $status
@@ -51,7 +52,7 @@ class Company extends \yii\db\ActiveRecord
             [['soato_id'], 'required'],
             [['created', 'updated'], 'safe'],
             [['location', 'ads'], 'string'],
-            [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long'], 'string', 'max' => 255],
+            [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long', 'cadastre'], 'string', 'max' => 255],
             [['inn'], 'unique'],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompanyStatus::class, 'targetAttribute' => ['status_id' => 'id']],
@@ -66,23 +67,24 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'inn' => 'Inn',
-            'name' => 'Name',
-            'director' => 'Director',
-            'phone' => 'Phone',
+            'inn' => 'STIR(INN)',
+            'name' => 'Nomi',
+            'director' => 'Direktor',
+            'phone' => 'Telefon',
             'telegram' => 'Telegram',
-            'phone_director' => 'Phone Director',
-            'type_id' => 'Type ID',
-            'soato_id' => 'Soato ID',
-            'status_id' => 'Status ID',
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'address' => 'Address',
+            'phone_director' => 'Direktor telefoni',
+            'type_id' => 'Tashkilot turi',
+            'soato_id' => 'Manzil',
+            'status_id' => 'Status',
+            'created' => 'Yaratildi',
+            'updated' => 'O`zgartirildi',
+            'address' => 'Manzil',
             'location' => 'Location',
             'lat' => 'Lat',
             'long' => 'Long',
-            'parent_id' => 'Parent ID',
-            'ads' => 'Ads',
+            'parent_id' => 'Yuqori turuvchi tashkiloti',
+            'ads' => 'Izoh',
+            'cadastre' => 'Kadastr raqami',
         ];
     }
 
@@ -124,5 +126,17 @@ class Company extends \yii\db\ActiveRecord
     public function getUsers()
     {
         return $this->hasMany(User::class, ['company_id' => 'id']);
+    }
+
+    public function getFulladdr(){
+        $ad = $this->soato;
+        return Soato::findOne($ad->res_id.$ad->region_id)->name_lot.' '.
+            Soato::findOne($ad->res_id.$ad->region_id.$ad->district_id)->name_lot;
+    }
+    public function getParent(){
+        return $this->hasOne(Company::className(),['id'=>'parent_id']);
+    }
+    public function getChild(){
+        return $this->hasMany(Company::className(),['parent_id'=>'id']);
     }
 }

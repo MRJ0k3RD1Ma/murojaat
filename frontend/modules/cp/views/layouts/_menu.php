@@ -28,36 +28,21 @@ use yii\helpers\Url; ?>
             </a>
             <ul class="nav nav-treeview" style="display: none;">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['/admin/company/index'])?>">
+                    <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['/cp/company/index'])?>">
                         <i class="nav-icon fa fa-circle"></i>
                         <p>
                             Ташкилотлар
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['/admin/company/index','type'=>'notpaid'])?>">
-                        <i class="nav-icon fa fa-circle"></i>
-                        <p>
-                            Тўлов қилигмаган
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="nav-icon fa fa-circle"></i>
-                        <p>
-                            Муддати ўтган
-                        </p>
-                    </a>
-                </li>
+
+
             </ul>
         </li>
 
 
-
         <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/service'])?>" class="nav-link <?=(Yii::$app->controller->id=='service')?'active':''?>">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/cp/service'])?>" class="nav-link <?=(Yii::$app->controller->id=='service')?'active':''?>">
                 <i class="nav-icon fas fa-list"></i>
                 <p>
                     Хизматлар
@@ -65,47 +50,6 @@ use yii\helpers\Url; ?>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/company-type'])?>" class="nav-link <?=(Yii::$app->controller->id=='company-type')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Ташкилотлар турлари
-                </p>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/bulim'])?>" class="nav-link <?=(Yii::$app->controller->id=='bulim')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Бўлимлар
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/lavozim'])?>" class="nav-link <?=(Yii::$app->controller->id=='lavozim')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Лавозимлар
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/appeal-question-group'])?>" class="nav-link <?=(Yii::$app->controller->id=='appeal-question-group')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Савол гуруҳлари
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/admin/appeal-question'])?>" class="nav-link <?=(Yii::$app->controller->id=='appeal-question')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Саволлар
-                </p>
-            </a>
-        </li>
 
     </ul>
 </nav>
