@@ -21,6 +21,7 @@
         "endroid/qr-code": "^4.6",
         "kartik-v/yii2-mpdf": "dev-master",
         "phpoffice/phpspreadsheet": "^1.25",
+        "phpoffice/phpword": "^0.18.2",
         "edofre/yii2-fullcalendar": "V1.0.11"
     },
     "require-dev": {

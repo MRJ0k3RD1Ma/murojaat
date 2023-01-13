@@ -300,5 +300,5 @@ table tr:first-child th:nth-child(3){
     min-height: 38px !important;
 }
 label{
-    display: block !important;
+    /* display: block !important; */
 }

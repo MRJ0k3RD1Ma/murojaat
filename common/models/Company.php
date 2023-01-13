@@ -51,7 +51,7 @@ class Company extends \yii\db\ActiveRecord
             [['type_id', 'soato_id', 'status_id', 'parent_id'], 'integer'],
             [['soato_id'], 'required'],
             [['created', 'updated'], 'safe'],
-            [['location', 'ads'], 'string'],
+            [['location', 'ads','cadastre'], 'string'],
             [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long', 'cadastre'], 'string', 'max' => 255],
             [['inn'], 'unique'],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],

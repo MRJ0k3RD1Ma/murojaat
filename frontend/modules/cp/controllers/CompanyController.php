@@ -5,6 +5,7 @@ namespace frontend\modules\cp\controllers;
 use common\models\Company;
 use common\models\search\CompanySearch;
 use common\models\User;
+use common\models\UserAccesItem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -123,15 +124,28 @@ class CompanyController extends Controller
         $model = User::findOne($id);
         $password = $model->password;
         $company = Company::findOne($model->company_id);
-        $model->password = "";
         if ($model->load(Yii::$app->request->post())) {
             if ($model->password) {
-                $model->encrypt();
+                $model->setPassword($model->password);
             } else {
                 $model->password = $password;
             }
             if ($model->save()) {
-
+                if(is_array($model->access)){
+                    foreach ($model->access as $key => $item){
+                        if($item == 1){
+                            $acc = new UserAccesItem();
+                            $acc->user_id = $model->id;
+                            $acc->access_id = $key;
+                            $acc->status = 1;
+                            $acc->save();
+                        }else{
+                            if($acc = UserAccesItem::findOne(['user_id'=>$model->id,'access_id'=>$key])){
+                                $acc->delete();
+                            }
+                        }
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->company_id]);
             } else {
                 echo "<pre>";
@@ -139,6 +153,8 @@ class CompanyController extends Controller
                 exit;
             }
         }
+        $model->password = "";
+
         return $this->render('adduser', [
             'model' => $model,
             'company'=>$company
@@ -159,8 +175,22 @@ class CompanyController extends Controller
         $company = Company::findOne($id);
         $model->company_id = $company->id;
         if ($model->load(Yii::$app->request->post())) {
-            $model->encrypt();
+
+            $model->setPassword($model->password);
             if($model->save()){
+                if(is_array($model->access)){
+                    foreach ($model->access as $key => $item){
+                        if($item == 1){
+                            $acc = new UserAccesItem();
+                            $acc->user_id = $model->id;
+                            $acc->access_id = $key;
+                            $acc->status = 1;
+                            $acc->save();
+                        }
+                    }
+                }else{
+                    exit;
+                }
                 return $this->redirect(['view', 'id' => $id]);
             }else{
                 echo "<pre>";

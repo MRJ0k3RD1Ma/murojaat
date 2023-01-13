@@ -37,6 +37,7 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    public $access;
     /**
      * {@inheritdoc}
      */
@@ -52,8 +53,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['role_id', 'lavozim_id', 'bulim_id'], 'required'],
+            [['password'],'required','on'=>'insert'],
             [['role_id', 'company_id', 'lavozim_id', 'bulim_id', 'status', 'active'], 'integer'],
             [['created', 'updated'], 'safe'],
+            ['access','each','rule'=>['integer']],
             [['name', 'image', 'username', 'phone', 'auth_key', 'token', 'telegram', 'telegram_username', 'telegram_chat_id', 'sms_code'], 'string', 'max' => 255],
             [['password'], 'string', 'max' => 500],
             [['email'], 'string', 'max' => 50],
@@ -82,6 +85,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'auth_key' => 'Auth Key',
             'token' => 'Token',
             'email' => 'Email',
+            'access' => '',
             'status' => 'Status',
             'created' => 'Yaratildi',
             'updated' => 'O`zgartirildi',
@@ -103,6 +107,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 
+    public function access($type){
+        if(UserAccesItem::findOne(['user_id'=>$this->id,'access_id'=>$type])){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /**
      * Gets query for [[Role]].
      *
