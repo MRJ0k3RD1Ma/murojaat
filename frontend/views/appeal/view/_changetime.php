@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\request */
+/* @var $model common\models\Request */
 /* @var $form ActiveForm */
 ?>
 
@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
         <div class="col-md-4">
             <?php
                 if($model->scenario == 'change'){
-                    $data = \yii\helpers\ArrayHelper::map(\app\models\RequestType::find()->where(['id'=>1])->all(),'id','name');
+                    $data = \yii\helpers\ArrayHelper::map(\common\models\RequestType::find()->where(['id'=>1])->all(),'id','name');
                 }else{
-                    $data = \yii\helpers\ArrayHelper::map(\app\models\RequestType::find()->where(['id'=>2])->all(),'id','name');
+                    $data = \yii\helpers\ArrayHelper::map(\common\models\RequestType::find()->where(['id'=>2])->all(),'id','name');
                 }
             ?>
             <?= $form->field($model, 'type_id')->dropDownList($data) ?>

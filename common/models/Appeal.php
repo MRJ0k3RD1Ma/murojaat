@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "appeal".
@@ -73,6 +74,8 @@ use Yii;
  */
 class Appeal extends \yii\db\ActiveRecord
 {
+    public $region_id,$district_id;
+    public $letter;
     /**
      * {@inheritdoc}
      */
@@ -87,8 +90,8 @@ class Appeal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pursuit', 'person_id', 'gender', 'soato_id', 'isbusinessman', 'question_id', 'appeal_type_id', 'appeal_shakl_id', 'appeal_control_id', 'count_applicant', 'count_list', 'status', 'boshqa_tashkilot', 'boshqa_tashkilot_id', 'answer_reply_send', 'company_id', 'register_id', 'register_company_id', 'type', 'number', 'year', 'employment_id'], 'integer'],
-            [['person_name', 'person_phone', 'soato_id', 'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id'], 'required'],
+            [['region_id','district_id','pursuit', 'person_id', 'gender', 'soato_id', 'isbusinessman', 'question_id', 'appeal_type_id', 'appeal_shakl_id', 'appeal_control_id', 'count_applicant', 'count_list', 'status', 'boshqa_tashkilot', 'boshqa_tashkilot_id', 'answer_reply_send', 'company_id', 'register_id', 'register_company_id', 'type', 'number', 'year', 'employment_id'], 'integer'],
+            [['person_name', 'person_phone','gender',  'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id'], 'required'],
             [['date_of_birth', 'deadtime', 'created', 'updated', 'boshqa_tashkilot_date', 'answer_date'], 'safe'],
             [['appeal_preview', 'appeal_detail', 'executor_files', 'answer_detail'], 'string'],
             [['passport', 'passport_jshshir', 'person_name', 'person_phone', 'address', 'email', 'appeal_file', 'appeal_file_extension', 'boshqa_tashkilot_number', 'answer_name', 'answer_file', 'answer_preview', 'answer_number', 'number_full'], 'string', 'max' => 255],
@@ -102,6 +105,8 @@ class Appeal extends \yii\db\ActiveRecord
             [['register_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['register_company_id' => 'id']],
             [['register_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['register_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],
+            ['letter','file'],
+
         ];
     }
 
@@ -112,53 +117,56 @@ class Appeal extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pursuit' => 'Pursuit',
-            'passport' => 'Passport',
-            'passport_jshshir' => 'Passport Jshshir',
+            'pursuit' => 'Тақиб ҳақида огоҳлантириш',
+            'passport' => 'Паспорт серия рақами',
+            'passport_jshshir' => 'ЖШ ШИР(ПНФЛ)',
             'person_id' => 'Person ID',
-            'person_name' => 'Person Name',
-            'person_phone' => 'Person Phone',
-            'date_of_birth' => 'Date Of Birth',
-            'gender' => 'Gender',
-            'soato_id' => 'Soato ID',
-            'address' => 'Address',
-            'email' => 'Email',
-            'businessman' => 'Businessman',
-            'isbusinessman' => 'Isbusinessman',
+            'person_name' => 'ФИО',
+            'letter'=>'Кузатувчи хат',
+            'person_phone' => 'Телефон',
+            'date_of_birth' => 'Туғилган санаси',
+            'gender' => 'Жинси',
+            'soato_id' => 'Маҳалла',
+            'address' => 'Манзил',
+            'email' => 'Эл-Почта',
+            'businessman' => 'Тадбиркорлик субьекти',
+            'isbusinessman' => 'Юридик шахс',
             'appeal_preview' => 'Appeal Preview',
-            'appeal_detail' => 'Appeal Detail',
-            'appeal_file' => 'Appeal File',
-            'question_id' => 'Question ID',
+            'appeal_detail' => 'Мурожаат матни',
+            'appeal_file' => 'Файл',
+            'question_id' => 'Масаласи',
             'executor_files' => 'Executor Files',
             'appeal_file_extension' => 'Appeal File Extension',
-            'appeal_type_id' => 'Appeal Type ID',
-            'appeal_shakl_id' => 'Appeal Shakl ID',
-            'appeal_control_id' => 'Appeal Control ID',
-            'count_applicant' => 'Count Applicant',
-            'count_list' => 'Count List',
-            'status' => 'Status',
-            'deadtime' => 'Deadtime',
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'boshqa_tashkilot' => 'Boshqa Tashkilot',
-            'boshqa_tashkilot_number' => 'Boshqa Tashkilot Number',
-            'boshqa_tashkilot_date' => 'Boshqa Tashkilot Date',
-            'boshqa_tashkilot_id' => 'Boshqa Tashkilot ID',
-            'answer_name' => 'Answer Name',
-            'answer_file' => 'Answer File',
+            'appeal_type_id' => 'Мурожаат тури',
+            'appeal_shakl_id' => 'Мурожаат шакли',
+            'appeal_control_id' => 'Ҳолати',
+            'count_applicant' => 'Мурожаатчилар',
+            'count_list' => 'Варақлар сони',
+            'status' => 'Статус',
+            'deadtime' => 'Муддат',
+            'created' => 'Яратилди',
+            'updated' => 'Ўзгартирлди',
+            'boshqa_tashkilot' => 'Бошқа ташкилот',
+            'boshqa_tashkilot_number' => 'Рақами',
+            'boshqa_tashkilot_date' => 'Санаси',
+            'boshqa_tashkilot_id' => 'Ташкилот',
+            'answer_name' => 'Ҳужжат номи',
+            'answer_file' => 'Файл',
             'answer_preview' => 'Answer Preview',
-            'answer_detail' => 'Answer Detail',
-            'answer_reply_send' => 'Answer Reply Send',
-            'answer_number' => 'Answer Number',
-            'answer_date' => 'Answer Date',
-            'company_id' => 'Company ID',
+            'answer_detail' => 'Мазмуни',
+            'answer_reply_send' => 'Жавоб мурожаатчига юборилди',
+            'answer_number' => 'Рақами',
+            'answer_date' => 'Санаси',
+            'company_id' => 'Ташкилот',
             'register_id' => 'Register ID',
-            'register_company_id' => 'Register Company ID',
+            'register_company_id' => 'Рўйхатга олувчи ташкилот',
             'type' => 'Type',
             'number' => 'Number',
             'year' => 'Year',
-            'number_full' => 'Number Full',
-            'employment_id' => 'Employment ID',
+            'number_full' => 'Рақами',
+            'employment_id' => 'Ижтимоий статус',
+            'region_id' => 'Вилоят',
+            'district_id' => 'Туман',
         ];
     }
 
@@ -171,7 +179,20 @@ class Appeal extends \yii\db\ActiveRecord
     {
         return $this->hasMany(AppealAnswer::class, ['appeal_id' => 'id']);
     }
-
+    public function upload(){
+        if($this->letter = UploadedFile::getInstance($this,'letter')){
+            $name = microtime(true).'.'.$this->letter->extension;
+            $this->letter->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
+            $this->letter = $name;
+        }
+    }
+    public function uploadAppeal(){
+        if($this->appeal_file = UploadedFile::getInstance($this,'appeal_file')){
+            $name = microtime(true).'.'.$this->appeal_file->extension;
+            $this->appeal_file->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
+            $this->appeal_file = $name;
+        }
+    }
     /**
      * Gets query for [[AppealBajaruvchis]].
      *
@@ -304,5 +325,18 @@ class Appeal extends \yii\db\ActiveRecord
 
     public function getStatus0(){
         return $this->hasOne(Status::className(),['id'=>'status']);
+    }
+
+
+    public function getRegion(){
+        $soato = $this->soato;
+        return Soato::findOne($soato->res_id.$soato->region_id)->name_cyr;
+    }
+    public function getDistrict(){
+        $soato = $this->soato;
+        return Soato::findOne($soato->res_id.$soato->region_id.$soato->district_id)->name_cyr;
+    }
+    public function getVillage(){
+        return $this->hasOne(Soato::class, ['id' => 'soato_id']);
     }
 }

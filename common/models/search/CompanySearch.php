@@ -82,4 +82,62 @@ class CompanySearch extends Company
 
         return $dataProvider;
     }
+
+    public function searchStatus($params)
+    {
+        $cid = \Yii::$app->user->identity->company_id;
+        $query = Company::find()->select([
+            'company.*',
+            'count(ab.company_id) as cntall',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=0) AS cnt0',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=1) AS cnt1',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=2) AS cnt2',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=3) AS cnt3',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=4) AS cnt4',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=5) AS cnt5',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status<>4 and appeal_bajaruvchi.deadtime<date(now())) AS cntdead',
+        ])->innerJoin('appeal_bajaruvchi ab','company.id = ab.company_id ')
+        ->innerJoin('appeal_register ar','ab.register_id = ar.id')
+        ->where(['ar.company_id'=>$cid])->groupBy(['company.id'])->orderBy(['cntall'=>SORT_DESC]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'type_id' => $this->type_id,
+            'soato_id' => $this->soato_id,
+            'status_id' => $this->status_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+            'parent_id' => $this->parent_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'inn', $this->inn])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'director', $this->director])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'telegram', $this->telegram])
+            ->andFilterWhere(['like', 'phone_director', $this->phone_director])
+            ->andFilterWhere(['like', 'address', $this->address])
+            ->andFilterWhere(['like', 'location', $this->location])
+            ->andFilterWhere(['like', 'lat', $this->lat])
+            ->andFilterWhere(['like', 'long', $this->long])
+            ->andFilterWhere(['like', 'ads', $this->ads])
+            ->andFilterWhere(['like', 'cadastre', $this->cadastre]);
+
+        return $dataProvider;
+    }
 }

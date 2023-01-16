@@ -41,7 +41,7 @@ class RequestStatus extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Номи',
             'icon' => 'Icon',
         ];
     }

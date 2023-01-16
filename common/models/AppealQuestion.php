@@ -46,9 +46,9 @@ class AppealQuestion extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group_id' => 'Group ID',
-            'code' => 'Code',
-            'name' => 'Name',
+            'group_id' => 'Гуруҳи',
+            'code' => 'Код',
+            'name' => 'Номи',
         ];
     }
 

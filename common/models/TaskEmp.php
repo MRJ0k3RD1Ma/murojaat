@@ -58,16 +58,16 @@ class TaskEmp extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'sender_id' => 'Sender ID',
-            'reciever_id' => 'Reciever ID',
-            'register_id' => 'Register ID',
-            'appeal_id' => 'Appeal ID',
-            'deadtime' => 'Deadtime',
-            'task' => 'Task',
-            'letter' => 'Letter',
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'status' => 'Status',
+            'sender_id' => 'Юбориувчи',
+            'reciever_id' => 'Қабул қилувчи',
+            'register_id' => 'Мурожаат',
+            'appeal_id' => 'Мурожаат',
+            'deadtime' => 'Муддат',
+            'task' => 'Топшириқ матни',
+            'letter' => 'Файл',
+            'created' => 'Юборилди',
+            'updated' => 'Ўзгартирилди',
+            'status' => 'Статус',
         ];
     }
 
@@ -81,6 +81,9 @@ class TaskEmp extends \yii\db\ActiveRecord
         return $this->hasOne(Appeal::class, ['id' => 'appeal_id']);
     }
 
+    public function getStatus0(){
+        return $this->hasOne(Status::class,['id'=>'status']);
+    }
     /**
      * Gets query for [[Reciever]].
      *

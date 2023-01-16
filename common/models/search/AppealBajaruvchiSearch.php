@@ -75,4 +75,60 @@ class AppealBajaruvchiSearch extends AppealBajaruvchi
 
         return $dataProvider;
     }
+
+    public function searchMy($params,$type=null,$id=0)
+    {
+        $query = AppealBajaruvchi::find();
+
+        if($type=='company'){
+            $query
+                ->innerJoin('appeal_register','appeal_register.id=appeal_bajaruvchi.register_id')
+                ->andWhere(['appeal_register.company_id'=>\Yii::$app->user->identity->company_id])
+                ->andWhere(['appeal_bajaruvchi.company_id'=>$id])
+                ->orderBy(['appeal_register.created'=>SORT_DESC])
+            ;
+        }elseif($type == 'answered'){
+            $query = AppealBajaruvchi::find()
+                ->where('register_id in (select id from appeal_register where company_id='.\Yii::$app->user->identity->company_id.')')
+                ->orderBy(['updated'=>SORT_DESC]);
+        }elseif($type=='my'){
+            $query = AppealBajaruvchi::find()
+                ->where('register_id in (select id from appeal_register where company_id='.\Yii::$app->user->identity->company_id.')')
+                ->andWhere(['sender_id'=>\Yii::$app->user->identity->id]);
+        }else{
+            $query->where(['company_id'=>\Yii::$app->user->identity->company_id])->andWhere(['<=','status',1]);
+        }
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'company_id' => $this->company_id,
+            'appeal_id' => $this->appeal_id,
+            'register_id' => $this->register_id,
+            'sender_id' => $this->sender_id,
+            'deadline' => $this->deadline,
+            'deadtime' => $this->deadtime,
+            'created' => $this->created,
+            'status' => $this->status,
+            'updated' => $this->updated,
+        ]);
+
+        $query->andFilterWhere(['like', 'task', $this->task])
+            ->andFilterWhere(['like', 'letter', $this->letter]);
+
+        return $dataProvider;
+    }
 }

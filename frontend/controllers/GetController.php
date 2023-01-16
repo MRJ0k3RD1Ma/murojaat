@@ -5,8 +5,8 @@ namespace frontend\controllers;
 
 use common\models\Company;
 use common\models\CompanyType;
-use common\models\District;
-use common\models\Village;
+use common\models\DistrictView;
+use common\models\MahallaView;
 use yii\web\Controller;
 
 
@@ -14,33 +14,33 @@ class GetController extends Controller
 {
 
     public function actionDistrict($id){
-        $model = District::find()->where(['region_id'=>$id])->all();
+        $model = DistrictView::find()->where(['region_id'=>$id])->all();
         $res = "<option value=''>-Tumanni tanlang-</option>";
         foreach ($model as $item) {
-            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+            $res .= "<option value='{$item->district_id}'>{$item->name_cyr}</option>";
         }
         echo $res;
         exit;
     }
 
-    public function actionVillage($id){
-        $model = Village::find()->where(['district_id'=>$id])->all();
+    public function actionVillage($id,$region_id){
+        $model = MahallaView::find()->where(['district_id'=>$id,'region_id'=>$region_id])->all();
         $res = "<option value=''>-Mahallani tanlang-</option>";
         foreach ($model as $item) {
-            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+            $res .= "<option value='{$item->id}'>{$item->name_cyr}</option>";
         }
         echo $res;
         exit;
     }
 
-    public function actionVillages($id){
+    public function actionVillages($id,$region_id){
         $res = "";
-        $model = Village::find()->where(['district_id'=>$id])->all();
+        $model = MahallaView::find()->where(['district_id'=>$id,'region_id'=>$region_id])->all();
         $n=0;
         foreach ($model as $item) {
             $n++;
             $res .= "<div class=\"form-group field-user-vil-{$item->id}\">
-    <label class=\"control-label\" for=\"user-vil-{$item->id}\">{$n}. {$item->name} </label>
+    <label class=\"control-label\" for=\"user-vil-{$item->id}\">{$n}. {$item->name_cyr} </label>
     <input type=\"hidden\" name=\"User[vil][{$item->id}]\" value=\"0\"><label><input type=\"checkbox\" id=\"user-vil-{$item->id}\" name=\"User[vil][{$item->id}]\" value=\"1\"> </label>
     
     <div class=\"help-block\"></div>

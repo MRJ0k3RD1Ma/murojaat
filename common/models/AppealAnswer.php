@@ -66,23 +66,23 @@ class AppealAnswer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'appeal_id' => 'Appeal ID',
-            'register_id' => 'Register ID',
-            'parent_id' => 'Parent ID',
-            'preview' => 'Preview',
-            'detail' => 'Detail',
-            'number' => 'Number',
-            'date' => 'Date',
-            'tarqatma_number' => 'Tarqatma Number',
-            'tarqatma_date' => 'Tarqatma Date',
-            'bajaruvchi_id' => 'Bajaruvchi ID',
-            'reaply_send' => 'Reaply Send',
-            'name' => 'Name',
-            'file' => 'File',
-            'status' => 'Status',
-            'status_boshqa' => 'Status Boshqa',
-            'created' => 'Created',
-            'updated' => 'Updated',
+            'appeal_id' => 'Мурожаатчи',
+            'register_id' => 'Мурожаат',
+            'parent_id' => 'Юборувчи',
+            'preview' => 'Ҳужжат номи',
+            'detail' => 'Батафсил',
+            'number' => 'Рақами',
+            'date' => 'Санаси',
+            'tarqatma_number' => 'Тарқатма рақами',
+            'tarqatma_date' => 'Тарқатма санаси',
+            'bajaruvchi_id' => 'Бажарувчи',
+            'reaply_send' => 'Жавоб хати юборилган',
+            'name' => 'Хужжат номи',
+            'file' => 'Файл',
+            'status' => 'Статус',
+            'status_boshqa' => 'Статус',
+            'created' => 'Юборилди',
+            'updated' => 'Ўзгартирилди',
         ];
     }
 
@@ -96,6 +96,9 @@ class AppealAnswer extends \yii\db\ActiveRecord
         return $this->hasOne(Appeal::class, ['id' => 'appeal_id']);
     }
 
+    public function getStatus0(){
+        return $this->hasOne(Status::class,['id'=>'status']);
+    }
     /**
      * Gets query for [[Bajaruvchi]].
      *

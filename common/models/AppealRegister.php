@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "appeal_register".
@@ -89,35 +90,35 @@ class AppealRegister extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'number' => 'Number',
-            'date' => 'Date',
-            'question_id' => 'Question ID',
-            'appeal_id' => 'Appeal ID',
-            'rahbar_id' => 'Rahbar ID',
-            'ijrochi_id' => 'Ijrochi ID',
+            'number' => 'Рақами',
+            'date' => 'Санаси',
+            'question_id' => 'Масаласи',
+            'appeal_id' => 'Мурожаат',
+            'rahbar_id' => 'Раҳбар',
+            'ijrochi_id' => 'Ижрочи',
             'users' => 'Users',
             'user_answer' => 'User Answer',
-            'tashkilot' => 'Tashkilot',
+            'tashkilot' => 'Ташкилот',
             'tashkilot_answer' => 'Tashkilot Answer',
             'parent_bajaruvchi_id' => 'Parent Bajaruvchi ID',
-            'deadline' => 'Deadline',
-            'deadtime' => 'Deadtime',
-            'donetime' => 'Donetime',
-            'control_id' => 'Control ID',
-            'status' => 'Status',
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'reply_send' => 'Reply Send',
-            'preview' => 'Preview',
+            'deadline' => 'Муддат',
+            'deadtime' => 'Муддат',
+            'donetime' => 'Бажарилган санаси',
+            'control_id' => 'Ҳолати',
+            'status' => 'Статус',
+            'created' => 'Яратилди',
+            'updated' => 'Ўзгарди',
+            'reply_send' => 'Жавоб мурожаатчига юборилди',
+            'preview' => 'Раҳбар резолюцияси',
             'detail' => 'Detail',
-            'file' => 'File',
-            'company_id' => 'Company ID',
+            'file' => 'Файл',
+            'company_id' => 'Ташкилот',
             'answer_send' => 'Answer Send',
-            'nazorat' => 'Nazorat',
-            'takroriy' => 'Takroriy',
-            'takroriy_id' => 'Takroriy ID',
-            'takroriy_date' => 'Takroriy Date',
-            'takroriy_number' => 'Takroriy Number',
+            'nazorat' => 'Назорат',
+            'takroriy' => 'Такрорий',
+            'takroriy_id' => 'Такрорий ID',
+            'takroriy_date' => 'Санаси',
+            'takroriy_number' => 'Рақами',
         ];
     }
 
@@ -191,6 +192,45 @@ class AppealRegister extends \yii\db\ActiveRecord
         return $this->hasOne(AppealBajaruvchi::class, ['id' => 'parent_bajaruvchi_id']);
     }
 
+    public function upload(){
+
+        if($this->letter = UploadedFile::getInstance($this,'letter')){
+            $name = microtime(true).'.'.$this->letter->extension;
+            $this->letter->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
+            $this->letter = $name;
+        }
+
+    }
+
+    public function getMyrequest(){
+        return $this->hasMany(Request::className(),['register_id'=>'id']);
+    }
+
+    public function getChild(){
+        return $this->hasMany(AppealBajaruvchi::className(),['register_id'=>'id']);
+    }
+    public function getAnswer(){
+        return $this->hasMany(AppealAnswer::className(),['register_id'=>'id']);
+    }
+    public function getChildanswer(){
+        return AppealAnswer::find()
+            ->where('parent_id in (select id from appeal_bajaruvchi where register_id='.$this->id.')')
+            ->orderBy(['id'=>SORT_DESC])->all();
+    }
+    public function getChildanswermy(){
+        return AppealAnswer::find()
+            ->where('parent_id in (select id from appeal_bajaruvchi where register_id='.$this->id.' and sender_id='.Yii::$app->user->id.')')
+            ->orderBy(['id'=>SORT_DESC])->all();
+    }
+
+
+    public function getStatus0(){
+        return $this->hasOne(Status::className(),['id'=>'status']);
+    }
+
+    public function getChildemp(){
+        return $this->hasMany(TaskEmp::className(),['register_id'=>'id'])->orderBy(['created'=>SORT_DESC]);
+    }
     /**
      * Gets query for [[Question]].
      *

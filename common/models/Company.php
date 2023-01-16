@@ -34,6 +34,7 @@ use Yii;
  */
 class Company extends \yii\db\ActiveRecord
 {
+    public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect;
     /**
      * {@inheritdoc}
      */
@@ -67,24 +68,36 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'inn' => 'STIR(INN)',
-            'name' => 'Nomi',
-            'director' => 'Direktor',
-            'phone' => 'Telefon',
-            'telegram' => 'Telegram',
-            'phone_director' => 'Direktor telefoni',
-            'type_id' => 'Tashkilot turi',
-            'soato_id' => 'Manzil',
-            'status_id' => 'Status',
+            'inn' => 'СТИР(ИНН)',
+            'name' => 'Номи',
+            'director' => 'Директор',
+            'phone' => 'Телефон',
+            'telegram' => 'Телеграм',
+            'phone_director' => 'Директор телефони',
+            'type_id' => 'Ташкилот тури',
+            'soato_id' => 'Манзид',
+            'status_id' => 'Статус',
             'created' => 'Yaratildi',
             'updated' => 'O`zgartirildi',
-            'address' => 'Manzil',
+            'address' => 'Манзил',
             'location' => 'Location',
             'lat' => 'Lat',
             'long' => 'Long',
-            'parent_id' => 'Yuqori turuvchi tashkiloti',
-            'ads' => 'Izoh',
-            'cadastre' => 'Kadastr raqami',
+            'parent_id' => 'Юқори турувчи ташкилот',
+            'ads' => 'Изоҳ',
+            'cadastre' => 'Кадастр рақами',
+            'cntall' => 'Юборилган мурожаатлар',
+            'cntzero' => 'Қабул қилинмаган',
+            'cntone' => 'Жараёнда',
+            'cnttwo' => 'Бажарилган',
+            'cntdead' => 'Муддати бузилган',
+            'cntwithdead' => 'Муддати бузилиб бажарилган',
+            'cnt0' => 'Кўрилмаган',
+            'cnt1' => 'Янги',
+            'cnt2' => 'Жараёнда',
+            'cnt3' => 'Тасдиқланиши кутилмоқда',
+            'cnt4' => 'Бажарилган',
+            'cnt5' => 'Рад этилган',
         ];
     }
 

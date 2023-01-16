@@ -65,18 +65,18 @@ class Request extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'sender_id' => 'Sender ID',
-            'reciever_id' => 'Reciever ID',
-            'type_id' => 'Type ID',
-            'register_id' => 'Register ID',
-            'appeal_id' => 'Appeal ID',
-            'status_id' => 'Status ID',
-            'detail' => 'Detail',
-            'date' => 'Date',
-            'file' => 'File',
-            'created' => 'Created',
-            'updated' => 'Updated',
-            'ignore_ads' => 'Ignore Ads',
+            'sender_id' => 'Юборувчи',
+            'reciever_id' => 'Қабул қилувчи',
+            'type_id' => 'Тури',
+            'register_id' => 'Мурожаат',
+            'appeal_id' => 'Мурожаат',
+            'status_id' => 'Статус',
+            'detail' => 'Батафсил',
+            'date' => 'Сана',
+            'file' => 'Файл',
+            'created' => 'Юборилган',
+            'updated' => 'Ўзгартирилган',
+            'ignore_ads' => 'Изоҳ',
         ];
     }
 

@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
 /* @var $form yii\widgets\ActiveForm */
 ?>
     <script>
@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-6">
                     <?php
                     $quest = [];
-                    foreach (\app\models\AppealQuestionGroup::find()->all() as $item) {
+                    foreach (\common\models\AppealQuestionGroup::find()->all() as $item) {
                         $quest[$item->code.'-'.$item->name] = [];
                         foreach ($item->question as $i){
                             $quest[$item->code.'-'.$item->name][$i->id] = $item->code.' '.$i->code.')'.$i->name;
@@ -63,6 +63,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'date_of_birth')->textInput(['type'=>'date']) ?>
                     <?= $form->field($model, 'gender')->dropDownList([0=>'Аёл',1=>'Эркак'],['prompt'=>'Жинсини танланг']) ?>
                     <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'employment_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employment::find()->all(),'id','name')) ?>
 
                 </div>
             </div>
@@ -76,9 +77,10 @@ use yii\widgets\ActiveForm;
                     </h3>
                 </div>
                 <div class="card-body">
-                    <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Region::find()->all(),'id','name'),['prompt'=>'Вилоятни танланг']) ?>
-                    <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\District::find()->where(['region_id'=>$model->region_id])->all(),'id','name'),['prompt'=>'Туманни танланг']) ?>
-                    <?= $form->field($model, 'village_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Village::find()->where(['district_id'=>$model->district_id])->all(),'id','name'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
+
+                    <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг']) ?>
+                    <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг']) ?>
+                    <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
                     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
                 </div>
@@ -105,7 +107,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model,'boshqa_tashkilot_date')->textInput(['type'=>'date'])?>
                 </div>
                 <?php   $tashkilot = [];
-                foreach (\app\models\AppealBoshqaTashkilotGroup::find()->all() as $item) {
+                foreach (\common\models\AppealBoshqaTashkilotGroup::find()->all() as $item) {
                     $tashkilot[$item->name] = [];
                     foreach ($item->tashkilotlar as $i){
                         $tashkilot[$item->name][$i->id] = $i->name;
@@ -131,9 +133,9 @@ use yii\widgets\ActiveForm;
                     </h3>
                 </div>
                 <div class="card-body">
-                    <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
+                    <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
 
-                    <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
+                    <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
 
                     <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
 
@@ -175,7 +177,11 @@ use yii\widgets\ActiveForm;
 
                             </div>
 
-                            <?= $form->field($register,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])?>
+                            <?= $form->field($register,'rahbar_id')->dropDownList(
+                                    \yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])
+                                        ->where(['user.company_id'=>Yii::$app->user->identity->company_id])
+                                        ->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')
+                                        ->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])?>
 
                             <?= $form->field($register, 'preview')->textarea(['maxlength' => true]) ?>
 
@@ -188,7 +194,7 @@ use yii\widgets\ActiveForm;
                                 </div>
                             </div>
 
-                            <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])?>
+                            <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])?>
 
                         </div>
                     </div>
@@ -255,7 +261,7 @@ use yii\widgets\ActiveForm;
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $users = \app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
+                            <?php $users = \common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
 
 
                                 foreach ($users as $item):
@@ -462,9 +468,9 @@ $this->registerJs("
         })
     });
     $('#appeal-district_id').change(function(){
-        $.get('/get/village?id='+$('#appeal-district_id').val()).done(function(data){
-            $('#appeal-village_id').empty();
-            $('#appeal-village_id').append(data).trigger('change');
+        $.get('/get/village?id='+$('#appeal-district_id').val()+'&region_id='+$('#appeal-region_id').val()).done(function(data){
+            $('#appeal-soato_id').empty();
+            $('#appeal-soato_id').append(data).trigger('change');
         })
     })
 ")

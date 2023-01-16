@@ -11,6 +11,7 @@ use common\models\Request;
  */
 class RequestSearch extends Request
 {
+    public $do;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class RequestSearch extends Request
     {
         return [
             [['id', 'sender_id', 'reciever_id', 'type_id', 'register_id', 'appeal_id', 'status_id'], 'integer'],
-            [['detail', 'date', 'file', 'created', 'updated', 'ignore_ads'], 'safe'],
+            [['do','detail', 'date', 'file', 'created', 'updated', 'ignore_ads'], 'safe'],
         ];
     }
 

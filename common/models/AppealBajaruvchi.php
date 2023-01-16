@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "appeal_bajaruvchi".
@@ -88,6 +89,13 @@ class AppealBajaruvchi extends \yii\db\ActiveRecord
         return $this->hasOne(Appeal::class, ['id' => 'appeal_id']);
     }
 
+    public function upload(){
+        if($this->letter = UploadedFile::getInstance($this,'letter')){
+            $name = microtime(true).'.'.$this->letter->extension;
+            $this->letter->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
+            $this->letter = $name;
+        }
+    }
     /**
      * Gets query for [[AppealAnswers]].
      *

@@ -1,15 +1,15 @@
 <?php
 
-use app\models\AppealAnswer;
+use common\models\AppealAnswer;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
-/* @var $answer app\models\AppealAnswer */
-/* @var $ans app\models\AppealAnswer */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
+/* @var $answer common\models\AppealAnswer */
+/* @var $ans common\models\AppealAnswer */
 
 $this->title = $model->person_name;
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];

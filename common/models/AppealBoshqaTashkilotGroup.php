@@ -40,7 +40,7 @@ class AppealBoshqaTashkilotGroup extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Номи',
         ];
     }
 
@@ -49,8 +49,9 @@ class AppealBoshqaTashkilotGroup extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAppealBoshqaTashkilots()
+    public function getTashkilotlar()
     {
         return $this->hasMany(AppealBoshqaTashkilot::class, ['group_id' => 'id']);
     }
+
 }

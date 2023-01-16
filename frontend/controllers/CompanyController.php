@@ -34,7 +34,7 @@ class CompanyController extends Controller
 
     public function actionIndex(){
         $searchModel = new CompanySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,'withstatus');
+        $dataProvider = $searchModel->searchStatus(Yii::$app->request->queryParams);
         if(Yii::$app->request->isPost){
             $speadsheet = new Spreadsheet();
             $sheet = $speadsheet->getActiveSheet();

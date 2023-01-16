@@ -45,8 +45,8 @@ class AppealBoshqaTashkilot extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'group_id' => 'Group ID',
+            'name' => 'Ташкилот номи',
+            'group_id' => 'Ташкилот гуруҳи',
             'isdelete' => 'Isdelete',
         ];
     }

@@ -124,6 +124,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasOne(UserRole::class, ['id' => 'role_id']);
     }
 
+    public function getLavozim(){
+        return $this->hasOne(Lavozim::class,['id'=>'lavozim_id']);
+    }
+
+    public function getBulim(){
+        return $this->hasOne(Bulim::class,['id'=>'bulim_id']);
+    }
     /**
      * Gets query for [[UserAccesItem]].
      *

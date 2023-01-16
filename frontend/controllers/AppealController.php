@@ -144,7 +144,7 @@ class AppealController extends Controller
         $model = Appeal::findOne($register->appeal_id);
         $address = $model->region->name.' '.$model->district->name.' '.@$model->village->name.' '.$model->address;
         $word = new TemplateProcessor(Yii::$app->basePath.'/web/template/getappeal.docx');
-        $word->setValue('companyup',mb_strtoupper(\app\models\Company::findOne(1)->name));
+        $word->setValue('companyup',mb_strtoupper(\common\models\Company::findOne(1)->name));
         $word->setValue('number',strip_tags($register->number));
         $word->setValue('questiongroup',strip_tags($model->question->group->name));
 
@@ -335,7 +335,7 @@ class AppealController extends Controller
         $searchModel = new AppealBajaruvchiSearch();
         $searchModel->status = $status;
         $type = 'answered';
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$type);
+        $dataProvider = $searchModel->searchMy(Yii::$app->request->queryParams,$type);
 
         return $this->render('answered', [
             'searchModel' => $searchModel,
@@ -420,16 +420,17 @@ class AppealController extends Controller
         $register->date = date('Y-m-d');
         $register->company_id = Yii::$app->user->identity->company_id;
         $register->deadtime = date('Y-m-d', strtotime(date('Y-m-d'). ' + 15 days'));;
-        $model->region_id = Yii::$app->user->identity->company->region_id;
+        $model->region_id = Yii::$app->user->identity->company->soato->region_id;
         $model->count_applicant = 1;
         $model->count_list = 1;
         $model->appeal_control_id = 1;
-        $model->nation_id = 1;
         $model->email = '';
         //appeal_file file upload
         //users array to json
-        $model->district_id = Yii::$app->user->identity->company->district_id;
-
+        $model->district_id = Yii::$app->user->identity->company->soato->district_id;
+        $model->register_id = Yii::$app->user->id;
+        $model->register_company_id = Yii::$app->user->identity->company_id;
+        $model->company_id = Yii::$app->user->identity->company_id;
         if($model->load(Yii::$app->request->post()) and $register->load(Yii::$app->request->post())){
             $model->deadtime = $register->deadtime;
             if($model->appeal_file = UploadedFile::getInstance($model,'appeal_file')){
@@ -443,12 +444,14 @@ class AppealController extends Controller
             }
             if($model->boshqa_tashkilot != 1){
                 $model->boshqa_tashkilot_date = null;
-                $model->boshqa_tashkilot_group_id = null;
                 $model->boshqa_tashkilot_id = null;
                 $model->boshqa_tashkilot_number = null;
             }
             $model->upload();
 
+            if(!$model->soato_id){
+                $model->soato_id = "17".$model->region_id.$model->district_id;
+            }
             if($model->save()){
 
                 $register->appeal_id = $model->id;
@@ -573,7 +576,7 @@ class AppealController extends Controller
     public function actionNotregister(){
 
         $searchModel = new AppealBajaruvchiSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchMy(Yii::$app->request->queryParams);
 
         return $this->render('notregister', [
             'searchModel' => $searchModel,
@@ -1025,14 +1028,16 @@ class AppealController extends Controller
         $model->appeal_type_id = 1;
         $model->appeal_control_id = 1;
         $com = Yii::$app->user->identity->company;
-        $model->region_id = $com->region_id;
-        $model->district_id = $com->district_id;
-        $model->village_id = $com->village_id;
+        $model->region_id = $com->soato->region_id;
+        $model->district_id = $com->soato->district_id;
+        $model->soato_id = $com->soato_id;
         $model->deadtime = date('Y-m-d', strtotime(date('Y-m-d') . ' +10 day'));
         $register->preview = "Мурожаатни кўриб чиқиб, кўтарилган масалани ўрнатилган тартибда ҳал қилиб, натижаси ҳақида муаллифга жавоб хати тайёрлансин.";
 
         if($model->load(Yii::$app->request->post()) and $register->load(Yii::$app->request->post())){
-
+            if(!$model->soato_id){
+                $model->soato_id = '17'.$model->region_id.$model->district_id;
+            }
             if($model->appeal_file = UploadedFile::getInstance($model,'appeal_file')){
                 $name = microtime(true).'.'.$model->appeal_file->extension;
                 $model->appeal_file->saveAs(Yii::$app->basePath.'/web/upload/'.$name);

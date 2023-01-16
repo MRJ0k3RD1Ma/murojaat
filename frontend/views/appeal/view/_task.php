@@ -34,7 +34,7 @@
         </thead>
         <tbody>
 
-        <?php $emp = \app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
+        <?php $emp = \common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
         $n=0;
         foreach ($emp as $item): $n++;
             ?>
