@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\AppealAnswerSearch */
+/* @var $searchModel common\models\search\AppealAnswerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Жавоби келган мурожаатлар';
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'label'=>'Жавоб рақами',
                                     'value'=>function($d){
-                                        $ans = \app\models\AppealAnswer::find()->where(['parent_id'=>$d->id])->orderBy(['id'=>SORT_DESC])->one();
+                                        $ans = \common\models\AppealAnswer::find()->where(['parent_id'=>$d->id])->orderBy(['id'=>SORT_DESC])->one();
                                         $url = Yii::$app->urlManager->createUrl(['/site/showresult','id'=>$d->id]);
                                         return "<a href='{$url}'>$ans->number<br>$ans->date</a>";
                                     },
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'label'=>'Хужжат номи',
                                     'value'=>function($d){
-                                        $ans = \app\models\AppealAnswer::find()->where(['parent_id'=>$d->id])->orderBy(['id'=>SORT_DESC])->one();
+                                        $ans = \common\models\AppealAnswer::find()->where(['parent_id'=>$d->id])->orderBy(['id'=>SORT_DESC])->one();
                                         return $ans->preview;
                                     }
                                 ],

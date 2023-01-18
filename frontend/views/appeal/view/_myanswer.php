@@ -35,7 +35,7 @@
 
                             <td><?= $item->bajaruvchi->company->name?></td>
                             <td><?= $item->number.'<br>'.$item->date ?></td>
-                            <td><?= $item->preview?></td>
+                            <td><?= $item->preview?> <?php if($item->status == 5){echo "<hr><b>Сабаб:</b>".$item->ignore_ads;}?></td>
                             <td><?= $item->file? "<a href='/upload/{$item->file}' download>Иловани юклаб олинг</a>" : 'Илова мавжуд эмас'?></td>
                             <td><?= $item->name?></td>
                             <td><?= $item->created ?></td>

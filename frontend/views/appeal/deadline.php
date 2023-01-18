@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\DeadlineChanges */
+/* @var $model common\models\DeadlineChanges */
 
 $this->title = 'Муддат узайтиришга сўров юбориш';
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];

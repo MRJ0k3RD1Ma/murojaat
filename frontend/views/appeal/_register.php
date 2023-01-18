@@ -118,19 +118,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute'=>'region_id',
                             'value'=>function($d){
-                                return $d->region->name;
+                                return $d->region;
                             }
                         ],
                         [
                             'attribute'=>'district_id',
                             'value'=>function($d){
-                                return $d->district->name;
+                                return $d->district;
                             }
                         ],
                         [
                             'attribute'=>'village_id',
                             'value'=>function($d){
-                                return $d->village->name;
+                                return @$d->village->name_cyr;
                             }
                         ],
                         'address',
@@ -288,9 +288,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </div>
                     <div class="col-md-6">
-                        <?= $form->field($reg,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'))?>
+                        <?= $form->field($reg,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'))?>
 
-                        <?= $form->field($reg,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'),['prompt'=>'Масъул ижрочини танланг'])?>
+                        <?= $form->field($reg,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'),['prompt'=>'Масъул ижрочини танланг'])?>
 
 
                     </div>

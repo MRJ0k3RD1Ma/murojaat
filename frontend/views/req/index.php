@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\DeadlineChangesSearch */
+/* @var $searchModel common\models\search\DeadlineChangesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Муддат узайтиришга сўровлар';
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'status_id',
                                 'value'=>function($d){return $d->status->name;},
-                                'filter'=>\yii\helpers\ArrayHelper::map(\app\models\RequestStatus::find()->all(),'id','name')
+                                'filter'=>\yii\helpers\ArrayHelper::map(\common\models\RequestStatus::find()->all(),'id','name')
                             ],
                             //'ads',
                             'created',

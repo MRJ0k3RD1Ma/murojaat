@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "task_emp".
@@ -102,6 +103,13 @@ class TaskEmp extends \yii\db\ActiveRecord
     public function getRegister()
     {
         return $this->hasOne(AppealRegister::class, ['id' => 'register_id']);
+    }
+    public function upload(){
+        if($this->letter = UploadedFile::getInstance($this,'letter')){
+            $name = microtime(true).'.'.$this->letter->extension;
+            $this->letter->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
+            $this->letter = $name;
+        }
     }
 
     /**

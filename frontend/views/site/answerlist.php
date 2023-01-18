@@ -8,13 +8,13 @@ $this->title = "Менга келган топшириқлар рўйхати";
 ?>
 <?php
 
-use app\models\AppealRegister;
+use common\models\AppealRegister;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\AppealRegisterSearch */
+/* @var $searchModel common\models\search\AppealRegisterSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $user = Yii::$app->user->identity;
 ?>
@@ -42,7 +42,7 @@ $user = Yii::$app->user->identity;
                     <div class="col-md-4">
                         <?php
                         $quest = [];
-                        foreach (\app\models\AppealQuestionGroup::find()->all() as $item) {
+                        foreach (\common\models\AppealQuestionGroup::find()->all() as $item) {
                             $quest[$item->code.'-'.$item->name] = [];
                             foreach ($item->question as $i){
                                 $quest[$item->code.'-'.$item->name][$i->id] = $item->code.' '.$i->code.')'.$i->name;
@@ -66,36 +66,14 @@ $user = Yii::$app->user->identity;
                     <div class="col-md-4">
                         <?= $form->field($searchModel, 'person_phone')->textInput(['maxlength' => true])->label('Телефон рақами') ?>
                     </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Region::find()->all(),'id','name'),['prompt'=>'Вилоятни танланг',
-                            'onchange'=>'
-				$.get( "'.\yii\helpers\Url::toRoute('/get/district').'", { id: $(this).val() } )
-                            .done(function( data ) {
-                                $( "#'.Html::getInputId($searchModel, 'district_id').'" ).html( data );
-                            });
-			'
-                        ])->label('Вилоят номи') ?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\District::find()->where(['region_id'=>$searchModel->region_id])->all(),'id','name'),['prompt'=>'Туманни танланг',
-                            'onchange'=>'
-				            $.get( "'.\yii\helpers\Url::toRoute('/get/village').'", { id: $(this).val() } )
-                            .done(function( data ) {
-                                $( "#'.Html::getInputId($searchModel, 'village_id').'" ).html( data );
-                            });
-			'
-                        ])->label('Туман номи') ?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'village_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Village::find()->where(['district_id'=>$searchModel->district_id])->all(),'id','name'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2'])->label('Маҳалла номи') ?>
-                    </div>
+
                     <div class="col-md-4">
                         <?= $form->field($searchModel, 'address')->textInput(['maxlength' => true])->label('Манзил') ?>
                     </div>
 
 
                     <div class="col-md-4">
-                        <?= $form->field($searchModel, 'control_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealControl::find()->all(),'id','name'),[
+                        <?= $form->field($searchModel, 'control_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealControl::find()->all(),'id','name'),[
                             'prompt'=>'Назорат турини танланг'
                         ]) ?>
                     </div>

@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
 
 $this->title = 'Мурожаатни янгилаш';
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];

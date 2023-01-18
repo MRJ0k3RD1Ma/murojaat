@@ -33,6 +33,7 @@ use Yii;
  */
 class AppealAnswer extends \yii\db\ActiveRecord
 {
+    public $n_olish;
     /**
      * {@inheritdoc}
      */
@@ -48,8 +49,8 @@ class AppealAnswer extends \yii\db\ActiveRecord
     {
         return [
             [['appeal_id', 'register_id', 'detail', 'bajaruvchi_id'], 'required'],
-            [['appeal_id', 'register_id', 'parent_id', 'bajaruvchi_id', 'reaply_send', 'status', 'status_boshqa'], 'integer'],
-            [['detail'], 'string'],
+            [['appeal_id', 'register_id', 'parent_id', 'bajaruvchi_id', 'reaply_send', 'status', 'status_boshqa','n_olish'], 'integer'],
+            [['detail','ignore_ads'], 'string'],
             [['date', 'tarqatma_date', 'created', 'updated'], 'safe'],
             [['preview', 'number', 'tarqatma_number', 'name', 'file'], 'string', 'max' => 255],
             [['appeal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appeal::class, 'targetAttribute' => ['appeal_id' => 'id']],
@@ -65,24 +66,25 @@ class AppealAnswer extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'appeal_id' => 'Мурожаатчи',
-            'register_id' => 'Мурожаат',
             'parent_id' => 'Юборувчи',
+            'status_boshqa' => 'Статус',
+            'id' => 'ID',
+            'status' => 'Ҳолат',
+            'n_olish' => 'Назоратдан олиш',
+            'appeal_id' => 'Ҳужжат рақами',
+            'register_id' => 'регистрация',
             'preview' => 'Ҳужжат номи',
-            'detail' => 'Батафсил',
+            'detail' => 'Мазмуни',
             'number' => 'Рақами',
             'date' => 'Санаси',
             'tarqatma_number' => 'Тарқатма рақами',
             'tarqatma_date' => 'Тарқатма санаси',
-            'bajaruvchi_id' => 'Бажарувчи',
-            'reaply_send' => 'Жавоб хати юборилган',
-            'name' => 'Хужжат номи',
+            'bajaruvchi_id' => 'Юборувчи',
+            'reaply_send' => 'Жавоб мурожаатчига юборилди',
+            'name' => 'Ижрочи',
             'file' => 'Файл',
-            'status' => 'Статус',
-            'status_boshqa' => 'Статус',
             'created' => 'Юборилди',
-            'updated' => 'Ўзгартирилди',
+            'updated' => 'Тасдиқланди',
         ];
     }
 

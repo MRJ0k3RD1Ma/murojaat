@@ -4,12 +4,12 @@ $this->title = 'Мурожаатлар рўйхати';
 ?>
 <?php
 
-use app\models\AppealRegister;
+use common\models\AppealRegister;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\AppealRegisterSearch */
+/* @var $searchModel common\models\search\AppealRegisterSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $user = Yii::$app->user->identity;
 ?>
@@ -149,9 +149,10 @@ $user = Yii::$app->user->identity;
                                         [
                                             'attribute'=>'address',
                                             'value'=>function($d){
-                                                return $d->district->name.' '.$d->village->name.' '.$d->address;
+                                                return $d->region.' '.$d->district.' '.@$d->village->name_cyr.' '.$d->address;
                                             }
                                         ],
+
                                         'appeal_detail',
                                         [
                                             'attribute'=>'deadtime',

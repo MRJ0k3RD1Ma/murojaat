@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\search\AppealBajaruvchiSearch */
+/* @var $searchModel common\models\search\AppealBajaruvchiSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $company->name.'га юборилган мурожаатлар рўйхати';
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $class = "bg-warning";
                                         $res = "<span class='{$class}' style='width: 100%; height: 100%; display: block;'>".$days.' кун қолди'."</span>";
                                     }else{$res = "<span class='{$class}' style='width: 100%; height: 100%; display: block;'>".$days.' кун қолди'."</span>";}
-                                    if(\app\models\AppealAnswer::find()->where(['appeal_id'=>$d->appeal_id])->andWhere(['status'=>0])->count('id') > 0){
+                                    if(\common\models\AppealAnswer::find()->where(['appeal_id'=>$d->appeal_id])->andWhere(['status'=>0])->count('id') > 0){
                                         $info = "<span class='fa fa-info-circle bg-warning' style='width: 100%; display: block; text-align: center; padding:3px; font-size: 12px;'> Янги жавоб</span>";
                                         $res = $info . $res;
                                     }

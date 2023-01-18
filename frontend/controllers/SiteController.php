@@ -9,6 +9,7 @@ use common\models\AppealRegister;
 use common\models\search\AppealBajaruvchiSearch;
 
 use common\models\search\AppealRegisterSearch;
+use common\models\search\CompanySearch;
 use common\models\TaskEmp;
 use common\models\User;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -223,6 +224,7 @@ class SiteController extends Controller
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
         $task = TaskEmp::findOne(['register_id'=>$id,'appeal_id'=>$register->appeal_id,'reciever_id'=>Yii::$app->user->id]);
+
         if($task->status == 0){
             $task->status = 1;
             $task->save();
@@ -505,8 +507,8 @@ class SiteController extends Controller
 
 
     public function actionCompanies(){
-        $searchModel = new CompanyMyRegisterSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new CompanySearch();
+        $dataProvider = $searchModel->searchMytask(Yii::$app->request->queryParams);
 
         if(Yii::$app->request->isPost){
 
@@ -558,15 +560,12 @@ class SiteController extends Controller
         $register = AppealRegister::findOne($model->register_id);
         $appeal = Appeal::findOne($model->appeal_id);
         $answer = AppealAnswer::find()->where(['parent_id'=>$model->id])->orderBy(['id'=>SORT_DESC])->one();
-        $appeal->scenario = 'close';
+
         $result = AppealRegister::findOne($answer->register_id);
-        $com = new AppealComment();
-        $com->answer_id = $answer->id;
-        $com->status = 5;
-        if($com->load(Yii::$app->request->post()) and $com->save()){
+        if($answer->load($this->request->post())){
+            $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
-            $answer->status = 5;
             $result->save(false);
             $model->save(false);
             $answer->save(false);
@@ -655,7 +654,7 @@ class SiteController extends Controller
     public function actionAnswered($status = 3){
         $searchModel = new AppealBajaruvchiSearch();
         $searchModel->status = $status;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,'my');
+        $dataProvider = $searchModel->searchMy(Yii::$app->request->queryParams,'my');
 
         return $this->render('answered', [
             'searchModel' => $searchModel,
@@ -672,19 +671,16 @@ class SiteController extends Controller
         $appeal = Appeal::findOne($model->appeal_id);
 
         $result = AppealRegister::findOne($answer->register_id);
-        $com = new AppealComment();
-        $com->answer_id = $answer->id;
-        $com->status = 5;
-        if($com->load(Yii::$app->request->post()) and $com->save()){
+
+        if($answer->load($this->request->post())){
+            $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
-            $answer->status = 5;
             $result->save(false);
             $model->save(false);
             $answer->save(false);
             return $this->redirect(['view','id'=>$register->id]);
         }
-        $appeal->scenario = 'close';
 
         return $this->render('viewresult',[
             'model'=>$appeal,

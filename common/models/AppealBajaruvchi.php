@@ -65,17 +65,17 @@ class AppealBajaruvchi extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'company_id' => 'Company ID',
-            'appeal_id' => 'Appeal ID',
-            'register_id' => 'Register ID',
-            'sender_id' => 'Sender ID',
-            'task' => 'Task',
-            'deadline' => 'Deadline',
-            'deadtime' => 'Deadtime',
-            'created' => 'Created',
-            'status' => 'Status',
-            'letter' => 'Letter',
-            'updated' => 'Updated',
+            'company_id' => 'Ташкилот',
+            'appeal_id' => 'Мурожаат',
+            'register_id' => 'Мурожаат',
+            'sender_id' => 'Юборувчи',
+            'task' => 'Топшириқ матни',
+            'deadline' => 'Муддат',
+            'deadtime' => 'Муддат',
+            'created' => 'Юборилди',
+            'status' => 'Статус',
+            'letter' => 'Файл',
+            'updated' => 'Ўзгартирилди',
         ];
     }
 

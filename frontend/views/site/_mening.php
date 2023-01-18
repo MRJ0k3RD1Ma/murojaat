@@ -1,11 +1,11 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
-/* @var $answer app\models\AppealAnswer */
-/* @var $ans app\models\AppealAnswer */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
+/* @var $answer common\models\AppealAnswer */
+/* @var $ans common\models\AppealAnswer */
 
-use app\models\AppealAnswer;
+use common\models\AppealAnswer;
 
 $ans = AppealAnswer::find()->where(['register_id'=>$register->id])->andWhere(['bajaruvchi_id'=>Yii::$app->user->id])->orderBy(['id'=>SORT_DESC])->all();
 ?>

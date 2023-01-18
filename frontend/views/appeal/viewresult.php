@@ -5,10 +5,10 @@ use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
-/* @var $answer app\models\AppealAnswer */
-/* @var $ans app\models\AppealAnswer */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
+/* @var $answer common\models\AppealAnswer */
+/* @var $ans common\models\AppealAnswer */
 
 $this->title = $model->person_name;
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];
@@ -120,19 +120,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'region_id',
                                 'value'=>function($d){
-                                    return $d->region->name;
+                                    return $d->region;
                                 }
                             ],
                             [
                                 'attribute'=>'district_id',
                                 'value'=>function($d){
-                                    return $d->district->name;
+                                    return $d->district;
                                 }
                             ],
                             [
                                 'attribute'=>'village_id',
                                 'value'=>function($d){
-                                    return @$d->village->name;
+                                    return @$d->village->name_cyr;
                                 }
                             ],
                             'address',
@@ -282,11 +282,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="deni" class="collapse" style="margin-top: 20px; padding: 20px;border: 1px solid #dc3545;" data-parent="#accordion">
 
                     <?php
-                    $com = new \app\models\AppealComment();
-                    $com->answer_id = $answer->id;
-                    $com->status = 6;
+
                     $form = ActiveForm::begin();?>
-                        <?= $form->field($com,'comment')->textInput()->textInput()->label('Изоҳ')?>
+                        <?= $form->field($answer,'ignore_ads')->textInput()->textInput()->label('Изоҳ')?>
                         <button class="btn btn-success" type="submit">
                             Жавобни рад қилиш
                         </button>

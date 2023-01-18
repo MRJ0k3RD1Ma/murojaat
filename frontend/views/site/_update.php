@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
 /* @var $form yii\widgets\ActiveForm */
 $this->title = 'Ўзгартириш';
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];
@@ -122,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 foreach ($us as $i):?>
                                                     <tr id="t<?= $i?>">
                                                         <td><button disabled value="<?= $i?>" type="button" class="btn btn-danger" ><span class="fa fa-trash"></span></button></td>
-                                                        <td><?php if($com = \app\models\Company::findOne($i)) echo $com->name?></td>
+                                                        <td><?php if($com = \common\models\Company::findOne($i)) echo $com->name?></td>
                                                         <input type="text" id="tashkilotid-<?= $i?>" name="AppealRegister[tashkilot][]" value="<?= $i?>" hidden class="hidden tashkilot_class">
                                                     </tr>
 
@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </tr>
                             </thead>
                             <tbody>
-                            <?php $users = \app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
+                            <?php $users = \common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all();
                             
                             foreach ($users as $item):
                                 ?>

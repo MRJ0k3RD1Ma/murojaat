@@ -704,18 +704,17 @@ class AppealController extends Controller
         $answer = AppealAnswer::find()->where(['parent_id'=>$model->id])->orderBy(['id'=>SORT_DESC])->one();
         $appeal->scenario = 'close';
         $result = AppealRegister::findOne($answer->register_id);
-        $com = new AppealComment();
-        $com->answer_id = $answer->id;
-        $com->status = 5;
-        if($com->load(Yii::$app->request->post()) and $com->save()){
+
+        if($answer->load($this->request->post())){
+            $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
-            $answer->status = 5;
             $result->save(false);
             $model->save(false);
             $answer->save(false);
             return $this->redirect(['view','id'=>$register->id]);
         }
+
 
 
         return $this->render('viewresult',[
@@ -734,21 +733,18 @@ class AppealController extends Controller
         $model = AppealBajaruvchi::findOne($answer->parent_id);
         $register = AppealRegister::findOne($model->register_id);
         $appeal = Appeal::findOne($model->appeal_id);
+        $appeal->scenario = 'close';
 
         $result = AppealRegister::findOne($answer->register_id);
-        $com = new AppealComment();
-        $com->answer_id = $answer->id;
-        $com->status = 5;
-        if($com->load(Yii::$app->request->post()) and $com->save()){
+        if($answer->load($this->request->post())){
+            $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
-            $answer->status = 5;
             $result->save(false);
             $model->save(false);
             $answer->save(false);
             return $this->redirect(['view','id'=>$register->id]);
         }
-        $appeal->scenario = 'close';
 
         return $this->render('viewresult',[
             'model'=>$appeal,
@@ -864,7 +860,7 @@ class AppealController extends Controller
         if($all){
             $searchModel->sts = 1;
         }
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchMy(Yii::$app->request->queryParams);
 
         return $this->render('request', [
             'searchModel' => $searchModel,
@@ -916,9 +912,9 @@ class AppealController extends Controller
         $model->count_applicant = 1;
         $model->count_list = 1;
         $com = Yii::$app->user->identity->company;
-        $model->region_id = $com->region_id;
-        $model->district_id = $com->district_id;
-        $model->village_id = $com->village_id;
+        $model->region_id = $com->soato->region_id;
+        $model->district_id = $com->soato->district_id;
+        $model->soato_id = $com->soato_id;
         $model->deadtime = date('Y-m-d', strtotime(date('Y-m-d') . ' +15 day'));
 
         if($model->load(Yii::$app->request->post())){
@@ -926,6 +922,9 @@ class AppealController extends Controller
                 $name = microtime(true).'.'.$model->appeal_file->extension;
                 $model->appeal_file->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
                 $model->appeal_file = $name;
+            }
+            if(!$model->soato_id){
+                $model->soato_id = "17".$model->region_id.$model->district_id;
             }
             $model->year = date('Y');
             if($model->number = Appeal::find()->where(['year'=>$model->year])->andWhere(['type'=>1])->max('number')){

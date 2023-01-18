@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\AppealAnswer */
+/* @var $model common\models\AppealAnswer */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'n_olish')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealControl::find()->where(['>','id',1])->all(),'id','name'),['prompt'=>'Назоратдан олиш']) ?>
+            <?= $form->field($model, 'n_olish')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealControl::find()->where(['>','id',1])->all(),'id','name'),['prompt'=>'Назоратдан олиш']) ?>
 
         </div>
         <div class="col-md-4">

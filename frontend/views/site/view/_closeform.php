@@ -1,12 +1,12 @@
 <?php
 
-use app\models\AppealControl;
+use common\models\AppealControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\AppealAnswer */
+/* @var $model common\models\AppealAnswer */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

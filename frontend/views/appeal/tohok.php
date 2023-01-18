@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
 /* @var $form yii\widgets\ActiveForm */
 ?>
    <?php $form = ActiveForm::begin() ?>
@@ -34,11 +34,12 @@ use yii\widgets\ActiveForm;
 
                         <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true]) ?>
 
-                        <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Region::find()->all(),'id','name'),['prompt'=>'Вилоятни танланг']) ?>
-                        <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\District::find()->where(['region_id'=>$model->region_id])->all(),'id','name'),['prompt'=>'Туманни танланг']) ?>
-                        <?= $form->field($model, 'village_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Village::find()->where(['district_id'=>$model->district_id])->all(),'id','name'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
-
+                        <!--manzil ma`lumotlari-->
+                        <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг']) ?>
+                        <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг']) ?>
+                        <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
                         <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+
 
                     </div>
                 </div>
@@ -52,9 +53,9 @@ use yii\widgets\ActiveForm;
                         </h3>
                     </div>
                     <div class="card-body">
-                        <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
+                        <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
 
-                        <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
+                        <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
 
                         <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
 
@@ -161,9 +162,9 @@ $this->registerJs("
         })
     });
     $('#appeal-district_id').change(function(){
-        $.get('/get/village?id='+$('#appeal-district_id').val()).done(function(data){
-            $('#appeal-village_id').empty();
-            $('#appeal-village_id').append(data).trigger('change');
+        $.get('/get/village?id='+$('#appeal-district_id').val()+'&region_id='+$('#appeal-region_id').val()).done(function(data){
+            $('#appeal-soato_id').empty();
+            $('#appeal-soato_id').append(data).trigger('change');
         })
     })
 ")

@@ -1,8 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model app\models\LoginForm */
+/* @var $form yii\bootstrap5\ActiveForm */
+/* @var $model common\models\LoginForm */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <?= $form->field($model,'address')->textInput()?>
 
-                        <?= $form->field($model,'bulim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Bulim::find()->all(),'id','name'))?>
+                        <?= $form->field($model,'bulim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Bulim::find()->all(),'id','name'))?>
 
-                        <?= $form->field($model,'lavozim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Lavozim::find()->all(),'id','name'))?>
+                        <?= $form->field($model,'lavozim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Lavozim::find()->all(),'id','name'))?>
 
                         <input type="submit" class="btn btn-success" style="margin-top:30px;" value="Сақлаш"/>
                     </div>

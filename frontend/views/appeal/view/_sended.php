@@ -2,7 +2,7 @@
     Мурожаатнинг жавоби
 </h3>
 
-<?php if($model_v = \app\models\AppealAnswer::find()->where(['parent_id'=>$register->parent_bajaruvchi_id])->orderBy(['created'=>SORT_DESC])->one()){?>
+<?php if($model_v = \common\models\AppealAnswer::find()->where(['parent_id'=>$register->parent_bajaruvchi_id])->orderBy(['created'=>SORT_DESC])->one()){?>
 <?= \yii\widgets\DetailView::widget([
     'model' => $model_v,
     'attributes' => [

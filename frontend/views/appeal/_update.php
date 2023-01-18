@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Appeal */
-/* @var $register app\models\AppealRegister */
+/* @var $model common\models\Appeal */
+/* @var $register common\models\AppealRegister */
 /* @var $form yii\widgets\ActiveForm */
 $this->title = 'Ўзгартириш';
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];
@@ -43,9 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 </div>
 
-                                <?= $form->field($register,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'))?>
+                                <?= $form->field($register,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'))?>
 
-                                <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'))?>
+                                <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'))?>
 
                                 <?= $form->field($register, 'preview')->textarea(['maxlength' => true]) ?>
 

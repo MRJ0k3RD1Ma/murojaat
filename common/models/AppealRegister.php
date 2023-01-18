@@ -53,7 +53,7 @@ use yii\web\UploadedFile;
  */
 class AppealRegister extends \yii\db\ActiveRecord
 {
-    public $mystatus;
+    public $letter,$mystatus,$masala;
     /**
      * {@inheritdoc}
      */
@@ -69,9 +69,10 @@ class AppealRegister extends \yii\db\ActiveRecord
     {
         return [
             [['number', 'date', 'appeal_id'], 'required'],
+            [['number','date','rahbar_id','preview','ijrochi_id'],'required','on'=>'reg'],
             [['date', 'deadtime', 'donetime', 'created', 'updated', 'takroriy_date'], 'safe'],
             [['question_id', 'appeal_id', 'rahbar_id', 'ijrochi_id', 'parent_bajaruvchi_id', 'deadline', 'control_id', 'status', 'reply_send', 'company_id', 'answer_send', 'nazorat', 'takroriy', 'takroriy_id'], 'integer'],
-            [['users', 'user_answer', 'tashkilot', 'tashkilot_answer', 'detail'], 'string'],
+            [['users', 'user_answer', 'tashkilot','masala', 'tashkilot_answer', 'detail'], 'string'],
             [['number', 'preview', 'file', 'takroriy_number'], 'string', 'max' => 255],
             [['appeal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appeal::class, 'targetAttribute' => ['appeal_id' => 'id']],
             [['control_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealControl::class, 'targetAttribute' => ['control_id' => 'id']],
@@ -80,6 +81,7 @@ class AppealRegister extends \yii\db\ActiveRecord
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealQuestion::class, 'targetAttribute' => ['question_id' => 'id']],
             [['rahbar_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['rahbar_id' => 'id']],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['company_id' => 'id']],
+            ['letter','file'],
         ];
     }
 

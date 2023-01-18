@@ -328,9 +328,7 @@ use yii\widgets\ActiveForm;
         }
     </style>
 <?php
-$js = <<<JS
 
-JS;
 
 $this->registerJs('
      $(document).ready(function() {

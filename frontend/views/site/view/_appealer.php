@@ -23,19 +23,19 @@
                 [
                     'attribute'=>'region_id',
                     'value'=>function($d){
-                        return $d->region->name;
+                        return $d->region;
                     }
                 ],
                 [
                     'attribute'=>'district_id',
                     'value'=>function($d){
-                        return $d->district->name;
+                        return $d->district;
                     }
                 ],
                 [
                     'attribute'=>'village_id',
                     'value'=>function($d){
-                        return @$d->village->name;
+                        return @$d->village->name_cyr;
                     }
                 ],
                 'address',
