@@ -1,7 +1,7 @@
 <?php
 
-use app\models\AppealBajaruvchi;
-use app\models\TaskEmp;
+use common\models\AppealBajaruvchi;
+use common\models\TaskEmp;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -58,7 +58,7 @@ function getColor($status){
 
 // type some code
 function closeAppeal($id,$reg_id,$c_id){
-    $reg = \app\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>=','id',$reg_id])->all();
+    $reg = \common\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>=','id',$reg_id])->all();
 
     foreach ($reg as $item){
         $item->status = 4;
@@ -83,7 +83,7 @@ function closeAppeal($id,$reg_id,$c_id){
 }
 
 function changeTime($id){
-    $model = \app\models\Request::findOne($id);
+    $model = \common\models\Request::findOne($id);
     $model->status_id = 2;
     if($model->save()){
         $register = $model->register;
@@ -120,7 +120,7 @@ function changeTime($id){
 }
 
 function changeCompany($id){
-    $model = \app\models\Request::findOne($id);
+    $model = \common\models\Request::findOne($id);
     $model->status_id = 2;
     if($model->save()){
         $register = $model->register;
@@ -144,7 +144,7 @@ function changeCompany($id){
 
 function deleteTask($tid){
     $task = AppealBajaruvchi::findOne($tid);
-    $register = \app\models\AppealRegister::find()->where(['parent_bajaruvchi_id'=>$task->id])
+    $register = \common\models\AppealRegister::find()->where(['parent_bajaruvchi_id'=>$task->id])
         ->andWhere(['company_id'=>$task->company_id])
     ->andWhere(['appeal_id'=>$task->appeal_id])->one();
 
@@ -152,7 +152,7 @@ function deleteTask($tid){
         deleteTask($item->id);
     }
 
-    $ans = \app\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
+    $ans = \common\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
     foreach ($ans as $item){
         $item->delete();
     }

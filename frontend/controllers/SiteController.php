@@ -628,7 +628,7 @@ class SiteController extends Controller
     public function actionClosemy($id){
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
-        $model->scenario = "close";
+//        $model->scenario = "close";
 
         $model->status = 4;
         if($model->load(Yii::$app->request->post())){
