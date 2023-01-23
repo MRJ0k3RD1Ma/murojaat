@@ -21,4 +21,8 @@ return [
         1=>'Lot faol',
         0=>'Lot faol emas'
     ],
+    'token_status'=>[
+        1=>'Aktiv',
+        0=>'Deaktiv'
+    ]
 ];

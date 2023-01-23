@@ -28,7 +28,7 @@ class Module extends \yii\base\Module
                             if(Yii::$app->user->identity->role_id == 2){
                                 return true;
                             }
-                            header('Location: '.Yii::$app->urlManager->createUrl([Yii::$app->user->identity->role->url]));
+                            header('Location: '.Yii::$app->urlManager->createUrl(['/site/index']));
                             exit;
                         }
                     ],

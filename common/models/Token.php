@@ -12,6 +12,12 @@ use Yii;
  * @property string|null $token
  * @property int|null $status
  * @property string $domain
+ * @property int|null $type_id
+ * @property string|null $created
+ * @property string|null $updated
+ * @property int|null $company_id
+ *
+ * @property TokenType $type
  */
 class Token extends \yii\db\ActiveRecord
 {
@@ -29,8 +35,10 @@ class Token extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'integer'],
+            [['status', 'type_id', 'company_id'], 'integer'],
+            [['created', 'updated'], 'safe'],
             [['name', 'token', 'domain'], 'string', 'max' => 255],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => TokenType::class, 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -45,6 +53,20 @@ class Token extends \yii\db\ActiveRecord
             'token' => 'Token',
             'status' => 'Status',
             'domain' => 'Domain',
+            'type_id' => 'Type ID',
+            'created' => 'Created',
+            'updated' => 'Updated',
+            'company_id' => 'Company ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Type]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(TokenType::class, ['id' => 'type_id']);
     }
 }

@@ -16,12 +16,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['token_status'])?>
+
+    <?= $form->field($model, 'type_id')->dropDownList(\common\models\TokenType::find()->all(),'id','name') ?>
 
     <?= $form->field($model, 'domain')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Saqlash', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
