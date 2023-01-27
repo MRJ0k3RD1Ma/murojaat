@@ -57,6 +57,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'filter'=>\yii\helpers\ArrayHelper::map(\common\models\CompanyType::find()->all(),'id','name')
                     ],
+                    [
+                        'attribute'=>'paid',
+                        'value'=>function($d){
+                            $txt = "";
+                            if($d->paid==0){
+                                $txt = "Тўланмаган";
+                            }else{
+                                $txt = $d->paid_date;
+                            }
+                            $url = Yii::$app->urlManager->createUrl(['/cp/company/paid','id'=>$d->id,'url'=>\yii\helpers\Url::current()]);
+                            return "<button value='{$url}' class='btn btn-link paidbtn'>{$txt}</button>";
+                        },
+                        'format'=>'raw',
+                        'filter'=>[0=>'To`lanmagan',1=>'Muddati o`tgan',2=>'To`langan'],
+                        'label'=>'To`lov holati'
+                    ],
 //                    'soato_id',
                     //'status_id',
                     //'created',
@@ -81,3 +97,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+    <div class="modal" id="paidmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pul o'tirganligi haqidagi ma'lumotlari</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php
+$this->registerJs("
+        $('.paidbtn').click(function(){
+            var url = this.value;
+            $('#paidmodal').modal('show').find('.modal-body').load(url);
+        })
+    ");
+?>

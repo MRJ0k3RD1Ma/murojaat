@@ -3,6 +3,7 @@
 namespace frontend\modules\cp\controllers;
 
 use common\models\Company;
+use common\models\CompanyOld;
 use common\models\search\CompanySearch;
 use common\models\User;
 use common\models\UserAccesItem;
@@ -47,6 +48,28 @@ class CompanyController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionPaid($id,$url=0){
+
+        $model = Company::findOne($id);
+        $model->scenario = 'paidtime';
+        $model->redirect = $url;
+        $model->paid_date = "";
+        $model->paid = 1;
+        if($model->load(Yii::$app->request->post())){
+
+            if($model->save()){
+                if($url){
+                    return $this->redirect([$url]);
+                }else{
+                    return $this->redirect(['index']);
+                }
+            }
+        }
+        return $this->renderAjax('_paid',['model'=>$model]);
+
+
     }
 
     public function actionChild($id){

@@ -26,6 +26,8 @@ use Yii;
  * @property int|null $parent_id
  * @property string|null $ads
  * @property string|null $cadastre
+ * @property int $paid
+ * @property string|null $paid_date
  *
  * @property Soato $soato
  * @property CompanyStatus $status
@@ -49,9 +51,9 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type_id', 'soato_id', 'status_id', 'parent_id'], 'integer'],
+            [['type_id', 'soato_id', 'status_id', 'parent_id','paid'], 'integer'],
             [['soato_id'], 'required'],
-            [['created', 'updated'], 'safe'],
+            [['created', 'updated','paid_date'], 'safe'],
             [['location', 'ads','cadastre'], 'string'],
             [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long', 'cadastre'], 'string', 'max' => 255],
             [['inn'], 'unique'],
@@ -98,6 +100,8 @@ class Company extends \yii\db\ActiveRecord
             'cnt3' => 'Тасдиқланиши кутилмоқда',
             'cnt4' => 'Бажарилган',
             'cnt5' => 'Рад этилган',
+            'paid' => 'Тўланган',
+            'paid_date' => 'Тўлов санаси',
         ];
     }
 

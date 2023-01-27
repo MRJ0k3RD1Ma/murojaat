@@ -22,7 +22,7 @@ return [
         ],
         'user' => [
             'identityClass' => 'backend\models\Token',
-//            'enableAutoLogin' => true,
+            'loginUrl' => null,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'enableSession'=>false,
         ],
@@ -45,6 +45,7 @@ return [
 
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 [
@@ -52,6 +53,14 @@ return [
                     'controller'=>'auth',
                     'extraPatterns' =>[
 
+                    ]
+                ],
+                [
+                    'class'=>'yii\rest\UrlRule',
+                    'controller'=>'companies',
+                    'extraPatterns' =>[
+                        'POST gettashkilot'=>'gettashkilot',
+                        'GET  companytype' =>'companytype',
                     ]
                 ]
             ],

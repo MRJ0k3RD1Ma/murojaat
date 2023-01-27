@@ -75,6 +75,10 @@ class AppealController extends Controller
     public function actionView($id,$ans = 0){
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
+        if(!$model->appeal_detail){
+            $model->appeal_detail = "-";
+            $model->save();
+        }
         if(!$register->parent_bajaruvchi_id and $model->status < 2){
             $model->status = 2;
             $model->save();
@@ -294,6 +298,7 @@ class AppealController extends Controller
                 $model->answer_file->saveAs(Yii::$app->basePath.'/web/upload/'.$name);
                 $model->answer_file = $name;
             }
+
             if($model->save()){
                 $register->status = 4;
                 $register->donetime = date('Y-m-d');

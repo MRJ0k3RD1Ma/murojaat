@@ -94,6 +94,8 @@ class Appeal extends \yii\db\ActiveRecord
             [['person_name', 'person_phone','gender',  'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id'], 'required'],
             [['date_of_birth', 'deadtime', 'created', 'updated', 'boshqa_tashkilot_date', 'answer_date'], 'safe'],
             [['appeal_preview', 'appeal_detail', 'executor_files', 'answer_detail'], 'string'],
+            [['address','gender', 'appeal_detail', 'appeal_type_id',], 'required','on'=>'insert'],
+            [['answer_name','answer_preview','answer_number','appeal_control_id','answer_date',],'required','on'=>'close'],
             [['passport', 'passport_jshshir', 'person_name', 'person_phone', 'address', 'email', 'appeal_file', 'appeal_file_extension', 'boshqa_tashkilot_number', 'answer_name', 'answer_file', 'answer_preview', 'answer_number', 'number_full'], 'string', 'max' => 255],
             [['businessman'], 'string', 'max' => 500],
             [['appeal_shakl_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealShakl::class, 'targetAttribute' => ['appeal_shakl_id' => 'id']],

@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['token_status'])?>
 
-    <?= $form->field($model, 'type_id')->dropDownList(\common\models\TokenType::find()->all(),'id','name') ?>
+    <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\TokenType::find()->all(),'id','name')) ?>
 
     <?= $form->field($model, 'domain')->textInput(['maxlength' => true]) ?>
 
