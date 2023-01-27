@@ -61,6 +61,8 @@ return [
                     'extraPatterns' =>[
                         'POST gettashkilot'=>'gettashkilot',
                         'GET  companytype' =>'companytype',
+                        'POST  create-company-type' =>'create-company-type',
+                        'POST  update-company-type' =>'update-company-type',
                     ]
                 ]
             ],
