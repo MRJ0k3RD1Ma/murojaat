@@ -36,7 +36,7 @@ use Yii;
  */
 class Company extends \yii\db\ActiveRecord
 {
-    public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect;
+    public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect,$region_id,$district_id;
     /**
      * {@inheritdoc}
      */
@@ -52,7 +52,6 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             [['type_id', 'soato_id', 'status_id', 'parent_id','paid'], 'integer'],
-            [['soato_id'], 'required'],
             [['created', 'updated','paid_date'], 'safe'],
             [['location', 'ads','cadastre'], 'string'],
             [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long', 'cadastre'], 'string', 'max' => 255],
@@ -102,6 +101,9 @@ class Company extends \yii\db\ActiveRecord
             'cnt5' => 'Рад этилган',
             'paid' => 'Тўланган',
             'paid_date' => 'Тўлов санаси',
+            'region_id'=>'Вилоят',
+            'district_id'=>'Туман',
+            'complex_id'=>'Комплекс',
         ];
     }
 

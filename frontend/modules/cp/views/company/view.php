@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-header">
             <div class="card-tools">
                 <p>
+                    <button id="tokengen" value="<?= Yii::$app->urlManager->createUrl(['/cp/company/token','id'=>$model->id])?>" class="btn btn-warning">Token yaratish</button>
                     <?= Html::a('Комплексга фойдаланувчи қўшиш', ['generatekomplex', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-
                     <?= Html::a('Фойдаланувчи қўшиш', ['adduser', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('ўзгартириш', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('Ўчириш', ['delete', 'id' => $model->id], [
@@ -87,6 +87,14 @@ $this->params['breadcrumbs'][] = $this->title;
 //                            'parent_id',
                             'ads:ntext',
                             'cadastre',
+                            [
+                                'label'=>'Token',
+                                'value'=>function($d){
+                                    $t = \common\models\Token::findOne(['company_id'=>$d->id,'status'=>1]);
+                                    return @$t->token.'<br>'.@$t->domain;
+                                },
+                                'format'=>'raw'
+                            ],
                         ],
                     ]) ?>
                 </div>
@@ -195,15 +203,37 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
+    <div class="modal" id="modalToken" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Token yaratish</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 <?php
 $this->registerJs("
     $(document).ready(function() {
     $('#example').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'print'
-        ]
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'print'
+            ]
+        });
     });
-} );
+    
+    $('#tokengen').click(function(){
+        var url = this.value;
+        $('#modalToken').modal('show').find('.modal-body').load(url);
+    })
 ")
 ?>

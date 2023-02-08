@@ -11,13 +11,14 @@ use Yii;
  */
 class CompanySearch extends Company
 {
+    public $region_id,$district_id;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'type_id', 'soato_id', 'status_id', 'parent_id','paid'], 'integer'],
+            [['id', 'type_id', 'soato_id', 'status_id', 'parent_id','paid','region_id','district_id'], 'integer'],
             [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'paid_date','created', 'updated', 'address', 'location', 'lat', 'long', 'ads', 'cadastre'], 'safe'],
         ];
     }
@@ -64,11 +65,16 @@ class CompanySearch extends Company
                $now = date('Y-m-d h:i:s');
                $query->andWhere(['paid'=>1])->andWhere(['>','paid_date',date('Y-m-d',strtotime($now.' -1 YEAR'))]);
          }
+        $addr = $this->region_id.$this->district_id;
+        if($this->soato_id){
+            $addr = $this->soato_id;
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'type_id' => $this->type_id,
-            'soato_id' => $this->soato_id,
+//            'soato_id' => $this->soato_id,
             'status_id' => $this->status_id,
             'created' => $this->created,
             'updated' => $this->updated,
@@ -88,7 +94,9 @@ class CompanySearch extends Company
             ->andFilterWhere(['like', 'long', $this->long])
             ->andFilterWhere(['like', 'ads', $this->ads])
             ->andFilterWhere(['like', 'paid_date', $this->paid_date])
+            ->andFilterWhere(['like', 'soato_id', $addr])
             ->andFilterWhere(['like', 'cadastre', $this->cadastre]);
+
 
         return $dataProvider;
     }

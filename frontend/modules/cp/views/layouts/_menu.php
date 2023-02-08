@@ -36,6 +36,15 @@ use yii\helpers\Url; ?>
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= Yii::$app->urlManager->createUrl(['/cp/complex/index'])?>">
+                        <i class="nav-icon fa fa-circle"></i>
+                        <p>
+                            Комплекслар
+                        </p>
+                    </a>
+                </li>
+
 
             </ul>
         </li>

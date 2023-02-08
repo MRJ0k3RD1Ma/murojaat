@@ -49,7 +49,7 @@ class Token extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Token nomi',
             'token' => 'Token',
             'status' => 'Status',
             'domain' => 'Domain',

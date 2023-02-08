@@ -14,22 +14,57 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг']) ?>
 
-    <?= $form->field($model, 'id') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг']) ?>
 
-    <?= $form->field($model, 'inn') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
 
-    <?= $form->field($model, 'name') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'inn') ?>
 
-    <?= $form->field($model, 'director') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'phone') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'director') ?>
+
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'phone') ?>
+
+        </div>
+        <div class="col-md-4">
+            <?php  echo $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\CompanyType::find()->all(),'id','name'),['prompt'=>'Tashkilot turini tanlang']) ?>
+
+        </div>
+        <div class="col-md-4">
+            <?php  echo $form->field($model, 'complex_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Complex::find()->all(),'id','name'),['prompt'=>'Komplexni tanlang']) ?>
+
+        </div>
+    </div>
+
+
+
+
+
+
 
     <?php // echo $form->field($model, 'telegram') ?>
 
     <?php // echo $form->field($model, 'phone_director') ?>
 
-    <?php // echo $form->field($model, 'type_id') ?>
+
+
 
     <?php // echo $form->field($model, 'soato_id') ?>
 
@@ -61,3 +96,20 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+
+$this->registerJs("
+    $('#companysearch-region_id').change(function(){
+        $.get('/get/district?id='+$('#companysearch-region_id').val()).done(function(data){
+            $('#companysearch-district_id').empty();
+            $('#companysearch-district_id').append(data);
+        })
+    });
+    $('#companysearch-district_id').change(function(){
+        $.get('/get/village?id='+$('#companysearch-district_id').val()+'&region_id='+$('#companysearch-region_id').val()).done(function(data){
+            $('#companysearch-soato_id').empty();
+            $('#companysearch-soato_id').append(data).trigger('change');
+        })
+    })
+")
+?>

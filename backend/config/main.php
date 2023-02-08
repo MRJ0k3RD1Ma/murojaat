@@ -63,6 +63,7 @@ return [
                         'GET  companytype' =>'companytype',
                         'POST  create-company-type' =>'create-company-type',
                         'POST  update-company-type' =>'update-company-type',
+                        'POST  send' =>'send',
                     ]
                 ]
             ],

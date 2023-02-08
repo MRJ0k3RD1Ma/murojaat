@@ -1,9 +1,12 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\AppealForm;
+use common\models\Appeal;
 use common\models\Company;
 use common\models\CompanyType;
-
+use Yii;
+use yii\web\UploadedFile;
 
 class CompaniesController extends AuthController {
 
@@ -91,5 +94,47 @@ class CompaniesController extends AuthController {
         }
         return false;
     }
+
+
+    public function actionSend(){
+        $token = Yii::$app->user->identity;
+        if($token->company_id){
+            $form = new AppealForm();
+            if($form->load($this->request->post(),'')){
+
+                if($file = UploadedFile::getInstanceByName("file")){
+                    $form->file = $file->name;
+                    $file->saveAs(Yii::$app->basePath.'/web/'.$form->file);
+                }
+
+                return $form;
+
+                $model = new Appeal();
+                $model->company_id = $token->company_id;
+                $model->register_company_id = $token->company_id;
+                $model->person_name = $post['name'];
+
+
+            }else{
+                return [
+                    'code'=>500,
+                    'message'=>'Post galmadi'
+                ];
+            }
+
+
+            return [
+                'code'=>200,
+                'message'=>'Murojaatingiz muvoffaqiyatli qabul qilindi.',
+                'appeal'=>'code',
+            ];
+        }else{
+            return [
+                'code'=>503,
+                'message'=>'Siz bu amalni bajara olmaysiz.',
+            ];
+        }
+    }
+
 
 }

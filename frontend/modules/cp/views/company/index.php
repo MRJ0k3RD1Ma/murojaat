@@ -26,11 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="card-body">
 
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+//                'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
@@ -47,9 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'inn',
                     'director',
                     'phone',
-                    //'telegram',
-                    //'phone_director',
-//                    'type_id',
                     [
                         'attribute'=>'type_id',
                         'value'=>function($d){

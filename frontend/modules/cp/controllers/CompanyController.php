@@ -5,6 +5,7 @@ namespace frontend\modules\cp\controllers;
 use common\models\Company;
 use common\models\CompanyOld;
 use common\models\search\CompanySearch;
+use common\models\Token;
 use common\models\User;
 use common\models\UserAccesItem;
 use yii\web\Controller;
@@ -32,6 +33,35 @@ class CompanyController extends Controller
                 ],
             ]
         );
+    }
+
+    public function actionToken($id){
+        $model = new Token();
+        if($m = Token::findOne(['company_id'=>$id])){
+            $model = $m;
+        }
+        $model->company_id = $id;
+        $model->status = 1;
+        $model->type_id = 1;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->token = \Yii::$app->security->generateRandomString(30);
+                while (Token::findOne(['token'=>$model->token])){
+                    $model->token = \Yii::$app->security->generateRandomString(30);
+                }
+                if($model->save()){
+                    Yii::$app->session->setFlash('success','Token yaratildi');
+                }else{
+                    Yii::$app->session->setFlash('error','Saqlashda xatolik');
+                }
+            }
+            return $this->redirect(['view', 'id' => $model->company_id]);
+
+        }
+
+        return $this->renderAjax('createtoken', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -238,9 +268,21 @@ class CompanyController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->region_id = $model->soato->region_id;
+        $model->district_id = $model->soato->district_id;
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if(!$model->soato_id){
+                $model->soato_id = "17".$model->region_id.$model->district_id;
+            }
+            if($model->save()){
+                $child = Company::find()->where(['parent_id'=>$model->id])->all();
+                foreach ($child as $item){
+                    $item->complex_id = $model->complex_id;
+                    $item->type_id = $model->type_id;
+                    $item->save(false);
+                }
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

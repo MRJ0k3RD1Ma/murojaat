@@ -26,8 +26,7 @@ use yii\widgets\ActiveForm;
             <div class="row">
                 <div class="col-md-3">
                     <?= $form->field($register, 'number')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-md-3">
+                </div>                <div class="col-md-3">
                     <?= $form->field($register, 'date')->textInput(['type' => 'date']) ?>
                 </div>
                 <div class="col-md-6">
