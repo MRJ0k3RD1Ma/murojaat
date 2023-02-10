@@ -91,6 +91,30 @@
     </ul>
 </li>
 
+
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link ">
+        <i class="nav-icon fas fa-chart-bar"></i>
+        <p>
+            Ҳисоботлар
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+
+    <ul class="nav nav-treeview" style="display: none;">
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/report/index'])?>" class="nav-link">
+                <i class="nav-icon fas fa-clock"></i>
+                <p>
+                    Раҳбарлар кесимида
+                </p>
+            </a>
+        </li>
+
+
+    </ul>
+</li>
+
 <?php if(Yii::$app->user->identity->access(3)){?>
     <li class="nav-item">
         <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/indexhok'])?>" class="nav-link <?=(Yii::$app->controller->id=='appeal' and Yii::$app->controller->action->id == 'indexhok')?'active':''?>">

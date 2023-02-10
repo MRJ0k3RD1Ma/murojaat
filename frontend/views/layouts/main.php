@@ -303,36 +303,53 @@ AppAsset::register($this);
     </footer>
 </div>
 
-    <div class="telegram-popup" align="center">
+    <?php $vil = Yii::$app->user->identity->access(3) or Yii::$app->user->identity->access(4); if($vil){?>
+        <div class="telegram-popup" align="center">
 
-        <p style="margin-bottom:-5px;">Тел: +998(62)223-18-78</p>
-        <!-- Telegram icon. I like to use font-awesome but dont want to effect your imports too much.-->
-        <a href="https://t.me/joinchat/DyZIXpPeovI5NmVi" target="_blank" class="telegram-button-link"><div class="telegram-button">
-                <p>
-                    <i class="fab fa-telegram-plane"></i>
-                    Телеграм гуруҳга аъзо бўлинг
-                </p>
+            <p style="margin-bottom:-5px; color:#1682FB">Тел: +998(62)223-18-78</p>
+            <!-- Telegram icon. I like to use font-awesome but dont want to effect your imports too much.-->
+            <a href="#" target="_blank" class="telegram-button-link"><div class="telegram-button">
+                    <p>
+                        <i class="fas fa-list"></i>
+                        Сўровномага ўтиш
+                    </p>
 
-            </div></a>
+                </div></a>
 
-    </div>
+        </div>
+    <?php }else{ ?>
+        <div class="telegram-popup" align="center">
+
+            <p style="margin-bottom:-5px;">Тел: +998(62)223-18-78</p>
+            <!-- Telegram icon. I like to use font-awesome but dont want to effect your imports too much.-->
+            <a href="https://t.me/joinchat/DyZIXpPeovI5NmVi" target="_blank" class="telegram-button-link"><div class="telegram-button">
+                    <p>
+                        <i class="fab fa-telegram-plane"></i>
+                        Телеграм гуруҳга аъзо бўлинг
+                    </p>
+
+                </div></a>
+
+        </div>
+    <?php } ?>
     <style>
+        <?php if(!$vil){?>
         body.sidebar-collapse .telegram-popup{
             display: none !important;
         }
+        <?php }?>
         /*Body css here just to demonstrate scrolling*/
         .telegram-popup{
             width: 291px;
             position: fixed;
-            bottom: 10px;
-            left: -22px;
+            <?= $vil ? 'bottom: 50px; right: 0px;' : 'bottom: 10px;left: -22px;'?>
             z-index: 2000;
             /*round corners*/
             border-radius: 10px;
             /*cool option borders.*/
 
             /*animate. hide on load*/
-            display: none;
+            display: <?= $vil ? 'block' : 'none'?>;
         }
 
         /*text stuff*/
@@ -371,12 +388,14 @@ AppAsset::register($this);
         }
     </style>
     <?php
-    $this->registerJs("
+    if(!$vil){
+        $this->registerJs("
         //Animation. 
         $(document).ready(function(){
             $(\".telegram-popup\").delay(3000).show(0);
         });
-    ")
+    ");
+    }
     ?>
 <?php
     $this->registerJs("

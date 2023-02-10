@@ -37,7 +37,7 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    public $access;
+    public $access,$cnt,$cnt_0,$cnt_1,$cnt_2,$cnt_3,$cnt_4,$cnt_5,$bulim_name,$lavozim_name;
     /**
      * {@inheritdoc}
      */
@@ -94,6 +94,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'telegram_chat_id' => 'Telegram Chat ID',
             'sms_code' => 'Sms Code',
             'active' => 'Active',
+            'cnt'=>'Жами',
+            'cnt_0'=>'Кўрилмаган',
+            'cnt_1'=>'Янги',
+            'cnt_2'=>'Жараёнда',
+            'cnt_3'=>'Тасдиқланиши кутилмоқда',
+            'cnt_4'=>'Бажарилган',
+            'cnt_5'=>'Рад этилган',
+            'bulim_name'=>'Бўлим',
+            'lavozim_name'=>'Лавозим',
         ];
     }
 
