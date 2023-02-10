@@ -17,9 +17,9 @@ use yii\helpers\Url; ?>
                 </p>
             </a>
         </li>
-
+        <?php if(false){?>
         <li class="nav-item has-treeview">
-            <a href="#" class="nav-link <?=(Yii::$app->controller->id=='company' && Yii::$app->controller->action->id=='index')?'active':''?>">
+            <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-filter"></i>
                 <p>
                     Ташкилотлар
@@ -59,6 +59,7 @@ use yii\helpers\Url; ?>
             </a>
         </li>
 
+        <?php }?>
 
     </ul>
 </nav>

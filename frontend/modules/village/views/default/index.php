@@ -1,12 +1,27 @@
-<div class="village-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+<div class="container-fluid">
+    <div class="header-body">
+
+
+        <!-- Card stats -->
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <a href="<?= Yii::$app->urlManager->createUrl(['/village/v-village/create'])?>">
+                    <div class="card card-stats">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Маҳаллалар бешлиги томонидан хонадонларда ўтказиладиган СЎРОВНОМА (Андижон тажрибаси)
+                                    </h5>
+                                    <br />
+                                    <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">Умумий <b><?= prettyNumber(0) ?></b> та сўровнома</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
 </div>

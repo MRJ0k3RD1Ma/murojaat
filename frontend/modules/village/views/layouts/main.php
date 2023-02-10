@@ -56,7 +56,7 @@ AppAsset::register($this);
             </li>
             <li class="nav-item d-none d-sm-inline-block align-center">
                 <a href="/" class="nav-link">
-                    "E-PILLA" axborot tizimi
+                    "E-MUROJAAT.UZ" axborot tizimi
                 </a>
             </li>
 
@@ -66,32 +66,6 @@ AppAsset::register($this);
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
 
             <li class="nav-item">
                 <?=Html::a('<i class="fa fa-door-open"></i> Chiqish',['/site/logout'],[
@@ -110,11 +84,11 @@ AppAsset::register($this);
     <aside class="main-sidebar sidebar-light-primary">
         <!-- Brand Logo -->
         <div align="center">
-            <br />
-            <img src="/logo_2.png" style="max-width: 80%;width: 100px;" alt="Aholi logo" />
-            <br />
+            <br>
+            <img src="/logo_2.png" style="max-width: 80%;width: 100px;" alt="logo">
+            <br>
             <div style="padding: 10px;" class="brand-text text-white">
-                "E-PILLA" avtomatlashtirilgan kasalachilik monitoringi axborot tizimi
+                "E-MUROJAAT.UZ" автоматлаштирилган мурожаатлар мониторинги ахборот тизими
             </div>
         </div>
         <hr />
@@ -148,9 +122,9 @@ AppAsset::register($this);
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
-    <footer class="main-footer hidden-sm hidden-xs">
-        <strong>&copy; "E-PILLA.UZ" axborot tizimi <a href="http://">"Рақамли иқтисодиётни ривожлантириш" МЧЖ</a> tomonidan ishlab chiqilgan.</strong>
-        Barcha huquqlar himoyalangan.
+    <footer class="main-footer hidden-sm hidden-xs" style="position: relative">
+        <strong>© "E-MUROJAAT.UZ" ахборот тизими <a href="http://raqamli.uz">"Рақамли иқтисодиётни ривожлантириш" МЧЖ</a> томонидан ишлаб чиқарилган.</strong>
+        Барча ҳуқуқлар ҳимояланган.
 
     </footer>
 </div>

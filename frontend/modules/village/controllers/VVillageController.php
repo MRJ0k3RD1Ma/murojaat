@@ -7,7 +7,7 @@ use common\models\search\VVillageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * VVillageController implements the CRUD actions for VVillage model.
  */
@@ -68,10 +68,18 @@ class VVillageController extends Controller
     public function actionCreate()
     {
         $model = new VVillage();
+        $model->soato_id = Yii::$app->user->identity->company->soato_id;
+        $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+
+            if ($model->load($this->request->post()) ) {
+                echo "<pre>";
+                var_dump($model);
+                exit;
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
