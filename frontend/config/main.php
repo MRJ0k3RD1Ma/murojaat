@@ -16,6 +16,9 @@ return [
         'cp' => [
             'class' => 'frontend\modules\cp\Module',
         ],
+        'village' => [
+            'class' => 'frontend\modules\village\Module',
+        ],
     ],
     'components' => [
         'request' => [
