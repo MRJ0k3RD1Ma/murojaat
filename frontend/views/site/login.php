@@ -43,16 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
     
 
 <div class="row">
-    <div class="col-8">
+    <div class="col-sm-8">
     <?= $form->field($model, 'rememberMe')->checkbox([
         'template' => "
-        <div class=\"icheck-primary\">
+        <div class=\"icheck-primary\" style='margin-left:30px;'>
     {input} {label}</div><div class=\"col-lg-8\">{error}</div>",
     ])->label('Эслаб қолиш') ?>
     </div>
 
     <!-- /.col -->
-    <div class="col-4">
+    <div class="col-sm-4">
         <?= Html::submitButton('Кириш', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
     </div>
     <!-- /.col -->
