@@ -308,7 +308,7 @@ AppAsset::register($this);
 
             <p style="margin-bottom:-5px; color:#1682FB">Тел: +998(62)223-18-78</p>
             <!-- Telegram icon. I like to use font-awesome but dont want to effect your imports too much.-->
-            <a href="#" target="_blank" class="telegram-button-link"><div class="telegram-button">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/village/'])?>" target="_blank" class="telegram-button-link"><div class="telegram-button">
                     <p>
                         <i class="fas fa-list"></i>
                         Сўровномага ўтиш

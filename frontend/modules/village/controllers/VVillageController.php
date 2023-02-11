@@ -2,8 +2,10 @@
 
 namespace frontend\modules\village\controllers;
 
+use common\models\VPersonMigrant;
 use common\models\VVillage;
 use common\models\search\VVillageSearch;
+use common\models\VVillageProblem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -74,12 +76,44 @@ class VVillageController extends Controller
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post()) ) {
-                echo "<pre>";
-                var_dump($model);
-                exit;
-                if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
+
+                    if($model->save()){
+                        foreach ($model->mig as $item){
+                            if($item['name'] and $item['birthday']){
+                                $mig = new VPersonMigrant();
+                                if($id = VPersonMigrant::find()->where(['village_id'=>$model->id])->max('id')){
+                                    $id++;
+                                }else{
+                                    $id = 1;
+                                }
+                                $mig->id = $id;
+                                $mig->village_id = $model->id;
+                                $mig->person_name = $item['name'];
+                                $mig->birthday = date('Y-m-d',strtotime($item['birthday']));
+                                $mig->save();
+                            }
+                        }
+                        foreach ($model->problems as $item){
+                            if($item['kinship'] and $item['year'] and $item['detail']){
+                                $mig = new VVillageProblem();
+                                if($id = VVillageProblem::find()->where(['village_id'=>$model->id])->max('id')){
+                                    $id++;
+                                }else{
+                                    $id = 1;
+                                }
+                                $mig->id = $id;
+                                $mig->village_id = $model->id;
+                                $mig->kinship = $item['kinship'];
+                                $mig->year = $item['year'];
+//                                $mig->name = $item['name']';
+                                $mig->detail = $item['detail'];
+                                $mig->save();
+                            }
+                        }
+                    }
+
+                Yii::$app->session->setFlash('success','Сўровнома мувофаққиятли сақланди');
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();

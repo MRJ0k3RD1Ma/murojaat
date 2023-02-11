@@ -73,13 +73,23 @@ use yii\widgets\ActiveForm;
     </div>
     <button class="btn btn-info" type="button" id="addmigrant"><span class="fa fa-plus"></span> Мигрант қўшиш</button>
     <br>
-    <div id="problems">
+    <div id="problems" data-key="0">
         <h3 class="card-title">Хонадонда аниқланган муаммолар</h3>   <br>
         <p style="font-style: italic">(Агар ўрганилган хонадонда муаммо аниқланмаса ушбу қисм тўлдирилмайди, бунда
             “Аниқланган муаммо мазмуни” устунидаги бўш қаторлардан бирига
             “муаммо мавжуд эмас” деб бир марта ёзилади)</p>
 
-        <div class='row'><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][][detail]'></textarea></label></div></div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][0][kinship]'></label>
+            </div>
+            <div class='col-sm-6'>
+                <label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][0][year]'></label>
+            </div>
+            <div class='col-sm-12'>
+                <label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][0][detail]'></textarea></label>
+            </div>
+        </div>
     </div>
     <button class="btn btn-info" type="button" id="addproblem"><span class="fa fa-plus"></span> Муамми қўшиш</button>
     <br>
