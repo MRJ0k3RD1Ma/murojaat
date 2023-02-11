@@ -32,9 +32,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'want_econom_energy')->radioList(Yii::$app->params['want_econom_energy']) ?>
 
-    <?= $form->field($model, 'econom_energy_credit')->textInput(['maxlength' => true])->label('Кредит ҳисобидан') ?>
+    <?= $form->field($model, 'econom_energy_credit')->checkbox(['value' => 1])->label('Кредит ҳисобидан') ?>
 
-    <?= $form->field($model, 'econom_energy_own')->textInput(['maxlength' => true])->label('Ўз маблағлари ҳисобидан') ?>
+    <?= $form->field($model, 'econom_energy_own')->checkbox(['value' => 1])->label('Ўз маблағлари ҳисобидан') ?>
 
     <?= $form->field($model, 'econom_energy')->textInput(['maxlength' => true]) ?>
 

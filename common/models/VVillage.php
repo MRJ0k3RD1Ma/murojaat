@@ -29,6 +29,7 @@ use Yii;
  * @property int|null $subsidy_women
  * @property int|null $subsidy_young
  * @property string|null $subsidy
+ * @property string|null $person_phone
  * @property int|null $migrant
  * @property int|null $home_status_id
  *
@@ -82,8 +83,8 @@ class VVillage extends \yii\db\ActiveRecord
             'person_birthday' => 'Туғилган санаси',
             'has_cl_problem' => 'Назоратга олинадиган муаммоси бор хонадонми ',
             'want_econom_energy' => 'Энергия тежамкор ускуналар ўрнатишга эҳтиёжи  ',
-            'econom_energy_credit' => 'кредит',
-            'econom_energy_own' => 'ўз маблағи',
+            'econom_energy_credit' => '',
+            'econom_energy_own' => '',
             'econom_energy' => 'кВт',
             'want_credit' => 'Кредит олишга бўлган талаб (млн.сўмда)',
             'credit' => 'Кредит мақсади:',
