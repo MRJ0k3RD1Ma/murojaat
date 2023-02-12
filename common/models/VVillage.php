@@ -22,10 +22,12 @@ use Yii;
  * @property string|null $econom_energy_own
  * @property string|null $econom_energy
  * @property int|null $want_credit
+ * @property int|null $is_want_credit
  * @property string|null $credit
  * @property int|null $credit_women
  * @property int|null $credit_young
  * @property int|null $want_subsidy
+ * @property int|null $gender
  * @property int|null $subsidy_women
  * @property int|null $subsidy_young
  * @property string|null $subsidy
@@ -56,7 +58,7 @@ class VVillage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'sector', 'soato_id', 'has_cl_problem', 'want_econom_energy', 'want_credit', 'credit_women', 'credit_young', 'want_subsidy', 'subsidy_women', 'subsidy_young', 'migrant', 'home_status_id'], 'integer'],
+            [['user_id', 'sector', 'gender','is_want_credit','soato_id', 'has_cl_problem', 'want_econom_energy', 'want_credit', 'credit_women', 'credit_young', 'want_subsidy', 'subsidy_women', 'subsidy_young', 'migrant', 'home_status_id'], 'integer'],
             [['date', 'person_birthday','created','updated','mig','problems'], 'safe'],
             [['road', 'address', 'person_name', 'econom_energy_credit','person_phone', 'econom_energy_own', 'econom_energy', 'credit', 'subsidy'], 'string', 'max' => 255],
             [['home_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => VHomeStatus::class, 'targetAttribute' => ['home_status_id' => 'id']],
@@ -78,7 +80,9 @@ class VVillage extends \yii\db\ActiveRecord
             'date' => 'Сўровнома санаси',
             'road' => 'Кўча',
             'address' => 'Манзил',
+            'is_want_credit' => 'Кредит олишга талаб',
             'person_name' => 'ФИО',
+            'gender' => 'Жинси',
             'person_phone' => 'Телефон рақами',
             'person_birthday' => 'Туғилган санаси',
             'has_cl_problem' => 'Назоратга олинадиган муаммоси бор хонадонми ',
@@ -148,4 +152,17 @@ class VVillage extends \yii\db\ActiveRecord
     {
         return $this->hasMany(VVillageProblem::class, ['village_id' => 'id']);
     }
+
+
+    public function getFulladdr(){
+        $addr = $this->soato;
+        return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr;
+
+        if(MahallaView::find()->where(['id'=>$this->soato_id])->one()){
+            return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr.' '.$addr->name_cyr;
+        }else{
+
+        }
+    }
+
 }

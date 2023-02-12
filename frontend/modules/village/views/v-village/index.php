@@ -10,57 +10,115 @@ use yii\grid\GridView;
 /** @var common\models\search\VVillageSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'V Villages';
+$this->title = 'Сўровномалар рўйхати';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vvillage-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card">
+        <div class="card-body">
 
-    <p>
-        <?= Html::a('Create V Village', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <p>
+                <?= Html::a('Сўровнома қўшиш', ['create'], ['class' => 'btn btn-success']) ?>
+            </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            <div class="table-responsive">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'sector',
-            'soato_id',
-            'date',
-            //'road',
-            //'address',
-            //'person_name',
-            //'person_birthday',
-            //'has_cl_problem',
-            //'want_econom_energy',
-            //'econom_energy_credit',
-            //'econom_energy_own',
-            //'econom_energy',
-            //'want_credit',
-            //'credit',
-            //'credit_women',
-            //'credit_young',
-            //'want_subsidy',
-            //'subsidy_women',
-            //'subsidy_young',
-            //'subsidy',
-            //'migrant',
-            //'home_status_id',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, VVillage $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
+//                    'id',
+//                    'user_id',
+                        [
+                            'attribute'=>'soato_id',
+                            'value'=>function($d){
+                                $url = Yii::$app->urlManager->createUrl(['/village/v-village/view','id'=>$d->id]);
+                                return "<a href='{$url}'>{$d->fulladdr}</a>";
+                            },
+                            'format'=>'raw'
+                        ],
+                        'sector',
+//                    'soato_id',
+                        'date',
+                        [
+                            'attribute'=>'soato_id',
+                            'value'=>function($d){
+                                return $d->soato->name_cyr;
+                            }
+                        ],
+                        [
+                            'attribute'=>'road',
+                            'value'=>function($d){
+                                return $d->road.' '.$d->address;
+                            }
+                        ],
+                        //'road',
+                        //'address',
+                        'person_name',
+
+                        'person_birthday',
+                        [
+                            'attribute'=>'gender',
+                            'value'=>function($d){
+                                return Yii::$app->params['gender'][$d->gender];
+                            }
+                        ],
+                        'person_phone',
+                        [
+                            'attribute'=>'home_status_id',
+                            'value'=>function($d){
+                                return $d->homeStatus->name;
+                            },
+                        ],
+//                        'has_cl_problem',
+                        [
+                            'attribute'=>'has_cl_problem',
+                            'value'=>function($d){
+                                return Yii::$app->params['has_cl_problem'][$d->has_cl_problem];
+                            }
+                        ],
+                        [
+                            'attribute'=>'want_econom_energy',
+                            'value'=>function($d){
+                                return Yii::$app->params['want_econom_energy'][$d->want_econom_energy];
+                            }
+                        ],
+                        //'want_econom_energy',
+                        [
+                            'attribute'=>'econom_energy_credit',
+                            'label'=>'Кредит'
+                        ],
+                        [
+                            'attribute'=>'econom_energy_own',
+                            'label'=>'Ўз хисобилдан'
+                        ],
+                        'econom_energy',
+//                        'is_want_credit',
+                        [
+                            'attribute'=>'is_want_credit',
+                            'value'=>function($d){
+                                return Yii::$app->params['is_want_credit'][$d->is_want_credit];
+                            }
+                        ],
+                        'want_credit',
+                        'credit_women',
+                        'credit_young',
+                        'credit',
+                        //'want_subsidy',
+                        //'subsidy_women',
+                        //'subsidy_young',
+                        //'subsidy',
+                        //'migrant',
+                        //'home_status_id',
+                    ],
+                ]); ?>
+            </div>
+        </div>
+    </div>
 
 
 </div>

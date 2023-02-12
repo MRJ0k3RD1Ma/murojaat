@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'person_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gender')->dropDownList(Yii::$app->params['gender']) ?>
 
     <?= $form->field($model, 'person_birthday')->textInput(['type'=>'date']) ?>
 
@@ -38,6 +39,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'econom_energy')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'is_want_credit')->dropDownList(Yii::$app->params['is_want_credit']) ?>
     <?= $form->field($model, 'want_credit')->textInput() ?>
 
     <?= $form->field($model, 'credit_women')->textInput()->label('Шундан, Аёллар') ?>
@@ -69,8 +71,17 @@ use yii\widgets\ActiveForm;
                     <input type="date" class="form-control active" id='mig-0' name="VVillage[mig][0][birthday]">
                 </label>
             </div>
+            <?php
+            $m = \common\models\VPersonMigrantWhy::find()->all();
+            $res = "<div class='col-sm-12'><label class='control-label' style='width: 100%'>Сабаб<select class='form-control' name='VVillage[mig][0][why_id]'>";
+            foreach ($m as $item){
+                $res .= "<option value='{$item->id}'>{$item->name}</option>";
+            }
+            $res .= "</select></label></div>";
+            echo $res; ?>
         </div>
     </div>
+
     <button class="btn btn-info" type="button" id="addmigrant"><span class="fa fa-plus"></span> Мигрант қўшиш</button>
     <br>
     <div id="problems" data-key="0">
@@ -80,6 +91,9 @@ use yii\widgets\ActiveForm;
             “муаммо мавжуд эмас” деб бир марта ёзилади)</p>
 
         <div class='row'>
+            <div class='col-sm-12'>
+                <label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][0][name]'></label>
+            </div>
             <div class='col-sm-6'>
                 <label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][0][kinship]'></label>
             </div>
@@ -89,6 +103,7 @@ use yii\widgets\ActiveForm;
             <div class='col-sm-12'>
                 <label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][0][detail]'></textarea></label>
             </div>
+
         </div>
     </div>
     <button class="btn btn-info" type="button" id="addproblem"><span class="fa fa-plus"></span> Муамми қўшиш</button>
@@ -106,19 +121,23 @@ use yii\widgets\ActiveForm;
 
 
 <?php
-
+$url = Yii::$app->urlManager->createUrl(['/village/v-village/getwhy']);
 $this->registerJs("
         $('#addmigrant').click(function(){
             var key = $('#migs').attr('data-key');
             key++;
-            var append = \"<div class='row'><div class='col-sm-6'><label class='control-label' style='width: 100%'>ФИО<input type='text' id='vvillage-mig-name' class='form-control' name='VVillage[mig][\"+key+\"][name]'></label></div><div class='col-sm-6'><label class='control-label' style='width: 100%'>Туғилган санаси<input type='date' id='mig\"+key+\"' class='form-control' name='VVillage[mig][\"+key+\"][birthday]'></label></div></div>\"
+            var append = \"<div class='row key-\"+key+\"'><div class='col-sm-6'><label class='control-label' style='width: 100%'>ФИО<input type='text' id='vvillage-mig-name' class='form-control' name='VVillage[mig][\"+key+\"][name]'></label></div><div class='col-sm-6'><label class='control-label' style='width: 100%'>Туғилган санаси<input type='date' id='mig\"+key+\"' class='form-control' name='VVillage[mig][\"+key+\"][birthday]'></label></div></div>\"
+      
             $('#migs').append(append);
+             $.get('{$url}?key='+key).done(function(data){
+                $('.row.key-'+key).append(data);
+            });
             $('#migs').attr('data-key',key);
         });
         $('#addproblem').click(function(){
             var key = $('#problems').attr('data-key');
             key++;
-            var append = \"<div class='row'><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][\"+key+\"][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][\"+key+\"][detail]'></textarea></label></div></div>\"
+            var append = \"<div class='row'><div class='col-sm-6'><label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][name]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][\"+key+\"][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][\"+key+\"][detail]'></textarea></label></div></div>\"
             $('#problems').append(append);
         });
     ")

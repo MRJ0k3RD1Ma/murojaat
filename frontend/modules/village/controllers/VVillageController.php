@@ -3,6 +3,7 @@
 namespace frontend\modules\village\controllers;
 
 use common\models\VPersonMigrant;
+use common\models\VPersonMigrantWhy;
 use common\models\VVillage;
 use common\models\search\VVillageSearch;
 use common\models\VVillageProblem;
@@ -72,7 +73,7 @@ class VVillageController extends Controller
         $model = new VVillage();
         $model->soato_id = Yii::$app->user->identity->company->soato_id;
         $model->user_id = Yii::$app->user->id;
-
+        $model->date = date('Y-m-d');
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post()) ) {
@@ -89,6 +90,7 @@ class VVillageController extends Controller
                                 $mig->id = $id;
                                 $mig->village_id = $model->id;
                                 $mig->person_name = $item['name'];
+                                $mig->why_id = $item['why_id'];
                                 $mig->birthday = date('Y-m-d',strtotime($item['birthday']));
                                 $mig->save();
                             }
@@ -105,7 +107,7 @@ class VVillageController extends Controller
                                 $mig->village_id = $model->id;
                                 $mig->kinship = $item['kinship'];
                                 $mig->year = $item['year'];
-//                                $mig->name = $item['name']';
+                                $mig->name = $item['name'];
                                 $mig->detail = $item['detail'];
                                 $mig->save();
                             }
@@ -122,6 +124,16 @@ class VVillageController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionGetwhy($key){
+        $model = VPersonMigrantWhy::find()->all();
+        $res = "<div class='col-sm-12'><label class='control-label' style='width: 100%'>Сабаб<select class='form-control' name='VVillage[mig][{$key}][why_id]'>";
+        foreach ($model as $item){
+            $res .= "<option value='{$item->id}'>{$item->name}</option>";
+        }
+        $res .= "</div></label></select>";
+        return $res;
     }
 
     /**
