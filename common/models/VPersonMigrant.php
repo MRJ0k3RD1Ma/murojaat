@@ -30,8 +30,8 @@ class VPersonMigrant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'village_id'], 'required'],
-            [['id', 'village_id'], 'integer'],
+            [['id', 'village_id','why_id'], 'required'],
+            [['id', 'village_id','why_id'], 'integer'],
             [['birthday'], 'safe'],
             [['person_name'], 'string', 'max' => 255],
             [['id', 'village_id'], 'unique', 'targetAttribute' => ['id', 'village_id']],
@@ -49,6 +49,7 @@ class VPersonMigrant extends \yii\db\ActiveRecord
             'village_id' => 'Village ID',
             'person_name' => 'Person Name',
             'birthday' => 'Birthday',
+            'why_id' => 'Sabab',
         ];
     }
 
