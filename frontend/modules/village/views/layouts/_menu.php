@@ -25,6 +25,14 @@ use yii\helpers\Url; ?>
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/village/v-village-fives'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village-fives')?'active':''?>">
+                <i class="nav-icon fas fa-list"></i>
+                <p>
+                    Маҳалла фаоллари
+                </p>
+            </a>
+        </li>
 
     </ul>
 </nav>

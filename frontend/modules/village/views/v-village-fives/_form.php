@@ -12,8 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'company_id')->textInput() ?>
-
     <?= $form->field($model, 'mfy_rais')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'profilaktika_inspektor')->textInput(['maxlength' => true]) ?>
@@ -26,8 +24,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deputat')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'sector')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -42,7 +42,7 @@ class VVillageController extends Controller
     public function actionIndex()
     {
         $searchModel = new VVillageSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->searchVillage($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -179,7 +179,7 @@ class VVillageController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = VVillage::findOne(['id' => $id])) !== null) {
+        if (($model = VVillage::find()->where(['id' => $id,'soato_id'=>Yii::$app->user->identity->company->soato_id])->one()) !== null) {
             return $model;
         }
 

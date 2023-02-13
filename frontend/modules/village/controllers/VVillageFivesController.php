@@ -7,7 +7,7 @@ use common\models\search\VVillageFivesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * VVillageFivesController implements the CRUD actions for VVillageFives model.
  */
@@ -38,27 +38,19 @@ class VVillageFivesController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new VVillageFivesSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+       if($model = VVillageFives::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->one()){
+           return $this->render('index', [
+               'model'=>$model,
+           ]);
+       }else{
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+           return $this->redirect(['create']);
+
+       }
+
     }
 
-    /**
-     * Displays a single VVillageFives model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+
 
     /**
      * Creates a new VVillageFives model.
@@ -70,8 +62,11 @@ class VVillageFivesController extends Controller
         $model = new VVillageFives();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post()) ) {
+                $model->company_id = Yii::$app->user->identity->company_id;
+                if($model->save()){
+                    return $this->redirect(['index']);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -94,7 +89,7 @@ class VVillageFivesController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

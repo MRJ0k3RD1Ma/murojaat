@@ -7,44 +7,36 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var common\models\search\VVillageFivesSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var $model VVillageFives */
 
-$this->title = 'V Village Fives';
+$this->title = $model->company->name;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vvillage-fives-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create V Village Fives', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="card">
+        <div class="card-body">
+            <p>
+                <?= Html::a('Ўзгартириш', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'company_id',
-            'mfy_rais',
-            'profilaktika_inspektor',
-            'hokim_yordamchi',
-            //'xotin_qizlar',
-            //'yoshlar_yetakchi',
-            //'deputat',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, VVillageFives $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
+            <?= \yii\widgets\DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+//            'id',
+//            'company_id',
+                    'mfy_rais',
+                    'profilaktika_inspektor',
+                    'hokim_yordamchi',
+                    'xotin_qizlar',
+                    'yoshlar_yetakchi',
+                    'deputat',
+                    'sector'
+                ],
+            ]) ?>
+        </div>
+    </div>
 
 
 </div>
