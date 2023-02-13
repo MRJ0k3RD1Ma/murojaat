@@ -6,6 +6,7 @@ use common\models\VPersonMigrant;
 use common\models\VPersonMigrantWhy;
 use common\models\VVillage;
 use common\models\search\VVillageSearch;
+use common\models\VVillageFives;
 use common\models\VVillageProblem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -74,6 +75,9 @@ class VVillageController extends Controller
         $model->soato_id = Yii::$app->user->identity->company->soato_id;
         $model->user_id = Yii::$app->user->id;
         $model->date = date('Y-m-d');
+        if($sec = VVillageFives::findOne(['company_id'=>Yii::$app->user->identity->company_id])){
+            $model->sector = $sec->sector;
+        }
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post()) ) {

@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deputat')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sector')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'sector')->dropDownList(Yii::$app->params['sector']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-success']) ?>

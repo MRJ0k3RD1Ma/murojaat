@@ -79,7 +79,7 @@ class VVillage extends \yii\db\ActiveRecord
             'soato_id' => 'Манзил',
             'date' => 'Сўровнома санаси',
             'road' => 'Кўча',
-            'address' => 'Манзил',
+            'address' => 'Уй рақами',
             'is_want_credit' => 'Кредит олишга талаб',
             'person_name' => 'ФИО',
             'gender' => 'Жинси',

@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'person_name')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'gender')->dropDownList(Yii::$app->params['gender']) ?>
 
     <?= $form->field($model, 'person_birthday')->textInput(['type'=>'date']) ?>
@@ -33,28 +34,34 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'want_econom_energy')->radioList(Yii::$app->params['want_econom_energy']) ?>
 
-    <?= $form->field($model, 'econom_energy_credit')->checkbox(['value' => 1])->label('Кредит ҳисобидан') ?>
+  <div id="want-econom-energy" style="display: none; margin-left:10px; border-left:1px solid #007bff; padding-left:10px;">
+      <?= $form->field($model, 'econom_energy_credit')->checkbox(['value' => 1])->label('Кредит ҳисобидан') ?>
 
-    <?= $form->field($model, 'econom_energy_own')->checkbox(['value' => 1])->label('Ўз маблағлари ҳисобидан') ?>
+      <?= $form->field($model, 'econom_energy_own')->checkbox(['value' => 1])->label('Ўз маблағлари ҳисобидан') ?>
 
-    <?= $form->field($model, 'econom_energy')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'econom_energy')->textInput(['maxlength' => true]) ?>
+  </div>
 
-    <?= $form->field($model, 'is_want_credit')->dropDownList(Yii::$app->params['is_want_credit']) ?>
-    <?= $form->field($model, 'want_credit')->textInput() ?>
+    <?= $form->field($model, 'is_want_credit')->radioList(Yii::$app->params['is_want_credit']) ?>
 
-    <?= $form->field($model, 'credit_women')->textInput()->label('Шундан, Аёллар') ?>
+    <div id="want-credit" style="display: none; margin-left:10px; border-left:1px solid #007bff; padding-left:10px;">
+        <?= $form->field($model, 'want_credit')->textInput() ?>
 
-    <?= $form->field($model, 'credit_young')->textInput()->label('Шундан, Ёшлар') ?>
-    <?= $form->field($model, 'credit')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'credit_women')->textInput()->label('Шундан, Аёллар') ?>
+
+        <?= $form->field($model, 'credit_young')->textInput()->label('Шундан, Ёшлар') ?>
+        <?= $form->field($model, 'credit')->textInput(['maxlength' => true]) ?>
+    </div>
 
     <?= $form->field($model, 'want_subsidy')->radioList(Yii::$app->params['want_subsidy']) ?>
+    <div id="want-subsidy" style="display: none; margin-left:10px; border-left:1px solid #007bff; padding-left:10px;">
 
-    <?= $form->field($model, 'subsidy_women')->textInput()->label('Шундан, Аёллар') ?>
+        <?= $form->field($model, 'subsidy_women')->textInput()->label('Шундан, Аёллар') ?>
 
-    <?= $form->field($model, 'subsidy_young')->textInput()->label('Шундан, Ёшлар') ?>
+        <?= $form->field($model, 'subsidy_young')->textInput()->label('Шундан, Ёшлар') ?>
 
-    <?= $form->field($model, 'subsidy')->textInput(['maxlength' => true]) ?>
-
+        <?= $form->field($model, 'subsidy')->textInput(['maxlength' => true]) ?>
+    </div>
     <?= $form->field($model, 'migrant')->textInput() ?>
 
     <div id="migs" data-key="0">
@@ -139,6 +146,31 @@ $this->registerJs("
             key++;
             var append = \"<div class='row'><div class='col-sm-6'><label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][name]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][\"+key+\"][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][\"+key+\"][detail]'></textarea></label></div></div>\"
             $('#problems').append(append);
+        });
+        
+        $('input[name=\"VVillage[want_econom_energy]\"]').change(function(){
+            var val = this.value;
+            if(val == 1){
+                $('#want-econom-energy').show();
+            }else{
+                $('#want-econom-energy').hide();
+            }
+        });
+        $('input[name=\"VVillage[is_want_credit]\"]').change(function(){
+            var val = this.value;
+            if(val == 1){
+                $('#want-credit').show();
+            }else{
+                $('#want-credit').hide();
+            }
+        });
+        $('input[name=\"VVillage[want_subsidy]\"]').change(function(){
+            var val = this.value;
+            if(val == 1){
+                $('#want-subsidy').show();
+            }else{
+                $('#want-subsidy').hide();
+            }
         });
     ")
 ?>
