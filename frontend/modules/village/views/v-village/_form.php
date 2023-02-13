@@ -35,11 +35,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'want_econom_energy')->radioList(Yii::$app->params['want_econom_energy']) ?>
 
   <div id="want-econom-energy" style="display: none; margin-left:10px; border-left:1px solid #007bff; padding-left:10px;">
+
       <?= $form->field($model, 'econom_energy_credit')->checkbox(['value' => 1])->label('Кредит ҳисобидан') ?>
 
       <?= $form->field($model, 'econom_energy_own')->checkbox(['value' => 1])->label('Ўз маблағлари ҳисобидан') ?>
 
       <?= $form->field($model, 'econom_energy')->textInput(['maxlength' => true]) ?>
+
   </div>
 
     <?= $form->field($model, 'is_want_credit')->radioList(Yii::$app->params['is_want_credit']) ?>
@@ -92,11 +94,7 @@ use yii\widgets\ActiveForm;
     <button class="btn btn-info" type="button" id="addmigrant"><span class="fa fa-plus"></span> Мигрант қўшиш</button>
     <br>
     <div id="problems" data-key="0">
-        <h3 class="card-title">Хонадонда аниқланган муаммолар</h3>   <br>
-        <p style="font-style: italic">(Агар ўрганилган хонадонда муаммо аниқланмаса ушбу қисм тўлдирилмайди, бунда
-            “Аниқланган муаммо мазмуни” устунидаги бўш қаторлардан бирига
-            “муаммо мавжуд эмас” деб бир марта ёзилади)</p>
-
+        <h3 class="card-title">Хонадонда аниқланган муаммолар</h3>  <br>
         <div class='row'>
             <div class='col-sm-12'>
                 <label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][0][name]'></label>

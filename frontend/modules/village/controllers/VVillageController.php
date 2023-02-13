@@ -79,44 +79,61 @@ class VVillageController extends Controller
             $model->sector = $sec->sector;
         }
         if ($this->request->isPost) {
-
             if ($model->load($this->request->post()) ) {
 
-                    if($model->save()){
-                        foreach ($model->mig as $item){
-                            if($item['name'] and $item['birthday']){
-                                $mig = new VPersonMigrant();
-                                if($id = VPersonMigrant::find()->where(['village_id'=>$model->id])->max('id')){
-                                    $id++;
-                                }else{
-                                    $id = 1;
-                                }
-                                $mig->id = $id;
-                                $mig->village_id = $model->id;
-                                $mig->person_name = $item['name'];
-                                $mig->why_id = $item['why_id'];
-                                $mig->birthday = date('Y-m-d',strtotime($item['birthday']));
-                                $mig->save();
+                // want_subsidy, is_want_credit, want_econom_energy,
+                    // want_subsidy
+                if($model->want_subsidy == 2){
+                    $model->subsidy_women = 0;
+                    $model->subsidy_young = 0;
+                    $model->subsidy = "";
+                }
+                if($model->is_want_credit == 2){
+                    $model->want_credit = 0;
+                    $model->credit_women = 0;
+                    $model->credit_young = 0;
+                    $model->credit = "";
+                }
+                if($model->want_econom_energy){
+                    $model->econom_energy = 0;
+                    $model->econom_energy_own = 0;
+                    $model->econom_energy_credit = 0;
+                }
+                if($model->save()){
+                    foreach ($model->mig as $item){
+                        if($item['name'] and $item['birthday']){
+                            $mig = new VPersonMigrant();
+                            if($id = VPersonMigrant::find()->where(['village_id'=>$model->id])->max('id')){
+                                $id++;
+                            }else{
+                                $id = 1;
                             }
-                        }
-                        foreach ($model->problems as $item){
-                            if($item['kinship'] and $item['year'] and $item['detail']){
-                                $mig = new VVillageProblem();
-                                if($id = VVillageProblem::find()->where(['village_id'=>$model->id])->max('id')){
-                                    $id++;
-                                }else{
-                                    $id = 1;
-                                }
-                                $mig->id = $id;
-                                $mig->village_id = $model->id;
-                                $mig->kinship = $item['kinship'];
-                                $mig->year = $item['year'];
-                                $mig->name = $item['name'];
-                                $mig->detail = $item['detail'];
-                                $mig->save();
-                            }
+                            $mig->id = $id;
+                            $mig->village_id = $model->id;
+                            $mig->person_name = $item['name'];
+                            $mig->why_id = $item['why_id'];
+                            $mig->birthday = date('Y-m-d',strtotime($item['birthday']));
+                            $mig->save();
                         }
                     }
+                    foreach ($model->problems as $item){
+                        if($item['kinship'] and $item['year'] and $item['detail']){
+                            $mig = new VVillageProblem();
+                            if($id = VVillageProblem::find()->where(['village_id'=>$model->id])->max('id')){
+                                $id++;
+                            }else{
+                                $id = 1;
+                            }
+                            $mig->id = $id;
+                            $mig->village_id = $model->id;
+                            $mig->kinship = $item['kinship'];
+                            $mig->year = $item['year'];
+                            $mig->name = $item['name'];
+                            $mig->detail = $item['detail'];
+                            $mig->save();
+                        }
+                    }
+                }
 
                 Yii::$app->session->setFlash('success','Сўровнома мувофаққиятли сақланди');
                 return $this->redirect(['view', 'id' => $model->id]);
