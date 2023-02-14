@@ -7,7 +7,7 @@ use common\models\search\VPersonMigrantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * VPersonMigrantController implements the CRUD actions for VPersonMigrant model.
  */
@@ -39,7 +39,7 @@ class VPersonMigrantController extends Controller
     public function actionIndex()
     {
         $searchModel = new VPersonMigrantSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -70,8 +70,8 @@ class VPersonMigrantController extends Controller
     {
         $model = new VPersonMigrant();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id, 'village_id' => $model->village_id]);
             }
         } else {
@@ -95,7 +95,7 @@ class VPersonMigrantController extends Controller
     {
         $model = $this->findModel($id, $village_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'village_id' => $model->village_id]);
         }
 

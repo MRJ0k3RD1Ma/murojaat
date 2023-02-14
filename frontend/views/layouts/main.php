@@ -6,10 +6,10 @@
 use common\models\AppealBajaruvchi;
 use common\models\AppealRegister;
 use common\widgets\Alert;
-use yii\bootstrap5\Progress;
+use yii\bootstrap\Progress;
 use yii\helpers\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 

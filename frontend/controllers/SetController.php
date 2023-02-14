@@ -4,9 +4,6 @@ namespace frontend\controllers;
 
 
 use common\models\CompanyType;
-use common\models\District;
-use common\models\KasanachiTutzorSxema;
-use common\models\Village;
 use yii\web\Controller;
 
 

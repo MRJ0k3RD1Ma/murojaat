@@ -3,7 +3,7 @@
 namespace frontend\modules\cp\controllers;
 
 use yii\web\Controller;
-
+use Yii;
 /**
  * Default controller for the `cp` module
  */

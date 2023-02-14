@@ -18,6 +18,14 @@ use yii\helpers\Url; ?>
             </a>
         </li>
         <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/'])?>" class="nav-link">
+                <i class="nav-icon fas fa-list-alt"></i>
+                <p>
+                    Мурожаатлар
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="<?= Yii::$app->urlManager->createUrl(['/village/v-village'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village')?'active':''?>">
                 <i class="nav-icon fas fa-list"></i>
                 <p>

@@ -1,18 +1,18 @@
 <?php
 
-namespace frontend\modules\village;
+namespace frontend\modules\district;
 
 use yii\filters\AccessControl;
 use Yii;
 /**
- * village module definition class
+ * district module definition class
  */
 class Module extends \yii\base\Module
 {
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'frontend\modules\village\controllers';
+    public $controllerNamespace = 'frontend\modules\district\controllers';
     public function behaviors()
     {
         return [

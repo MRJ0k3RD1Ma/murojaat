@@ -19,6 +19,9 @@ return [
         'village' => [
             'class' => 'frontend\modules\village\Module',
         ],
+        'district' => [
+            'class' => 'frontend\modules\district\Module',
+        ],
     ],
     'components' => [
         'request' => [

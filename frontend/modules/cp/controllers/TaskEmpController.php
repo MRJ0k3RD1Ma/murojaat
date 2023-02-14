@@ -7,7 +7,7 @@ use common\models\search\TaskEmpSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * TaskEmpController implements the CRUD actions for TaskEmp model.
  */
@@ -39,7 +39,7 @@ class TaskEmpController extends Controller
     public function actionIndex()
     {
         $searchModel = new TaskEmpSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -72,8 +72,8 @@ class TaskEmpController extends Controller
     {
         $model = new TaskEmp();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'sender_id' => $model->sender_id, 'reciever_id' => $model->reciever_id, 'register_id' => $model->register_id, 'appeal_id' => $model->appeal_id]);
             }
         } else {
@@ -99,7 +99,7 @@ class TaskEmpController extends Controller
     {
         $model = $this->findModel($sender_id, $reciever_id, $register_id, $appeal_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'sender_id' => $model->sender_id, 'reciever_id' => $model->reciever_id, 'register_id' => $model->register_id, 'appeal_id' => $model->appeal_id]);
         }
 

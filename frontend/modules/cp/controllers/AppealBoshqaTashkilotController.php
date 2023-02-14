@@ -7,7 +7,7 @@ use common\models\search\AppealBoshqaTashkilotSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * AppealBoshqaTashkilotController implements the CRUD actions for AppealBoshqaTashkilot model.
  */
@@ -39,7 +39,7 @@ class AppealBoshqaTashkilotController extends Controller
     public function actionIndex()
     {
         $searchModel = new AppealBoshqaTashkilotSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -69,8 +69,8 @@ class AppealBoshqaTashkilotController extends Controller
     {
         $model = new AppealBoshqaTashkilot();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -93,7 +93,7 @@ class AppealBoshqaTashkilotController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

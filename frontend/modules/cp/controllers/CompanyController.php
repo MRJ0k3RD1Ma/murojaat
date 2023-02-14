@@ -3,7 +3,6 @@
 namespace frontend\modules\cp\controllers;
 
 use common\models\Company;
-use common\models\CompanyOld;
 use common\models\search\CompanySearch;
 use common\models\Token;
 use common\models\User;
@@ -43,8 +42,8 @@ class CompanyController extends Controller
         $model->company_id = $id;
         $model->status = 1;
         $model->type_id = 1;
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
                 $model->token = \Yii::$app->security->generateRandomString(30);
                 while (Token::findOne(['token'=>$model->token])){
                     $model->token = \Yii::$app->security->generateRandomString(30);
@@ -72,7 +71,7 @@ class CompanyController extends Controller
     public function actionIndex()
     {
         $searchModel = new CompanySearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -104,7 +103,7 @@ class CompanyController extends Controller
 
     public function actionChild($id){
         $searchModel = new CompanySearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = Company::findOne($id);
         return $this->render('child', [
             'searchModel' => $searchModel,
@@ -122,7 +121,7 @@ class CompanyController extends Controller
     {
         $searchModel = new CompanySearch();
         $searchModel->parent_id = $id;
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -159,8 +158,8 @@ class CompanyController extends Controller
     {
         $model = new Company();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -270,7 +269,7 @@ class CompanyController extends Controller
         $model = $this->findModel($id);
         $model->region_id = $model->soato->region_id;
         $model->district_id = $model->soato->district_id;
-        if ($this->request->isPost && $model->load($this->request->post())) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
             if(!$model->soato_id){
                 $model->soato_id = "17".$model->region_id.$model->district_id;
             }

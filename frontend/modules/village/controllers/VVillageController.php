@@ -43,7 +43,7 @@ class VVillageController extends Controller
     public function actionIndex()
     {
         $searchModel = new VVillageSearch();
-        $dataProvider = $searchModel->searchVillage($this->request->queryParams);
+        $dataProvider = $searchModel->searchVillage(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -78,8 +78,8 @@ class VVillageController extends Controller
         if($sec = VVillageFives::findOne(['company_id'=>Yii::$app->user->identity->company_id])){
             $model->sector = $sec->sector;
         }
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) ) {
 
                 // want_subsidy, is_want_credit, want_econom_energy,
                     // want_subsidy
@@ -168,7 +168,7 @@ class VVillageController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

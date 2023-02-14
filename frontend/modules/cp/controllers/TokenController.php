@@ -7,7 +7,7 @@ use common\models\search\TokenSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * TokenController implements the CRUD actions for Token model.
  */
@@ -39,7 +39,7 @@ class TokenController extends Controller
     public function actionIndex()
     {
         $searchModel = new TokenSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -69,8 +69,8 @@ class TokenController extends Controller
     {
         $model = new Token();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
                 $model->token = \Yii::$app->security->generateRandomString(30);
                 while (Token::findOne(['token'=>$model->token])){
                     $model->token = \Yii::$app->security->generateRandomString(30);
@@ -99,7 +99,7 @@ class TokenController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

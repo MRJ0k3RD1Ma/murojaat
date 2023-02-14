@@ -61,8 +61,8 @@ class VVillageFivesController extends Controller
     {
         $model = new VVillageFives();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) ) {
                 $model->company_id = Yii::$app->user->identity->company_id;
                 if($model->save()){
                     return $this->redirect(['index']);
@@ -88,7 +88,7 @@ class VVillageFivesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
 

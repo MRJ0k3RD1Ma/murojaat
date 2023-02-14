@@ -5,8 +5,8 @@
 
 use common\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 

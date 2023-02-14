@@ -1,11 +1,11 @@
 <?php
 
-namespace frontend\modules\village\controllers;
+namespace frontend\modules\district\controllers;
 
 use yii\web\Controller;
-use Yii;
+
 /**
- * Default controller for the `village` module
+ * Default controller for the `district` module
  */
 class DefaultController extends Controller
 {
