@@ -1,5 +1,6 @@
 <?php
 
+use common\models\VVillageProblemType;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -95,7 +96,7 @@ use yii\widgets\ActiveForm;
     <br>
     <div id="problems" data-key="0">
         <h3 class="card-title">Хонадонда аниқланган муаммолар</h3>  <br>
-        <div class='row'>
+        <div class='row key-0'>
             <div class='col-sm-12'>
                 <label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][0][name]'></label>
             </div>
@@ -108,7 +109,15 @@ use yii\widgets\ActiveForm;
             <div class='col-sm-12'>
                 <label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][0][detail]'></textarea></label>
             </div>
-
+            <?php
+            $model = VVillageProblemType::find()->all();
+            $res = "<div class='col-sm-12'><label class='control-label' style='width: 100%'>Муаммо коди<select class='form-control' name='VVillage[problems][0][type_id]'>";
+            foreach ($model as $item){
+                $res .= "<option value='{$item->id}'>{$item->code} - {$item->name}</option>";
+            }
+            $res .= "</select></label></div>";
+            echo $res;
+            ?>
         </div>
     </div>
     <button class="btn btn-info" type="button" id="addproblem"><span class="fa fa-plus"></span> Муамми қўшиш</button>
@@ -127,6 +136,7 @@ use yii\widgets\ActiveForm;
 
 <?php
 $url = Yii::$app->urlManager->createUrl(['/village/v-village/getwhy']);
+$url_type = Yii::$app->urlManager->createUrl(['/village/v-village/gettype']);
 $this->registerJs("
         $('#addmigrant').click(function(){
             var key = $('#migs').attr('data-key');
@@ -142,8 +152,12 @@ $this->registerJs("
         $('#addproblem').click(function(){
             var key = $('#problems').attr('data-key');
             key++;
-            var append = \"<div class='row'><div class='col-sm-6'><label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][name]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][\"+key+\"][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][\"+key+\"][detail]'></textarea></label></div></div>\"
+            var append = \"<div class='row prob key-\"+key+\"'><div class='col-sm-6'><label style='width: 100%' class='control-label'>ФИО<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][name]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Қариндошлиги<input type='text' class='form-control' name='VVillage[problems][\"+key+\"][kinship]'></label></div><div class='col-sm-6'><label style='width: 100%' class='control-label'>Йил<input type='number' class='form-control' name='VVillage[problems][\"+key+\"][year]'></label></div><div class='col-sm-12'><label style='width: 100%' class='control-label'>Муаммо мазмуни<textarea type='text' class='form-control' name='VVillage[problems][\"+key+\"][detail]'></textarea></label></div></div>\"
             $('#problems').append(append);
+             $.get('{$url_type}?key='+key).done(function(data){
+                $('.prob.row.key-'+key).append(data);
+            });
+            $('#problems').attr('data-key',key);
         });
         
         $('input[name=\"VVillage[want_econom_energy]\"]').change(function(){

@@ -8,6 +8,7 @@ use common\models\VVillage;
 use common\models\search\VVillageSearch;
 use common\models\VVillageFives;
 use common\models\VVillageProblem;
+use common\models\VVillageProblemType;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -95,9 +96,9 @@ class VVillageController extends Controller
                     $model->credit = "";
                 }
                 if($model->want_econom_energy){
-                    $model->econom_energy = 0;
-                    $model->econom_energy_own = 0;
-                    $model->econom_energy_credit = 0;
+                    $model->econom_energy = "";
+                    $model->econom_energy_own = "";
+                    $model->econom_energy_credit = "";
                 }
                 if($model->save()){
                     foreach ($model->mig as $item){
@@ -130,9 +131,14 @@ class VVillageController extends Controller
                             $mig->year = $item['year'];
                             $mig->name = $item['name'];
                             $mig->detail = $item['detail'];
+                            $mig->type_id = $item['type_id'];
                             $mig->save();
                         }
                     }
+                }else{
+                    echo '<pre>';
+                    var_dump($model);
+                    exit;
                 }
 
                 Yii::$app->session->setFlash('success','Сўровнома мувофаққиятли сақланди');
@@ -153,7 +159,16 @@ class VVillageController extends Controller
         foreach ($model as $item){
             $res .= "<option value='{$item->id}'>{$item->name}</option>";
         }
-        $res .= "</div></label></select>";
+        $res .= "</select></label></div>";
+        return $res;
+    }
+    public function actionGettype($key){
+        $model = VVillageProblemType::find()->all();
+        $res = "<div class='col-sm-12'><label class='control-label' style='width: 100%'>Муаммо коди<select class='form-control' name='VVillage[problems][{$key}][type_id]'>";
+        foreach ($model as $item){
+            $res .= "<option value='{$item->id}'>{$item->code} - {$item->name}</option>";
+        }
+        $res .= "</select></label></div>";
         return $res;
     }
 

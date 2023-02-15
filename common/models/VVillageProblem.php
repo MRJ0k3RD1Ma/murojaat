@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property int $village_id
+ * @property int $type_id
+ * @property int $status_id
  * @property string $kinship
  * @property int $year
  * @property string|null $name
@@ -33,7 +35,7 @@ class VVillageProblem extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'village_id', 'year'], 'required'],
-            [['id', 'village_id', 'year'], 'integer'],
+            [['id', 'village_id', 'year','status_id','type_id'], 'integer'],
             [['detail'], 'string'],
             [['kinship', 'name'], 'string', 'max' => 255],
             [['id', 'village_id'], 'unique', 'targetAttribute' => ['id', 'village_id']],

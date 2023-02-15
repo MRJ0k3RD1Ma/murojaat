@@ -39,7 +39,7 @@
                         <th rowspan="2">№</th>
                         <th rowspan="2">Муаммо коди</th>
                         <th rowspan="2">Муаммо йўналиши</th>
-                        <th colspan="3">Туман бўйича жами</th>
+                        <th colspan="3">Маҳалла бўйича жами</th>
                     </tr>
                     <tr>
                         <th>Аниқланган муаммолар сони</th>
@@ -48,7 +48,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                <!--Mahalladagi muammolarning umumiy soni kiritialdi-->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Жами</td>
+                    <td><?= $prob[0][0]?></td>
+                    <td><?= $prob[0][1]?></td>
+                    <td><?= $prob[0][2]?></td>
+                </tr>
+                <?php $n=0; foreach ($model as $item): $n++;?>
+                    <tr>
+                        <td><?= $n?></td>
+                        <td><?= $item->code ?></td>
+                        <td><?= $item->name?></td>
+                        <td><?= $prob[$item->id][0]?></td>
+                        <td><?= $prob[$item->id][1]?></td>
+                        <td><?= $prob[$item->id][2]?></td>
+                    </tr>
+                <?php endforeach;?>
                 </tbody>
             </table>
         </div>
