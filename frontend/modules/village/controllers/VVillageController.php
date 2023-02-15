@@ -79,6 +79,7 @@ class VVillageController extends Controller
         if($sec = VVillageFives::findOne(['company_id'=>Yii::$app->user->identity->company_id])){
             $model->sector = $sec->sector;
         }
+        $model->migrant = 0;
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) ) {
 
