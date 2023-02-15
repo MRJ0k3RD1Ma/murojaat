@@ -34,6 +34,17 @@
         </li>
 
     </ul>
+
 </li>
+<?php if(Yii::$app->user->identity->access(5)){?>
+<li class="nav-item">
 
-
+    <a href="<?= Yii::$app->urlManager->createUrl(['/district/'])?>" class="nav-link ">
+        <p>
+            <i class="nav-icon fas fa-list-alt"></i>
+            Сўровнома
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+</li>
+<?php }?>

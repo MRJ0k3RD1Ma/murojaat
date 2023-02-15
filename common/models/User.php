@@ -54,6 +54,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['role_id', 'lavozim_id', 'bulim_id'], 'required'],
             [['password'],'required','on'=>'insert'],
+            [['password','username',],'required','on'=>'change'],
             [['role_id', 'company_id', 'lavozim_id', 'bulim_id', 'status', 'active'], 'integer'],
             [['created', 'updated'], 'safe'],
             ['access','each','rule'=>['integer']],

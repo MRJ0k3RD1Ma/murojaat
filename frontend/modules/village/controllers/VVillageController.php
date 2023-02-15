@@ -95,7 +95,7 @@ class VVillageController extends Controller
                     $model->credit_young = 0;
                     $model->credit = "";
                 }
-                if($model->want_econom_energy){
+                if($model->want_econom_energy == 2){
                     $model->econom_energy = "";
                     $model->econom_energy_own = "";
                     $model->econom_energy_credit = "";

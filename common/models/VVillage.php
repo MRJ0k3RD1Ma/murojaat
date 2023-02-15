@@ -43,7 +43,7 @@ use Yii;
  */
 class VVillage extends \yii\db\ActiveRecord
 {
-    public $mig,$problems;
+    public $mig,$problems,$region_id,$district_id;
     /**
      * {@inheritdoc}
      */
@@ -60,6 +60,7 @@ class VVillage extends \yii\db\ActiveRecord
         return [
             [['user_id', 'sector', 'gender','is_want_credit','soato_id', 'has_cl_problem', 'want_econom_energy', 'want_credit', 'credit_women', 'credit_young', 'want_subsidy', 'subsidy_women', 'subsidy_young', 'migrant', 'home_status_id'], 'integer'],
             [['date', 'person_birthday','created','updated','mig','problems', 'want_subsidy',], 'safe'],
+            [['soato_id'],'required','on'=>'district'],
             [['gender','is_want_credit','has_cl_problem', 'want_econom_energy', 'date', 'person_birthday', 'migrant', 'home_status_id','road', 'want_subsidy','address', 'person_name','person_phone',],'required'],
             [['road', 'address', 'person_name', 'econom_energy_credit','person_phone', 'econom_energy_own', 'econom_energy', 'credit', 'subsidy'], 'string', 'max' => 255],
             [['home_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => VHomeStatus::class, 'targetAttribute' => ['home_status_id' => 'id']],
@@ -98,6 +99,8 @@ class VVillage extends \yii\db\ActiveRecord
             'want_subsidy' => 'Субсидия олишга бўлган талаб:',
             'subsidy_women' => 'Аёллар',
             'subsidy_young' => 'Ёшлар',
+            'region_id' => 'Вилоят',
+            'district_id' => 'Туман',
             'subsidy' => 'Субсидия мақсади:',
             'migrant' => 'Хонадон вакилидан четда (ишлаш ёки ўқиш мақсадида) юрганлар сони',
             'home_status_id' => 'Хонадоннинг иқтисодий-ижтимоий аҳволи:',

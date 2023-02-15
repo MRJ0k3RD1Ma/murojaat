@@ -62,4 +62,7 @@ class VPersonMigrant extends \yii\db\ActiveRecord
     {
         return $this->hasOne(VVillage::class, ['id' => 'village_id']);
     }
+    public function getWhy(){
+        return $this->hasOne(VPersonMigrantWhy::class,['id'=>'why_id']);
+    }
 }

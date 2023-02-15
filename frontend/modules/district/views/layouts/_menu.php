@@ -26,18 +26,10 @@ use yii\helpers\Url; ?>
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/village/v-village'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village')?'active':''?>">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village')?'active':''?>">
                 <i class="nav-icon fas fa-list"></i>
                 <p>
                     Сўровнома
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<?= Yii::$app->urlManager->createUrl(['/village/v-village-fives'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village-fives')?'active':''?>">
-                <i class="nav-icon fas fa-list"></i>
-                <p>
-                    Маҳалла фаоллари
                 </p>
             </a>
         </li>

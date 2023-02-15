@@ -156,11 +156,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-6">
 
-                            <?= $form->field($model,'address')->textInput()?>
+                            <?= $form->field($model,'bulim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Bulim::find()->all(),'id','name'))?>
 
-                            <?= $form->field($model,'bulim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Bulim::find()->all(),'id','name'))?>
-
-                            <?= $form->field($model,'lavozim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Lavozim::find()->all(),'id','name'))?>
+                            <?= $form->field($model,'lavozim_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Lavozim::find()->all(),'id','name'))?>
 
                             <input type="submit" class="btnRegister" value="Сақлаш"/>
 

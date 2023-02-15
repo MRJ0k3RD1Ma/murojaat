@@ -76,4 +76,8 @@ class Soato extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Company::class, ['soato_id' => 'id']);
     }
+
+    public function getDistrict(){
+        return Soato::findOne('17'.$this->region_id.$this->district_id)->name_cyr;
+    }
 }

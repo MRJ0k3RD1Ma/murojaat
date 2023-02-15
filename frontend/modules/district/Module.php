@@ -23,7 +23,7 @@ class Module extends \yii\base\Module
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function($rule, $action){
-                            if(Yii::$app->user->identity->access(3) or Yii::$app->user->identity->access(4)){
+                            if(Yii::$app->user->identity->access(5)){
                                 return true;
                             }
                             header('Location: '.Yii::$app->urlManager->createUrl(['/site/index']));
@@ -49,7 +49,7 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-        Yii::$app->viewPath = "@frontend/modules/village/views";
+        Yii::$app->viewPath = "@frontend/modules/district/views";
 
         // custom initialization code goes here
     }

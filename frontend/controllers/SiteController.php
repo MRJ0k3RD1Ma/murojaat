@@ -431,9 +431,9 @@ class SiteController extends Controller
         $model = User::findOne(Yii::$app->user->id);
 
         $this->layout='login.php';
-
+        $model->scenario = "change";
         if ($model->load(Yii::$app->request->post())) {
-            $model->encrypt();
+            $model->setPassword($model->password);
             $model->active = 1;
             $model->save();
             return $this->goBack();

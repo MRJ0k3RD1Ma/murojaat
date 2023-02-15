@@ -67,4 +67,7 @@ class VVillageProblem extends \yii\db\ActiveRecord
     {
         return $this->hasOne(VVillage::class, ['id' => 'village_id']);
     }
+    public function getType(){
+        return $this->hasOne(VVillageProblemType::class,['id'=>'type_id']);
+    }
 }
