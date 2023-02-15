@@ -148,10 +148,15 @@ class Company extends \yii\db\ActiveRecord
     }
 
     public function getFulladdr(){
-        $ad = $this->soato;
-        return Soato::findOne($ad->res_id.$ad->region_id)->name_lot.' '.
-            Soato::findOne($ad->res_id.$ad->region_id.$ad->district_id)->name_lot;
+        $addr = $this->soato;
+
+        if(MahallaView::find()->where(['id'=>$this->soato_id])->one()){
+            return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr.' '.$addr->name_cyr;
+        }else{
+            return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr;
+        }
     }
+
     public function getParent(){
         return $this->hasOne(Company::className(),['id'=>'parent_id']);
     }

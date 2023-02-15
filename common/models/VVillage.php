@@ -59,7 +59,8 @@ class VVillage extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'sector', 'gender','is_want_credit','soato_id', 'has_cl_problem', 'want_econom_energy', 'want_credit', 'credit_women', 'credit_young', 'want_subsidy', 'subsidy_women', 'subsidy_young', 'migrant', 'home_status_id'], 'integer'],
-            [['date', 'person_birthday','created','updated','mig','problems'], 'safe'],
+            [['date', 'person_birthday','created','updated','mig','problems', 'want_subsidy',], 'safe'],
+            [['gender','is_want_credit','has_cl_problem', 'want_econom_energy', 'date', 'person_birthday', 'migrant', 'home_status_id','road', 'want_subsidy','address', 'person_name','person_phone',],'required'],
             [['road', 'address', 'person_name', 'econom_energy_credit','person_phone', 'econom_energy_own', 'econom_energy', 'credit', 'subsidy'], 'string', 'max' => 255],
             [['home_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => VHomeStatus::class, 'targetAttribute' => ['home_status_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],
@@ -156,12 +157,11 @@ class VVillage extends \yii\db\ActiveRecord
 
     public function getFulladdr(){
         $addr = $this->soato;
-        return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr;
 
         if(MahallaView::find()->where(['id'=>$this->soato_id])->one()){
             return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr.' '.$addr->name_cyr;
         }else{
-
+            return Soato::findOne(['region_id'=>$addr->region_id])->name_cyr.' '.Soato::findOne(['district_id'=>$addr->district_id,'region_id'=>$addr->region_id])->name_cyr;
         }
     }
 
