@@ -11,6 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 /**
  * CompanyController implements the CRUD actions for Company model.
  */
@@ -72,7 +74,36 @@ class CompanyController extends Controller
     {
         $searchModel = new CompanySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if(Yii::$app->request->isPost){
 
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $n = 0;
+            $sheet->setCellValue('A1', '№');
+            $sheet->setCellValue('B1', 'Ташкилот номи');
+            $sheet->setCellValue('C1', 'Логин');
+            $sheet->setCellValue('D1', 'Парол');
+            $sheet->setCellValue('E1', 'Тўлов ҳолати');
+            $sheet->setCellValue('F1', 'Телефон');
+            $sheet->setCellValue('G1', 'Туман');
+            foreach ($dataProvider->query->all() as $item){
+                $n++;
+                $m = $n+1;
+                $sheet->setCellValue('A'.$m, $n);
+                $sheet->setCellValue('B'.$m, $item->name);
+                $sheet->setCellValue('C'.$m, $item->inn);
+                $sheet->setCellValue('D'.$m, '1111');
+                $sheet->setCellValue('E'.$m, $item->paid==1?'Тўлов қилинган':'Тўланмаган');
+                $sheet->setCellValue('F'.$m, $item->phone);
+                $sheet->setCellValue('G'.$m, $item->district_id);
+            }
+
+            $writer = new Xlsx($spreadsheet);
+//            $writer->save("php://output");
+
+            $writer->save('tashkilotlar.xlsx');
+            Yii::$app->response->sendFile('tashkilotlar.xlsx');
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

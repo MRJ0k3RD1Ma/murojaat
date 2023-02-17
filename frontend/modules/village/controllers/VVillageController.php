@@ -76,13 +76,14 @@ class VVillageController extends Controller
         $model->soato_id = Yii::$app->user->identity->company->soato_id;
         $model->user_id = Yii::$app->user->id;
         $model->date = date('Y-m-d');
+
         if($sec = VVillageFives::findOne(['company_id'=>Yii::$app->user->identity->company_id])){
             $model->sector = $sec->sector;
         }
         $model->migrant = 0;
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) ) {
-
+                $model->sector = Yii::$app->user->identity->company->soato->sector;
                 // want_subsidy, is_want_credit, want_econom_energy,
                     // want_subsidy
                 if($model->want_subsidy == 2){

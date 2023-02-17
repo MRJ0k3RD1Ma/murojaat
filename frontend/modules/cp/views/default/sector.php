@@ -13,17 +13,14 @@
                 <div class="col-md-4">
                     <?php foreach (\common\models\MahallaView::find()->where('id like "%1733'.$id.'%"')->all() as $item):?>
                         <div class="row">
-                            <div class="col-md-6" style="text-align: right">
-                                <?= $item->name_cyr?>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" class="sector" data-id="<?= $item->id?>" value="<?= $item->sector?>">
+                            <div class="col-md-12">
+                                <label><?= $item->name_cyr?> <input type="text" class="sector" data-id="<?= $item->id?>" value="<?= $item->sector?>"></label>
                             </div>
                         </div>
                     <?php endforeach;?>
                 </div>
                 <div class="col-md-4">
-                    <?php foreach (\app\models\LocVillage::find()->where(['district_id'=>$id])->all() as $item):?>
+                    <?php foreach (\app\models\LocVillage::find()->where(['district_id'=>$id])->orderBy(['sector_number'=>SORT_ASC])->all() as $item):?>
                         <div class="row">
                             <div class="col-md-12">
                                 <?= $item->name?> - <?= $item->sector_number?>

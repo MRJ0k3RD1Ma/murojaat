@@ -493,7 +493,7 @@ class VVillageController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = VVillage::find()->where(['id' => $id,'soato_id'=>Yii::$app->user->identity->company->soato_id])->one()) !== null) {
+        if (($model = VVillage::find()->where(['id' => $id])->andWhere('soato_id like "%'.Yii::$app->user->identity->company_id.'%"')->one()) !== null) {
             return $model;
         }
 
