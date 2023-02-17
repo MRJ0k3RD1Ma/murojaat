@@ -34,7 +34,7 @@ class RegionView extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['id', 'region_id', 'district_id'], 'integer'],
+            [['id', 'region_id', 'district_id','sector'], 'integer'],
             [['name_lot', 'name_cyr', 'name_ru'], 'string', 'max' => 100],
             [['center_lot', 'center_cyr', 'center_ru'], 'string', 'max' => 50],
         ];

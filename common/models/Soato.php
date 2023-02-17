@@ -19,6 +19,7 @@ use Yii;
  * @property string|null $center_cyr
  * @property string|null $name_ru
  * @property string|null $center_ru
+ * @property int|null $sector
  *
  * @property Company[] $companies
  */
@@ -39,7 +40,7 @@ class Soato extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['id', 'res_id', 'region_id', 'district_id', 'qfi_id', 'mahalla_id'], 'integer'],
+            [['id', 'res_id', 'region_id','sector', 'district_id', 'qfi_id', 'mahalla_id'], 'integer'],
             [['name_lot', 'name_cyr', 'name_ru'], 'string', 'max' => 100],
             [['center_lot', 'center_cyr', 'center_ru'], 'string', 'max' => 50],
             [['id'], 'unique'],

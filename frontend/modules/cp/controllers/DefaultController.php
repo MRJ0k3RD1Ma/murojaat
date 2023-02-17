@@ -2,6 +2,10 @@
 
 namespace frontend\modules\cp\controllers;
 
+use common\models\DistrictView;
+use common\models\MahallaView;
+use common\models\RegionView;
+use common\models\Soato;
 use yii\web\Controller;
 use Yii;
 /**
@@ -17,4 +21,24 @@ class DefaultController extends Controller
     {
         return $this->render('index');
     }
+
+    public function actionSector($id = 0){
+        $region = DistrictView::find()->where('id like "%1733%"')->all();
+
+        return $this->render('sector',[
+            'region'=>$region,
+            'id'=>$id
+        ]);
+
+    }
+
+    public function actionSetsector($id,$val){
+        if($model = Soato::findOne($id)){
+            $model->sector = $val;
+            $model->save();
+            return 'saqlandi';
+        }
+        return "mahalla topilmadi";
+    }
+
 }

@@ -36,7 +36,7 @@ class MahallaView extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['id', 'district_id', 'region_id', 'qfi_id', 'mahalla_id'], 'integer'],
+            [['id', 'district_id', 'region_id','sector', 'qfi_id', 'mahalla_id'], 'integer'],
             [['name_lot', 'name_cyr', 'name_ru'], 'string', 'max' => 100],
             [['center_lot', 'center_cyr', 'center_ru'], 'string', 'max' => 50],
         ];
