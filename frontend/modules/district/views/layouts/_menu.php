@@ -34,6 +34,34 @@ use yii\helpers\Url; ?>
             </a>
         </li>
 
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link ">
+                <i class="nav-icon fas fa-list-alt"></i>
+                <p>
+                    Статистикалар
+                </p>
+            </a>
+
+            <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statmyf'])?>" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Маҳалла
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statproblem'])?>" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Муаммолар
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
     </ul>
 </nav>
 <!-- /.sidebar-menu -->
