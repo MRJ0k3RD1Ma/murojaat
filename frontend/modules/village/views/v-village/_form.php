@@ -15,8 +15,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'date')->textInput(['type' => 'date']) ?>
 
-    <?= $form->field($model, 'sector')->dropDownList(Yii::$app->params['sector']) ?>
-
     <?= $form->field($model, 'road')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
