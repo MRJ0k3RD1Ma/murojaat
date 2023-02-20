@@ -52,6 +52,10 @@ class VVillageController extends Controller
         $dataProvider = $searchModel->searchDistrict(Yii::$app->request->queryParams);
         if(Yii::$app->request->isPost){
             // export excel;
+            ini_set('upload_max_filesize','500M');
+            ini_set('max_input_time','5000');
+            ini_set('max_execution_time','5000');
+            ini_set('memory_limit','500000M');
             $speadsheet = new Spreadsheet();
 
             $sheet = $speadsheet->getActiveSheet();
@@ -293,7 +297,7 @@ class VVillageController extends Controller
                     $sheet->setCellValue('AF'.$q,$prob->name);
                     $sheet->setCellValue('AG'.$q,$prob->year);
                     $sheet->setCellValue('AH'.$q,$prob->detail);
-                    $sheet->setCellValue('AI'.$q,$prob->type->name);
+                    $sheet->setCellValue('AI'.$q,$prob->type->code);
                 }
 
                 /*$sheet->setCellValue('AJ'.$n,$item);
