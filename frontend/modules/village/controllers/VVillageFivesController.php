@@ -64,6 +64,7 @@ class VVillageFivesController extends Controller
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) ) {
                 $model->company_id = Yii::$app->user->identity->company_id;
+                $model->soato_id = Yii::$app->user->identity->company->soato_id;
                 if($model->save()){
                     return $this->redirect(['index']);
                 }

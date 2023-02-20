@@ -16,6 +16,9 @@ use Yii;
  * @property string|null $yoshlar_yetakchi
  * @property string|null $deputat
  * @property int|null $sector
+ * @property int|null $people
+ * @property int|null $homes
+ * @property int|null $soato_id
  *
  * @property Company $company
  */
@@ -35,7 +38,7 @@ class VVillageFives extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id','sector'], 'integer'],
+            [['company_id','sector','people','homes','soato_id'], 'integer'],
             [['company_id'],'unique'],
             [['mfy_rais', 'profilaktika_inspektor', 'hokim_yordamchi', 'xotin_qizlar', 'yoshlar_yetakchi', 'deputat'], 'string', 'max' => 255],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['company_id' => 'id']],
@@ -57,6 +60,8 @@ class VVillageFives extends \yii\db\ActiveRecord
             'yoshlar_yetakchi' => 'Ёшлар етакчиси',
             'deputat' => 'Депутат',
             'sector' => 'Сектор',
+            'people' => 'Аҳоли сони',
+            'homes' => 'Хонадонлар сони',
         ];
     }
 

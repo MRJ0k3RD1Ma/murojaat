@@ -37,7 +37,7 @@ use yii\helpers\Url; ?>
 
             <ul class="nav nav-treeview" style="display: none;">
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statmyf'])?>" class="nav-link">
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statmahalla'])?>" class="nav-link">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Маҳалла

@@ -32,7 +32,7 @@
                         <div class="col-md-6">
                             <?php
                             $quest = [];
-                            foreach (\app\models\AppealQuestionGroup::find()->all() as $item) {
+                            foreach (\common\models\AppealQuestionGroup::find()->all() as $item) {
                                 $quest[$item->code.'-'.$item->name] = [];
                                 foreach ($item->question as $i){
                                     $quest[$item->code.'-'.$item->name][$i->id] = $item->code.' '.$i->code.')'.$i->name;
@@ -44,11 +44,11 @@
                         </div>
 
                         <div class="col-md-6">
-                            <?= $form->field($register,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->andWhere(['is_rahbar'=>1])->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])?>
+                            <?= $form->field($register,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])?>
 
                         </div>
                         <div class="col-md-6">
-                              <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])?>
+                              <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])?>
 
                         </div>
 

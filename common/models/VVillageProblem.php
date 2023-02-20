@@ -15,6 +15,7 @@ use Yii;
  * @property int $year
  * @property string|null $name
  * @property string $detail
+ * @property int $ranges
  *
  * @property VVillage $village
  */
@@ -35,7 +36,7 @@ class VVillageProblem extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'village_id', 'year'], 'required'],
-            [['id', 'village_id', 'year','status_id','type_id'], 'integer'],
+            [['id', 'village_id', 'year','status_id','type_id','ranges'], 'integer'],
             [['detail'], 'string'],
             [['kinship', 'name'], 'string', 'max' => 255],
             [['id', 'village_id'], 'unique', 'targetAttribute' => ['id', 'village_id']],
@@ -55,6 +56,7 @@ class VVillageProblem extends \yii\db\ActiveRecord
             'year' => 'Year',
             'name' => 'Name',
             'detail' => 'Detail',
+            'ranges' => 'Даража',
         ];
     }
 

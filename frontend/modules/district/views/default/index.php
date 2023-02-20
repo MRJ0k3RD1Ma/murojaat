@@ -28,41 +28,74 @@
 </div>
 
 
-<div class="card">
-    <div class="card-body">
-        <h4 style="text-align: center"><?= Yii::$app->user->identity->company->fulladdr ?> маҳаллаларида ўтказилган хатловда аниқланган муаммоларни йўналишлари кесимида</h4>
-        <h4 style="text-align: center; font-weight: bold">МАЪЛУМОТ</h4>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th rowspan="2">№</th>
-                    <th rowspan="2">Муаммо коди</th>
-                    <th rowspan="2">Муаммо йўналиши</th>
-                    <th colspan="3">Туман бўйича жами</th>
-                    <th colspan="2">1-сектор</th>
-                    <th colspan="2">2-сектор</th>
-                    <th colspan="2">3-сектор</th>
-                    <th colspan="2">4-сектор</th>
-                </tr>
-                <tr>
-                    <th>Аниқланган муаммолар сони</th>
-                    <th>Жами муаммодаги улуши %</th>
-                    <th>Ҳал этилган муаммолар сони</th>
-                    <th>Аниқланган муаммолар сони</th>
-                    <th>Ҳал этилган муаммолар сони</th>
-                    <th>Аниқланган муаммолар сони</th>
-                    <th>Ҳал этилган муаммолар сони</th>
-                    <th>Аниқланган муаммолар сони</th>
-                    <th>Ҳал этилган муаммолар сони</th>
-                    <th>Аниқланган муаммолар сони</th>
-                    <th>Ҳал этилган муаммолар сони</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!--Mahalladagi muammolarning umumiy soni kiritialdi-->
-                </tbody>
-            </table>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title">Секторлар кусимида ўрганишлар</h5>
+                    </div>
+                </div>
+
+                <div>
+                    <div id="chart"></div>
+                </div>
+            </div>
+            <!-- end card-body -->
+
+
         </div>
     </div>
 </div>
+
+
+
+<?php
+
+$this->registerJsFile("/theme/plugins/apexcharts/apexcharts.min.js");
+
+$this->registerJs("
+     var options = {
+          series: {$series},
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: ['1-Сектор','2-Сектор','3-Сектор','4-Сектор'],
+        },
+        
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return \"$ \" + val + \" thousands\"
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector(\"#chart\"), options);
+        chart.render();
+      
+")
+
+?>
