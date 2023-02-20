@@ -6,6 +6,7 @@ use common\models\MahallaView;
 use common\models\VVillage;
 use common\models\VVillageFives;
 use common\models\VVillageProblem;
+use common\models\VVillageProblemStatus;
 use common\models\VVillageProblemType;
 use yii\web\Controller;
 use Yii;
@@ -34,8 +35,59 @@ class DefaultController extends Controller
         }]
         */
         $series = [];
+        $status = VVillageProblemStatus::find()->all();
+        foreach ($status as $item){
+            $arr = [
+                'name'=>$item->name,
+                'data'=>[
+                    VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=1)')->andWhere(['status_id'=>$item->id])->count('*'),
+                    VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=2)')->andWhere(['status_id'=>$item->id])->count('*'),
+                    VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=3)')->andWhere(['status_id'=>$item->id])->count('*'),
+                    VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=4)')->andWhere(['status_id'=>$item->id])->count('*'),
+                ],
+            ];
+            $series[] = $arr;
+        }
 
-        return $this->render('index');
+        $chart_gen = [];
+        $arr = [
+            'name'=>"Ўрганилган ҳонадонлар",
+            'data'=>[
+                VVillage::find()->where('soato_id in (select id from mahalla_view where id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=1)')->count('*'),
+                VVillage::find()->where('soato_id in (select id from mahalla_view where id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=2)')->count('*'),
+                VVillage::find()->where('soato_id in (select id from mahalla_view where id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=3)')->count('*'),
+                VVillage::find()->where('soato_id in (select id from mahalla_view where id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=4)')->count('*'),
+            ],
+        ];
+        $chart_gen[] = $arr;
+
+        $arr = [
+            'name'=>"Ўрганилган муаммолар",
+            'data'=>[
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=1)')->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=2)')->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=3)')->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=4)')->count('*'),
+            ],
+        ];
+        $chart_gen[] = $arr;
+
+        $arr = [
+            'name'=>"Хал этилган ёки назоратга олинган",
+            'data'=>[
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=1)')->andWhere(['>=','status_id',3])->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=2)')->andWhere(['>=','status_id',3])->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=3)')->andWhere(['>=','status_id',3])->count('*'),
+                VVillageProblem::find()->where('village_id in (select id from v_village where soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%" and sector=4)')->andWhere(['>=','status_id',3])->count('*'),
+            ],
+        ];
+        $chart_gen[] = $arr;
+
+
+        return $this->render('index',[
+            'series'=>json_encode($series),
+            'chart_gen'=>json_encode($chart_gen),
+        ]);
     }
 
 

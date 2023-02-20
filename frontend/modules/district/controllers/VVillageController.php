@@ -208,10 +208,11 @@ class VVillageController extends Controller
                 $sheet->setCellValueByColumnAndRow($i+1,$row,$i);
             }
             $n=5;
-            $l = 1;
+
             $m=0;
             foreach ($dataProvider->query->all() as $item){
                 $m++;
+                $l = 1;
                 if($l < count($item->vPersonMigrants)){
                     $l = count($item->vPersonMigrants);
                 }
