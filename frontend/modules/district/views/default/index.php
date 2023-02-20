@@ -30,7 +30,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h4 style="text-align: center">Хоразм вилояти Хонқа туманидаги маҳаллаларида ўтказилган хатловда аниқланган муаммоларни йўналишлари кесимида</h4>
+        <h4 style="text-align: center"><?= Yii::$app->user->identity->company->fulladdr ?> маҳаллаларида ўтказилган хатловда аниқланган муаммоларни йўналишлари кесимида</h4>
         <h4 style="text-align: center; font-weight: bold">МАЪЛУМОТ</h4>
         <div class="table-responsive">
             <table class="table table-hover table-bordered">

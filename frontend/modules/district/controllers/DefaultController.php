@@ -2,6 +2,7 @@
 
 namespace frontend\modules\district\controllers;
 
+use common\models\MahallaView;
 use common\models\VVillageProblem;
 use common\models\VVillageProblemType;
 use yii\web\Controller;
@@ -65,5 +66,22 @@ class DefaultController extends Controller
             'model'=>$model,
             'prob'=>$prob
         ]);
+    }
+
+
+    public function actionStatmahalla(){
+
+        $sec_1 = MahallaView::find()->where('id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['sector'=>1])->all();
+        $sec_2 = MahallaView::find()->where('id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['sector'=>1])->all();
+        $sec_3 = MahallaView::find()->where('id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['sector'=>1])->all();
+        $sec_4 = MahallaView::find()->where('id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['sector'=>1])->all();
+
+        return $this->render('statmfy',[
+            'sec_1'=>$sec_1,
+            'sec_2'=>$sec_2,
+            'sec_3'=>$sec_3,
+            'sec_4'=>$sec_4,
+        ]);
+
     }
 }
