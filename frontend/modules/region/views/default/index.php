@@ -13,7 +13,7 @@
                                 <h5 class="card-title text-uppercase text-muted mb-0">Ўрганилган ҳонадонлар
                                 </h5>
                                 <br />
-                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">Умумий <b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->count('*')) ?></b> та сўровнома</span>
+                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "17'.Yii::$app->user->identity->company->soato->region_id.'%"')->count('*')) ?></b> та сўровнома</span>
                             </div>
                         </div>
 
@@ -30,7 +30,7 @@
                                 <h5 class="card-title text-uppercase text-muted mb-0">Бугун ўрганилган
                                 </h5>
                                 <br />
-                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">Умумий <b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['date'=>date('Y-m-d')])->count('*')) ?></b> та сўровнома</span>
+                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "17'.Yii::$app->user->identity->company->soato->region_id.'%"')->andWhere(['date'=>date('Y-m-d')])->count('*')) ?></b> та сўровнома</span>
                             </div>
                         </div>
 
@@ -47,7 +47,7 @@
                                 <h5 class="card-title text-uppercase text-muted mb-0">Эркаклар
                                 </h5>
                                 <br />
-                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">Умумий <b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['gender'=>1])->count('*')) ?></b> та сўровнома</span>
+                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "17'.Yii::$app->user->identity->company->soato->region_id.'%"')->andWhere(['gender'=>1])->count('*')) ?></b> та сўровнома</span>
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
                                 <h5 class="card-title text-uppercase text-muted mb-0">Аёллар
                                 </h5>
                                 <br />
-                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">Умумий <b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->andWhere(['gender'=>0])->count('*')) ?></b> нафар сўровнома</span>
+                                <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><b><?= prettyNumber(\common\models\VVillage::find()->where('soato_id like "17'.Yii::$app->user->identity->company->soato->region_id.'%"')->andWhere(['gender'=>0])->count('*')) ?></b> нафар сўровнома</span>
                             </div>
                         </div>
 

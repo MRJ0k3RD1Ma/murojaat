@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\district\controllers;
+namespace frontend\modules\region\controllers;
 
 use common\models\VPersonMigrant;
 use common\models\VPersonMigrantWhy;
@@ -49,7 +49,7 @@ class VVillageController extends Controller
     public function actionIndex()
     {
         $searchModel = new VVillageSearch();
-        $dataProvider = $searchModel->searchDistrict(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchRegion(Yii::$app->request->queryParams);
         if(Yii::$app->request->isPost){
             // export excel;
             ini_set('upload_max_filesize','500M');
@@ -62,7 +62,7 @@ class VVillageController extends Controller
             $title = date('Y-m-d h:i:s');
 
             $speadsheet->getActiveSheet()->mergeCells("A1:O1");
-            $sheet->setCellValue('A1',Yii::$app->user->identity->company->fulladdr.'да уйма-уй юриш жараёнида ўтказилган ўрганишлар натижалари');
+            $sheet->setCellValue('A1',Yii::$app->user->identity->company->soato->region.'да уйма-уй юриш жараёнида ўтказилган ўрганишлар натижалари');
 
             $sheet->getColumnDimension('A')->setWidth(5);
             $sheet->getColumnDimension('B')->setWidth(20);
@@ -498,7 +498,7 @@ class VVillageController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = VVillage::find()->where(['id' => $id])->andWhere('soato_id like "%'.Yii::$app->user->identity->company->soato_id.'%"')->one()) !== null) {
+        if (($model = VVillage::find()->where(['id' => $id])->one()) !== null) {
             return $model;
         }
 

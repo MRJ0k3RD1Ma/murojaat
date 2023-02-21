@@ -48,3 +48,16 @@
     </a>
 </li>
 <?php }?>
+
+<?php if(Yii::$app->user->identity->access(6)){?>
+<li class="nav-item">
+
+    <a href="<?= Yii::$app->urlManager->createUrl(['/region/'])?>" class="nav-link ">
+        <p>
+            <i class="nav-icon fas fa-list-alt"></i>
+            Сўровнома(Вилоят)
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+</li>
+<?php }?>

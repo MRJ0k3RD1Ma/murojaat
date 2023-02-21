@@ -81,4 +81,7 @@ class Soato extends \yii\db\ActiveRecord
     public function getDistrict(){
         return Soato::findOne('17'.$this->region_id.$this->district_id)->name_cyr;
     }
+    public function getRegion(){
+        return static::findOne('17'.$this->region_id)->name_cyr;
+    }
 }

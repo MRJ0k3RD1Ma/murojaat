@@ -22,6 +22,9 @@ return [
         'district' => [
             'class' => 'frontend\modules\district\Module',
         ],
+        'region' => [
+            'class' => 'frontend\modules\region\Module',
+        ],
     ],
     'components' => [
         'request' => [
