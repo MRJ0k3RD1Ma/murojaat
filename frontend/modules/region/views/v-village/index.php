@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute'=>'soato_id',
                             'value'=>function($d){
-                                $url = Yii::$app->urlManager->createUrl(['/district/v-village/view','id'=>$d->id]);
+                                $url = Yii::$app->urlManager->createUrl(['/region/v-village/view','id'=>$d->id]);
                                 return "<a href='{$url}'>{$d->fulladdr}</a>";
                             },
                             'format'=>'raw'

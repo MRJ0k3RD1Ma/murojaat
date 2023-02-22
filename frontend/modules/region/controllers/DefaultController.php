@@ -586,7 +586,8 @@ class DefaultController extends Controller
             'sec_2'=>$sec_2,
             'sec_3'=>$sec_3,
             'sec_4'=>$sec_4,
-            'res'=>$res
+            'res'=>$res,
+            'soato'=>$soato
         ]);
 
     }
