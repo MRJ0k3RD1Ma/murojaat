@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'filter'=>Yii::$app->params['ranges']
                             ],
 
-                            ['class' => 'yii\grid\ActionColumn'],
+//                            ['class' => 'yii\grid\ActionColumn'],
                         ],
                     ]); ?>
 

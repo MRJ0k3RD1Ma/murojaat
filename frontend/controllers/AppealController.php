@@ -155,7 +155,7 @@ class AppealController extends Controller
 
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
-        $address = $model->region->name.' '.$model->district->name.' '.@$model->village->name.' '.$model->address;
+        $address = $model->region->name_cyr.' '.$model->district->name_cyr.' '.@$model->village->name_cyr.' '.$model->address;
         $word = new TemplateProcessor(Yii::$app->basePath.'/web/template/getappeal.docx');
         $word->setValue('companyup',mb_strtoupper(\common\models\Company::findOne(1)->name));
         $word->setValue('number',strip_tags($register->number));
@@ -750,7 +750,7 @@ class AppealController extends Controller
         $appeal->scenario = 'close';
 
         $result = AppealRegister::findOne($answer->register_id);
-        if($answer->load($this->request->post())){
+        if($answer->load(Yii::$app->request->post())){
             $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
