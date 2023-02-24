@@ -118,4 +118,63 @@ class GetController extends Controller
 
         exit;
     }
+
+    public function actionGettashkilot_full(){
+## Read value
+        $draw = isset($_POST['draw']) ? $_POST['draw'] : 1;
+        $row = isset($_POST['start']) ? $_POST['start'] : 0;
+        $rowperpage = isset($_POST['length']) ? $_POST['length'] : 10; // Rows display per page
+        $columnIndex = isset($_POST['order'][0]['column']) ? $_POST['order'][0]['column'] : 0; // Column index
+        $columnName = isset($_POST['columns'][$columnIndex]['data']) ? $_POST['columns'][$columnIndex]['data'] : null; // Column name
+        $columnSortOrder = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'asc'; // asc or desc
+//        $searchValue = isset($_POST['search']['value']) ? $_POST['search']['value'] : ''; // Search value
+        if(isset($_POST['search']['value'])){
+            $searchValue = $_POST['search']['value'];
+        }else{
+            $searchValue = null;
+        }
+## Search
+        $searchQuery = "";
+        if($searchValue != null){
+            $searchQuery = " and (name like '%".$searchValue."%' or 
+            director like '%".$searchValue."%' or 
+            inn like'%".$searchValue."%' ) ";
+        }
+
+        ## Total number of records without filtering
+        $comid = \Yii::$app->user->identity->company_id;
+
+        $totalRecords = Company::find()->count('id');
+
+        ## Total number of records with filtering
+
+        $totalRecordwithFilter = Company::find()->where('1'.$searchQuery)->count('id');
+
+
+
+        $empRecords = Company::find()->where('1'. $searchQuery)->orderBy([$columnName => $columnSortOrder != 'asc' ? SORT_DESC : SORT_ASC])->limit($rowperpage)->offset($row)->all();
+
+        $data = array();
+
+        foreach ($empRecords as $item){
+            $data[] = array(
+                'id'=>"<button type='button' class='btn btn-success buttontashkilotadd' onclick='tashkilotadd({$item->id})' value='".$item->id."'><span class='fa fa-plus'></span></button>",
+                'name'=>"<span class='trtashkilotlist{$item->id}'>{$item->name}</span>",
+                'director'=>$item->director,
+                'inn'=>$item->inn,
+            );
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        echo json_encode($response);
+
+        exit;
+    }
 }

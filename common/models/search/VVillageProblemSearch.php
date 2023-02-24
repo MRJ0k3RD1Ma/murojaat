@@ -5,7 +5,7 @@ namespace common\models\search;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\VVillageProblem;
-
+use Yii;
 /**
  * VVillageProblemSearch represents the model behind the search form of `common\models\VVillageProblem`.
  */
@@ -17,7 +17,7 @@ class VVillageProblemSearch extends VVillageProblem
     public function rules()
     {
         return [
-            [['id', 'village_id', 'year'], 'integer'],
+            [['id', 'village_id', 'year', 'type_id', 'status_id', 'ranges'], 'integer'],
             [['kinship', 'name', 'detail'], 'safe'],
         ];
     }
@@ -40,7 +40,11 @@ class VVillageProblemSearch extends VVillageProblem
      */
     public function search($params)
     {
-        $query = VVillageProblem::find();
+        $region_id = Yii::$app->user->identity->company->soato_id;
+        $query = VVillageProblem::find()->select(['v_village_problem.*'])
+            ->innerJoin('v_village','v_village.id=v_village_problem.village_id')
+            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")');
+        ;
 
         // add conditions that should always apply here
 
@@ -61,6 +65,9 @@ class VVillageProblemSearch extends VVillageProblem
             'id' => $this->id,
             'village_id' => $this->village_id,
             'year' => $this->year,
+            'type_id' => $this->type_id,
+            'status_id' => $this->status_id,
+            'ranges' => $this->ranges,
         ]);
 
         $query->andFilterWhere(['like', 'kinship', $this->kinship])

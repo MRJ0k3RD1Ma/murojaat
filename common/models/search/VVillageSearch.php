@@ -187,6 +187,7 @@ class VVillageSearch extends VVillage
         return $dataProvider;
     }
 
+
     public function searchRegion($params)
     {
         $query = VVillage::find()->where('soato_id like "'.'17'.Yii::$app->user->identity->company->soato->region_id.'%"');

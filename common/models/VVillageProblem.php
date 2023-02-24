@@ -9,14 +9,16 @@ use Yii;
  *
  * @property int $id
  * @property int $village_id
- * @property int $type_id
- * @property int $status_id
  * @property string $kinship
  * @property int $year
  * @property string|null $name
  * @property string $detail
+ * @property int|null $type_id
+ * @property int $status_id
  * @property int $ranges
  *
+ * @property VAppeal[] $vAppeals
+ * @property VAppeal[] $vAppeals0
  * @property VVillage $village
  */
 class VVillageProblem extends \yii\db\ActiveRecord
@@ -36,11 +38,11 @@ class VVillageProblem extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'village_id', 'year'], 'required'],
-            [['id', 'village_id', 'year','status_id','type_id','ranges'], 'integer'],
+            [['id', 'village_id', 'year', 'type_id', 'status_id', 'ranges'], 'integer'],
             [['detail'], 'string'],
             [['kinship', 'name'], 'string', 'max' => 255],
             [['id', 'village_id'], 'unique', 'targetAttribute' => ['id', 'village_id']],
-            [['village_id'], 'exist', 'skipOnError' => true, 'targetClass' => VVillage::class, 'targetAttribute' => ['village_id' => 'id']],
+            [['village_id'], 'exist', 'skipOnError' => true, 'targetClass' => VVillage::className(), 'targetAttribute' => ['village_id' => 'id']],
         ];
     }
 
@@ -52,12 +54,34 @@ class VVillageProblem extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'village_id' => 'Village ID',
-            'kinship' => 'Kinship',
-            'year' => 'Year',
-            'name' => 'Name',
-            'detail' => 'Detail',
-            'ranges' => 'Даража',
+            'kinship' => 'Қариндошлиги',
+            'year' => 'Туғилган йили',
+            'name' => 'ФИО',
+            'detail' => 'Муаммо матни',
+            'type_id' => 'Муаммо коди',
+            'status_id' => 'Ҳолати',
+            'ranges' => 'Муаммо даражаси',
         ];
+    }
+
+    /**
+     * Gets query for [[VAppeals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVAppeals()
+    {
+        return $this->hasMany(VAppeal::className(), ['problem_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[VAppeals0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVAppeals0()
+    {
+        return $this->hasMany(VAppeal::className(), ['village_id' => 'village_id']);
     }
 
     /**
@@ -67,9 +91,14 @@ class VVillageProblem extends \yii\db\ActiveRecord
      */
     public function getVillage()
     {
-        return $this->hasOne(VVillage::class, ['id' => 'village_id']);
+        return $this->hasOne(VVillage::className(), ['id' => 'village_id']);
     }
+
     public function getType(){
         return $this->hasOne(VVillageProblemType::class,['id'=>'type_id']);
+    }
+
+    public function getStatus(){
+        return $this->hasOne(VVillageProblemStatus::class,['id'=>'status_id']);
     }
 }

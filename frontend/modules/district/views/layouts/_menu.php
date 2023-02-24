@@ -26,6 +26,15 @@ use yii\helpers\Url; ?>
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village-problem')?'active':''?>">
+                <i class="nav-icon fas fa-list"></i>
+                <p>
+                    Муаммолар
+                </p>
+            </a>
+        </li>
+
 
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link ">
