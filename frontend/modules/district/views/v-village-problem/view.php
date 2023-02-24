@@ -97,6 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
 
+                    <?= $this->render('_task',['model'=>\common\models\VAppeal::find()->where(['id'=>$model->id,'village_id'=>$model->village_id])->all() ])?>
+
                 </div>
 
             </div>

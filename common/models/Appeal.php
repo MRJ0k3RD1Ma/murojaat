@@ -75,7 +75,7 @@ use yii\web\UploadedFile;
 class Appeal extends \yii\db\ActiveRecord
 {
     public $region_id,$district_id;
-    public $letter;
+    public $letter,$task_txt;
     /**
      * {@inheritdoc}
      */
@@ -93,11 +93,12 @@ class Appeal extends \yii\db\ActiveRecord
             [['region_id','district_id','pursuit', 'person_id', 'gender', 'soato_id', 'isbusinessman', 'question_id', 'appeal_type_id', 'appeal_shakl_id', 'appeal_control_id', 'count_applicant', 'count_list', 'status', 'boshqa_tashkilot', 'boshqa_tashkilot_id', 'answer_reply_send', 'company_id', 'register_id', 'register_company_id', 'type', 'number', 'year', 'employment_id'], 'integer'],
             [['person_name', 'person_phone','gender',  'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id'], 'required'],
             [['date_of_birth', 'deadtime', 'created', 'updated', 'boshqa_tashkilot_date', 'answer_date'], 'safe'],
+            [['person_name', 'person_phone','gender',  'address', 'appeal_detail',],'required','on'=>'v_district'],
             [['appeal_preview', 'appeal_detail', 'executor_files', 'answer_detail'], 'string'],
             [['address','gender', 'appeal_detail', 'appeal_type_id',], 'required','on'=>'insert'],
             [['answer_name','answer_preview','answer_number','appeal_control_id','answer_date',],'required','on'=>'close'],
             [['passport', 'passport_jshshir', 'person_name', 'person_phone', 'address', 'email', 'appeal_file', 'appeal_file_extension', 'boshqa_tashkilot_number', 'answer_name', 'answer_file', 'answer_preview', 'answer_number', 'number_full'], 'string', 'max' => 255],
-            [['businessman'], 'string', 'max' => 500],
+            [['businessman','task_txt'], 'string', 'max' => 500],
             [['appeal_shakl_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealShakl::class, 'targetAttribute' => ['appeal_shakl_id' => 'id']],
             [['appeal_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealType::class, 'targetAttribute' => ['appeal_type_id' => 'id']],
             [['boshqa_tashkilot_id'], 'exist', 'skipOnError' => true, 'targetClass' => AppealBoshqaTashkilot::class, 'targetAttribute' => ['boshqa_tashkilot_id' => 'id']],
@@ -129,6 +130,7 @@ class Appeal extends \yii\db\ActiveRecord
             'date_of_birth' => 'Туғилган санаси',
             'gender' => 'Жинси',
             'soato_id' => 'Маҳалла',
+            'task_txt' => 'Топшириқ матни',
             'address' => 'Манзил',
             'email' => 'Эл-Почта',
             'businessman' => 'Тадбиркорлик субьекти',

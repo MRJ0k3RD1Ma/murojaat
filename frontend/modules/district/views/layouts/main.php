@@ -128,14 +128,38 @@ AppAsset::register($this);
 
     </footer>
 </div>
-<?php //
-//$controller=Yii::$app->controller->id;
-//$action=Yii::$app->controller->action->id;
-//if($controller=='site' && $action=='index')
-//echo '<script src="/theme/dist/js/pages/dashboard2.js"></script>';
-//echo '<script src="/theme/dist/js/pages/dashboard2.js"></script>';
-//
-//?>
+
+
+<?php
+if(Yii::$app->session->hasFlash('error')){
+    $txt = Yii::$app->session->getFlash('error');
+    $xato = 'Хатолик';
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'error',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+if(Yii::$app->session->hasFlash('success')){
+    $txt = Yii::$app->session->getFlash('success');
+    $xato = 'Muvvofaqiyatli';
+    $this->registerJs("
+        $(document).ready(function(){
+            Swal.fire({
+              icon: 'success',
+              title: \"{$xato}\",
+              text: \"{$txt}\"
+            })
+        })
+    ");
+
+}
+?>
 <?php $this->endBody() ?>
 </body>
 </html>

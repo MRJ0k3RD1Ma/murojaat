@@ -12,6 +12,10 @@ use Yii;
  * @property int $village_id
  * @property int $status_id
  * @property int $company_id
+ * @property string|null $task
+ * @property string|null $ignore
+ * @property string|null $created
+ * @property string|null $updated
  *
  * @property Appeal $appeal
  * @property Company $company
@@ -35,6 +39,8 @@ class VAppeal extends \yii\db\ActiveRecord
         return [
             [['appeal_id', 'id', 'village_id', 'status_id', 'company_id'], 'required'],
             [['appeal_id', 'id', 'village_id', 'status_id', 'company_id'], 'integer'],
+            [['task', 'ignore'], 'string'],
+            [['created', 'updated'], 'safe'],
             [['appeal_id', 'id', 'village_id', 'company_id'], 'unique', 'targetAttribute' => ['appeal_id', 'id', 'village_id', 'company_id']],
             [['appeal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appeal::className(), 'targetAttribute' => ['appeal_id' => 'id']],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['company_id' => 'id']],
@@ -53,6 +59,10 @@ class VAppeal extends \yii\db\ActiveRecord
             'village_id' => 'Village ID',
             'status_id' => 'Status ID',
             'company_id' => 'Company ID',
+            'task' => 'Task',
+            'ignore' => 'Ignore',
+            'created' => 'Created',
+            'updated' => 'Updated',
         ];
     }
 
@@ -84,5 +94,9 @@ class VAppeal extends \yii\db\ActiveRecord
     public function getVillage()
     {
         return $this->hasOne(VVillage::className(), ['id' => 'village_id']);
+    }
+
+    public function getStatus(){
+        return $this->hasOne(Status::class,['id'=>'status_id']);
     }
 }
