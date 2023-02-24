@@ -719,7 +719,7 @@ class AppealController extends Controller
         $appeal->scenario = 'close';
         $result = AppealRegister::findOne($answer->register_id);
 
-        if($answer->load($this->request->post())){
+        if($answer->load(Yii::$app->request->post())){
             $answer->status = 5;
             $result->status = 5;
             $model->status = 5;
@@ -1115,4 +1115,18 @@ class AppealController extends Controller
     }
 
 
+    public function actionDeletehok($id){
+        if(Yii::$app->request->isPost){
+            if($model = Appeal::findOne($id)){
+                if($model->status<2){
+                    $model->delete();
+                    Yii::$app->session->setFlash('success','Muvoffaqiyatli o`chirildi');
+                }
+                Yii::$app->session->setFlash('error','Murojaat yuzasidan ish boshlanganligi sababli o`chirish bajarilmadi');
+            }
+            Yii::$app->session->setFlash('error','Bunday murojaat topilmadi');
+        }
+        Yii::$app->session->setFlash('error','Bad request');
+        return $this->redirect(['notregvil']);
+    }
 }

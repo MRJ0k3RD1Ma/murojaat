@@ -18,108 +18,6 @@ $user = Yii::$app->user->identity;
         <div class="header-body">
 
 
-            <!-- Card stats -->
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/index'])?>">
-                        <div class="card card-stats">
-                            <!-- Card body -->
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Жами топшириқлар</h5>
-                                        <br />
-                                        <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><?= prettyNumber(AppealRegister::find()->where(['company_id'=>\Yii::$app->user->identity->company_id])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id')) ?> та</span>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="icon icon-shape">
-                                            <img src="/web/theme/dist/img/home.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px; height: 50px;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/index','type'=>'closed'])?>">
-                        <div class="card card-stats">
-                            <!-- Card body -->
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Бажарилган</h5>
-                                        <br />
-                                        <span style="color: #32325d;background: url(/theme/dist/img/link_hover_tolqin.svg);padding-bottom: 3px;" class="h4 mb-0"><?= prettyNumber(AppealRegister::find()->where(['company_id'=>$user->company_id])
-                                                ->andWhere(['=','status',4])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id')) ?> та</span>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="icon icon-shape">
-                                            <img src="/web/theme/dist/img/home_human.png" style="color: #397fd5;font-size: 85px;float: right; height: 50px; position: absolute;right: 20px;" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/index','type'=>'running'])?>">
-                        <div class="card card-stats">
-                            <!-- Card body -->
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Жараёнда</h5>
-                                        <br />
-                                        <span style="color: #32325d;background: url(/theme/dist/img/link_hover_tolqin.svg);padding-bottom: 3px;" class="h4 mb-0"><?= prettyNumber(AppealRegister::find()->where(['company_id'=>$user->company_id])
-                                                ->andWhere(['<>','status',4])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id'))?> та</span>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="icon icon-shape">
-                                            <img src="/web/theme/dist/img/humans.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px;  height: 50px;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/index','type'=>'dead'])?>">
-                        <div class="card card-stats">
-                            <!-- Card body -->
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Муддати ўтган</h5>
-                                        <br />
-                                        <span style="color: #32325d;background: url(/theme/dist/img/link_hover_tolqin.svg);padding-bottom: 3px;" class="h4 mb-0"><?php
-                                            $sql = "deadtime<date(now())";
-                                            $query = AppealRegister::find()->where(['company_id'=>$user->company_id])
-                                                ->andWhere(['<>','status',4])->andWhere($sql)->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id');
-                                            echo prettyNumber($query)?> та</span>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="icon icon-shape">
-                                            <img src="/web/theme/dist/img/humans.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px;  height: 50px;" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -190,7 +88,14 @@ $user = Yii::$app->user->identity;
                                             },
                                             'format'=>'raw'
                                         ],
-
+                                        [
+                                            'label'=>'',
+                                            'value'=>function($d){
+                                                $url  = Yii::$app->urlManager->createUrl(['/appeal/deletehok','id'=>$d->id]);
+                                                return "<a href='{$url}' data-confirm='Siz rostdan ham ushbu murojaatni o`chirmoqchimisiz?' data-method='post' class='btn btn-danger'><span class='fa fa-trash'></span></a>";
+                                            },
+                                            'format'=>'raw'
+                                        ],
                                     ],
                                 ]); ?>
 
