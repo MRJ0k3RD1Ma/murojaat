@@ -156,7 +156,7 @@ class Appeal extends \yii\db\ActiveRecord
             'boshqa_tashkilot_id' => 'Ташкилот',
             'answer_name' => 'Ҳужжат номи',
             'answer_file' => 'Файл',
-            'answer_preview' => 'Answer Preview',
+            'answer_preview' => 'Ҳужжат номи',
             'answer_detail' => 'Мазмуни',
             'answer_reply_send' => 'Жавоб мурожаатчига юборилди',
             'answer_number' => 'Рақами',

@@ -13,6 +13,8 @@ use common\models\search\AppealSearch;
 use common\models\search\RequestSearch;
 use common\models\TaskEmp;
 use common\models\User;
+use common\models\VAppeal;
+use common\models\VVillageProblem;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use yii\base\BaseObject;
@@ -299,8 +301,11 @@ class AppealController extends Controller
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
         $model->scenario = "close";
-
-        $model->status = 4;
+        if($model->type == 3){
+            $model->status = 3;
+        }else{
+            $model->status = 4;
+        }
         if($model->load(Yii::$app->request->post())){
             if($model->answer_file = UploadedFile::getInstance($model,'answer_file')){
                 $name = microtime(true).'.'.$model->answer_file->extension;
@@ -309,11 +314,20 @@ class AppealController extends Controller
             }
 
             if($model->save()){
-                $register->status = 4;
+
+                if($model->type == 3){
+                    $register->status = 3;
+                }else{
+                    $register->status = 4;
+                }
                 $register->donetime = date('Y-m-d');
                 $register->control_id = $model->appeal_control_id;
                 $register->answer_send = $model->answer_reply_send;
                 $register->save();
+                if($m = VAppeal::findOne(['appeal_id'=>$model->id,'company_id'=>Yii::$app->user->identity->company_id])){
+                    $m->status_id = 3;
+                    $m->save(false);
+                }
                 closeAppeal($model->id,$register->id,$register->control_id);
             }
         }
@@ -978,6 +992,32 @@ class AppealController extends Controller
             $register->status = 2;
             $register->company_id = $model->company_id;
             if($register->save()){
+                if($m = VAppeal::findOne(['appeal_id'=>$model->id,'company_id'=>Yii::$app->user->identity->company_id])){
+                    $m->status_id = 2;
+                    $m->save(false);
+                }
+
+                $task = new TaskEmp();
+                $task->appeal_id = $register->appeal_id;
+                $task->register_id = $register->id;
+                $task->reciever_id = $register->rahbar_id;
+                $task->sender_id = $register->rahbar_id;
+                $task->deadtime = $register->deadtime;
+                $task->task = '-';
+                $task->status = 0;
+                $task->save();
+                if($register->rahbar_id != $register->ijrochi_id){
+                    $task = new TaskEmp();
+                    $task->appeal_id = $register->appeal_id;
+                    $task->register_id = $register->id;
+                    $task->reciever_id = $register->ijrochi_id;
+                    $task->sender_id = $register->rahbar_id;
+                    $task->deadtime = $register->deadtime;
+                    $task->task = '-';
+                    $task->status = 0;
+                    $task->save();
+                }
+
                 $model->question_id = $register->question_id;
                 $model->appeal_control_id = 1;
                 $model->status = 2;
@@ -1129,4 +1169,15 @@ class AppealController extends Controller
         Yii::$app->session->setFlash('error','Bad request');
         return $this->redirect(['notregvil']);
     }
+
+    public function actionNotregshtab(){
+        $searchModel = new AppealSearch();
+        $dataProvider = $searchModel->searchNotregshtab(Yii::$app->request->queryParams);
+
+        return $this->render('indexhok', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 }

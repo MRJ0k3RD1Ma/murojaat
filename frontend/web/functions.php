@@ -58,7 +58,7 @@ function getColor($status){
 
 // type some code
 function closeAppeal($id,$reg_id,$c_id){
-    $reg = \common\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>=','id',$reg_id])->all();
+    $reg = \common\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>','id',$reg_id])->all();
 
     foreach ($reg as $item){
         $item->status = 4;

@@ -171,14 +171,15 @@ AppAsset::register($this);
                     <i class="far fa-bell"></i>
                     <span class="badge badge-warning navbar-badge mycolor"><?php
                         $cnt = \common\models\AppealBajaruvchi::find()->where(['<=','status',1])->andWhere(['company_id'=>Yii::$app->user->identity->company_id])->count('id');
-
+                        $cnt3 = \common\models\Appeal::find()->where(['type'=>3])->andWhere(['<','status',2])->count('id');
                         if(Yii::$app->user->identity->company_id == 1){
                             $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
-                            echo $cnt +  $cnt2;
+                            echo $cnt +  $cnt2 + $cnt3;
                         }else{
                             $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
-                            echo $cnt ;
+                            echo $cnt + $cnt3;
                         }
+
                         ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -192,6 +193,9 @@ AppAsset::register($this);
                             <i class="fas fa-envelope mr-2"></i> <?= $cnt2 ?> та МФЙ орқали келган
                         </a>
                     <?php }?>
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregshtab'])?>" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> <?= $cnt3 ?> та штабдан келган
+                    </a>
 
                 </div>
             </li>

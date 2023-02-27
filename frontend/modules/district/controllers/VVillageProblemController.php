@@ -3,6 +3,7 @@
 namespace frontend\modules\district\controllers;
 
 use common\models\Appeal;
+use common\models\search\VAppealSearch;
 use common\models\VAppeal;
 use Yii;
 use common\models\VVillageProblem;
@@ -46,6 +47,28 @@ class VVillageProblemController extends Controller
         ]);
     }
 
+    public function actionNottask()
+    {
+        $searchModel = new VVillageProblemSearch();
+        $dataProvider = $searchModel->searchNottask(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionAnswered()
+    {
+        $searchModel = new VAppealSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('answer', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single VVillageProblem model.
      * @param integer $id
@@ -75,7 +98,7 @@ class VVillageProblemController extends Controller
         $model->scenario = "v_district";
         $model->register_company_id = Yii::$app->user->identity->company_id;
         $model->register_id = Yii::$app->user->id;
-        $model->type = 2;
+        $model->type = 3;
         $model->count_applicant = 1;
         $model->appeal_type_id = 1;
         $model->appeal_shakl_id = 7;

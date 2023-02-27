@@ -10,12 +10,12 @@ $this->title = "Ҳисоботлар";
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <b>Ҳисобот санаси:</b><?= $model->report_date ?> <br>
-                    <b>Янги киритиладиган маълумотлар санаси: </b> <?= $model->next_date?>
+                    <b>Ҳисобот санаси:</b><?= date('Y-m-d') ?> <br>
+                    <b>Янги киритиладиган маълумотлар санаси: </b> <?= date('Y-m-d',strtotime(date('Y-m-d').' +1 day'))?>
                 </h3>
             </div>
             <div class="card-body">
-                <?php if(strtotime($model->next_date) == time()){?>
+                <?php if(strtotime($model->next_date) <= time() or $model->isNewRecord){?>
                 <p><b>Кунни якунлаш</b> тугмасини босган ҳолда маҳаллалар томонидан киритилаётган сўровномаларнинг санаси <b>автоматик <?= date('Y-m-d',strtotime(date('Y-m-d').' +1 day'))?> санадан киритилади.</b></p>
                 <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/closedate'])?>" data-method="post" data-confirm="Сиз ростдан ҳам бугунги кунни якунламоқчимисиз?" class="btn btn-success">Кунни якунлаш</a>
                 <?php }else{?>

@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<?php if($model->status <2 and $model->type==1 and Yii::$app->user->identity->company_id==$model->company_id){?>
+<?php if($model->status <2 and ($model->type!=0 and $model->type != 2) and Yii::$app->user->identity->company_id==$model->company_id){?>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
