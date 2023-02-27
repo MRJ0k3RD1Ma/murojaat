@@ -9,6 +9,7 @@ use common\models\search\VVillageSearch;
 use common\models\VVillageFives;
 use common\models\VVillageProblem;
 use common\models\VVillageProblemType;
+use common\models\VVillageReport;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -73,9 +74,18 @@ class VVillageController extends Controller
     public function actionCreate()
     {
         $model = new VVillage();
-        $model->soato_id = Yii::$app->user->identity->company->soato_id;
+        $soato = Yii::$app->user->identity->company->soato;
+        $model->soato_id = $soato->id;
         $model->user_id = Yii::$app->user->id;
-        $model->date = date('Y-m-d');
+        if($rep = VVillageReport::findOne('17'.$soato->region_id.$soato->district_id)){
+            $date = $rep->next_date;
+            if(time() > strtotime($date) ){
+                $date = date('Y-m-d');
+            }
+        }else{
+            $date = date('Y-m-d');
+        }
+        $model->date = date('Y-m-d',strtotime($date));
 
         if($sec = VVillageFives::findOne(['company_id'=>Yii::$app->user->identity->company_id])){
             $model->sector = $sec->sector;
@@ -84,8 +94,7 @@ class VVillageController extends Controller
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) ) {
                 $model->sector = Yii::$app->user->identity->company->soato->sector;
-                // want_subsidy, is_want_credit, want_econom_energy,
-                    // want_subsidy
+
                 if($model->want_subsidy == 2){
                     $model->subsidy_women = 0;
                     $model->subsidy_young = 0;
@@ -102,6 +111,8 @@ class VVillageController extends Controller
                     $model->econom_energy_own = "";
                     $model->econom_energy_credit = "";
                 }
+
+
                 if($model->save()){
                     foreach ($model->mig as $item){
                         if($item['name'] and $item['birthday']){

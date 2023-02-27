@@ -63,7 +63,14 @@ use yii\helpers\Url; ?>
                 </li>
             </ul>
         </li>
-
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/report'])?>" class="nav-link">
+                <i class="nav-icon fas fa-chart-bar"></i>
+                <p>
+                    Ҳисоботлар
+                </p>
+            </a>
+        </li>
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

@@ -43,8 +43,10 @@ class VVillageProblemSearch extends VVillageProblem
         $region_id = Yii::$app->user->identity->company->soato_id;
         $query = VVillageProblem::find()->select(['v_village_problem.*'])
             ->innerJoin('v_village','v_village.id=v_village_problem.village_id')
-            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")');
+            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")')
+            ->orderBy(['v_village_problem.village_id'=>SORT_DESC])
         ;
+
 
         // add conditions that should always apply here
 
