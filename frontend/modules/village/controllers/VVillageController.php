@@ -374,6 +374,16 @@ class VVillageController extends Controller
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) ) {
                 $model->sector = Yii::$app->user->identity->company->soato->sector;
+                if($rep = VVillageReport::findOne('17'.$soato->region_id.$soato->district_id)){
+                    $date = $rep->next_date;
+                    if(time() > strtotime($date) ){
+                        $date = date('Y-m-d');
+                    }
+                    if(strtotime($model->date) >= date('Y-m-d')){
+                        $model->date = date('Y-m-d',strtotime($date));
+                    }
+                }
+
 
                 if($model->want_subsidy == 2){
                     $model->subsidy_women = 0;

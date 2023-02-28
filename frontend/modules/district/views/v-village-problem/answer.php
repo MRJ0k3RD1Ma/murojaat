@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'label'=>'Муддат',
                                 'value'=>function($d){
-                                    return $d->appeal
+//                                    return $d->appeal
                                 }
                             ],
                         ],
