@@ -36,6 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format'=>'raw'
                             ],
                             [
+                                'label'=>'Мурожаатчи',
+                                'value'=>function($d){
+                                    $ap = \common\models\VVillageProblem::findOne(['id'=>$d->id,'village_id'=>$d->village_id]);
+                                    $url = Yii::$app->urlManager->createUrl(['/district/v-village-problem/view','id'=>$d->id,'village_id'=>$d->village_id]);
+                                    $text = $ap->name.'<br>'.$ap->type->code.'-'.$ap->type->name;
+                                    return "<a href='{$url}'>{$text}</a>";
+                                },
+                                'format'=>'raw'
+                            ],
+                            [
                                 'label'=>'Ташкилот',
                                 'value'=>function($d){
                                     return $d->company->name;
@@ -43,6 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             [
                                 'attribute'=>'task'
+                            ],
+                            [
+                                'label'=>'Муддат',
+                                'value'=>function($d){
+                                    return $d->appeal
+                                }
                             ],
                         ],
                     ]); ?>
