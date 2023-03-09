@@ -11,7 +11,7 @@ use common\models\AppealRegister;
  */
 class AppealRegisterSearch extends AppealRegister
 {
-    public $question_id, $person_name,$person_phone,$gender,$date_of_birth,$region_id,$district_id,$village_id,$address,$sts;
+    public  $person_name,$person_phone,$gender,$date_of_birth,$region_id,$district_id,$village_id,$address,$sts,$number;
     /**
      * {@inheritdoc}
      */
@@ -69,6 +69,7 @@ class AppealRegisterSearch extends AppealRegister
             'deadline' => $this->deadline,
             'deadtime' => $this->deadtime,
             'donetime' => $this->donetime,
+            'number' => $this->number,
             'control_id' => $this->control_id,
             'status' => $this->status,
             'created' => $this->created,
@@ -87,6 +88,7 @@ class AppealRegisterSearch extends AppealRegister
             ->andFilterWhere(['like', 'user_answer', $this->user_answer])
             ->andFilterWhere(['like', 'tashkilot', $this->tashkilot])
             ->andFilterWhere(['like', 'tashkilot_answer', $this->tashkilot_answer])
+            ->andFilterWhere(['like', 'number', $this->number])
             ->andFilterWhere(['like', 'preview', $this->preview])
             ->andFilterWhere(['like', 'detail', $this->detail])
             ->andFilterWhere(['like', 'file', $this->file])
@@ -138,6 +140,7 @@ class AppealRegisterSearch extends AppealRegister
             'date' => $this->date,
             'question_id' => $this->question_id,
             'appeal_id' => $this->appeal_id,
+            'number' => $this->number,
             'rahbar_id' => $this->rahbar_id,
             'ijrochi_id' => $this->ijrochi_id,
             'parent_bajaruvchi_id' => $this->parent_bajaruvchi_id,
@@ -164,6 +167,7 @@ class AppealRegisterSearch extends AppealRegister
             ->andFilterWhere(['like', 'preview', $this->preview])
             ->andFilterWhere(['like', 'detail', $this->detail])
             ->andFilterWhere(['like', 'file', $this->file])
+            ->andFilterWhere(['like', 'number', $this->number])
             ->andFilterWhere(['like', 'appeal.person_phone', $this->person_phone])
             ->andFilterWhere(['like', 'appeal.person_name', $this->person_name])
             ->andFilterWhere(['like', 'takroriy_number', $this->takroriy_number]);
@@ -223,7 +227,7 @@ class AppealRegisterSearch extends AppealRegister
         $query->andFilterWhere([
             'id' => $this->id,
             'date' => $this->date,
-            'question_id' => $this->question_id,
+            'appeal_register.question_id' => $this->question_id,
             'appeal_id' => $this->appeal_id,
             'rahbar_id' => $this->rahbar_id,
             'ijrochi_id' => $this->ijrochi_id,
@@ -243,7 +247,86 @@ class AppealRegisterSearch extends AppealRegister
             'takroriy_date' => $this->takroriy_date,
         ]);
 
-        $query->andFilterWhere(['like', 'number', $this->number])
+        $query->andFilterWhere(['like', 'appeal_register.number', $this->number])
+            ->andFilterWhere(['like', 'users', $this->users])
+            ->andFilterWhere(['like', 'user_answer', $this->user_answer])
+            ->andFilterWhere(['like', 'tashkilot', $this->tashkilot])
+            ->andFilterWhere(['like', 'tashkilot_answer', $this->tashkilot_answer])
+            ->andFilterWhere(['like', 'preview', $this->preview])
+            ->andFilterWhere(['like', 'detail', $this->detail])
+            ->andFilterWhere(['like', 'file', $this->file])
+            ->andFilterWhere(['like', 'appeal.person_phone', $this->person_phone])
+            ->andFilterWhere(['like', 'appeal.person_name', $this->person_name])
+            ->andFilterWhere(['like', 'takroriy_number', $this->takroriy_number]);
+
+        return $dataProvider;
+    }
+
+//status 1 bo'lganda ushbu search ishlaydi
+    public function searchRegister1($params)
+    {
+
+        /*SELECT
+
+
+
+    AND (`a`.`question_id` = 0
+    OR `a`.`question_id` IS NULL)*/
+        $user = \Yii::$app->user->identity;
+        $query = AppealRegister::find()->where(['appeal_register.company_id'=>$user->company_id])
+            ->innerJoin('appeal','appeal.id=appeal_register.appeal_id')
+        ->andWhere('appeal.question_id=0 or appeal.question_id is null');
+
+
+        $query->orderBy(['date'=>SORT_DESC]);
+
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'date' => $this->date,
+            'appeal_register.question_id' => $this->question_id,
+            'appeal_id' => $this->appeal_id,
+            'rahbar_id' => $this->rahbar_id,
+            'ijrochi_id' => $this->ijrochi_id,
+            'parent_bajaruvchi_id' => $this->parent_bajaruvchi_id,
+            'deadline' => $this->deadline,
+            'deadtime' => $this->deadtime,
+            'donetime' => $this->donetime,
+            'control_id' => $this->control_id,
+            'created' => $this->created,
+            'updated' => $this->updated,
+            'reply_send' => $this->reply_send,
+            'company_id' => $this->company_id,
+            'answer_send' => $this->answer_send,
+            'nazorat' => $this->nazorat,
+            'takroriy' => $this->takroriy,
+            'takroriy_id' => $this->takroriy_id,
+            'takroriy_date' => $this->takroriy_date,
+        ]);
+
+        $query->andFilterWhere(['like', 'appeal_register.number', $this->number])
             ->andFilterWhere(['like', 'users', $this->users])
             ->andFilterWhere(['like', 'user_answer', $this->user_answer])
             ->andFilterWhere(['like', 'tashkilot', $this->tashkilot])

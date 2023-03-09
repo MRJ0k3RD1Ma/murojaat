@@ -9,8 +9,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\AppealRegisterSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model \common\models\ViewFullstat*/
 $user = Yii::$app->user->identity;
 ?>
 <div class="header pb-6">
@@ -120,76 +119,6 @@ $user = Yii::$app->user->identity;
                 </div>
 
 
-            <div class="collapse" id="collapseExample">
-                <h4>Қидирув</h4>
-                <hr>
-
-                <?php $form = ActiveForm::begin([
-                    'action' => ['index'],
-                    'method' => 'get',
-                ]); ?>
-                <div class="row">
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel,'number')->textInput()?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel,'date')->textInput(['type'=>'date'])?>
-                    </div>
-                    <div class="col-md-4">
-                        <?php
-                        $quest = [];
-                        foreach (\common\models\AppealQuestionGroup::find()->all() as $item) {
-                            $quest[$item->code.'-'.$item->name] = [];
-                            foreach ($item->question as $i){
-                                $quest[$item->code.'-'.$item->name][$i->id] = $item->code.' '.$i->code.')'.$i->name;
-                            }
-                        }
-                        ?>
-
-                        <?= $form->field($searchModel, 'question_id')->dropDownList($quest,['prompt'=>'Саволни танланг','class'=>'form-control js-select2'])->label('Саволни танланг') ?>
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel,'person_name')->textInput()->label('ФИО')?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'date_of_birth')->textInput(['type'=>'date'])->label('Туғилган санаси') ?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'gender')->dropDownList([0=>'Аёл',1=>'Эркак'],['prompt'=>'Жинсини танланг'])->label('Жинси') ?>
-                    </div>
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'person_phone')->textInput(['maxlength' => true])->label('Телефон рақами') ?>
-                    </div>
-
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'address')->textInput(['maxlength' => true])->label('Манзил') ?>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <?= $form->field($searchModel, 'control_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealControl::find()->all(),'id','name'),[
-                            'prompt'=>'Назорат турини танланг'
-                        ]) ?>
-                    </div>
-
-
-
-
-                </div>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Қидириш', ['class' => 'btn btn-primary']) ?>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/site/index'])?>" class="btn btn-outline-secondary">Тозалаш</a>
-                </div>
-
-                <?php ActiveForm::end(); ?>
-
-            </div>
-
-
-
             <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -197,167 +126,267 @@ $user = Yii::$app->user->identity;
                                 <h3 class="card-title">
                                     <?= $this->title?>
                                 </h3>
-                                <div class="card-tools">
-                                    <a href="" data-method="post" class="btn btn-info"><i class="fa fa-file-excel"></i> Экспорт</a>
-                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                        <span class="fa fa-search"></span> Қидирув
-                                    </button>
-                                </div>
+
                             </div>
                             <div class="card-body">
 
-
                                 <div class="table-responsive">
 
-                                    <?= GridView::widget([
-                                        'dataProvider' => $dataProvider,
-                                        'columns' => [
-                                            ['class' => 'yii\grid\SerialColumn'],
-
-                                            [
-                                                'label'=>'Рақами ва санаси',
-                                                'value'=>function($d){
-                                                    $d->date = date('d-m-Y',strtotime($d->date));
-                                                    return "<b>№ {$d->number}</b> <br> {$d->date}";
-                                                },
-                                                'format'=>'raw'
-                                            ],
-                                            [
-                                                'attribute'=>'appeal_id',
-                                                'value'=>function($d){
-
-                                                    if($q = $d->appeal->question){
-                                                        $res = $q->group->code.'-'.$q->code.'.'.$q->name;
-                                                    }else{
-                                                        $res = "Савол белгиланмаган";
-                                                    }
-
-                                                    $url = Yii::$app->urlManager->createUrl(['/appeal/view','id'=>$d->id]);
-
-                                                    $res = $d->appeal->person_name.'<br>'.$res;
-                                                    return "<a href='{$url}'>{$res}</a>";
-                                                },
-                                                'format'=>'raw',
-                                            ],
-                                            [
-                                                'attribute'=>'rahbar_id',
-                                                'value'=>function($d){
-                                                    return isset($d->rahbar) ? $d->rahbar->name : '';
-                                                }
-                                            ],
-                                            [
-                                                'attribute'=>'ijrochi_id',
-                                                'value'=>function($d){
-                                                    return isset($d->ijrochi) ? $d->ijrochi->name : '';
-                                                }
-                                            ],
-
-                                            [
-                                                'attribute'=>'control_id',
-                                                'value'=>function($d){
-                                                    if($d->parent_bajaruvchi_id){
-                                                        return $d->parent->status0->name;
-                                                    }else{
-                                                        return $d->appeal->status0->name;
-                                                    }
-                                                }
-                                            ],
-
-                                            [
-                                                'attribute'=>'deadtime',
-                                                'value'=>function($d){
-                                                    if($d->parent_bajaruvchi_id>0){
-                                                        $baj = $d->parent;
-                                                        if($baj->status == 4){
-                                                            return "<span class='bg-success' style='display: block;text-align: center'>Бажарилган</span>".
-                                                                $d->donetime;
-                                                        }
-                                                        $datetime2 = date_create($baj->deadtime);
-                                                        $datetime1 = date_create(date('Y-m-d'));
-                                                        $interval = date_diff($datetime1, $datetime2);
-                                                        $days = $interval->format('%a ');
-                                                        $ds = $interval->format('%R%a ');
-                                                        $dead = date('d-m-Y',strtotime($baj->deadtime));
-
-                                                    }else{
-                                                        $baj = $d->appeal;
-                                                        if($baj->status == 4){
-                                                            return "<span class='bg-success' style='display: block;text-align: center'>Бажарилган</span>".
-                                                            $baj->answer_date;
-                                                        }
-                                                        $datetime2 = date_create($baj->deadtime);
-                                                        $datetime1 = date_create(date('Y-m-d'));
-                                                        $interval = date_diff($datetime1, $datetime2);
-                                                        $days = $interval->format('%a ');
-                                                        $ds = $interval->format('%R%a ');
-                                                        $dead = date('d-m-Y',strtotime($baj->deadtime));
-                                                    }
+                                    <table  class="table table-bordered">
+                                        <tr>
+                                            <td colspan="3" align="center">Urganch tuman hokimligi va quyi tashkilotlarida ro`yxarga olingan murojaatlar</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40%"></td>
+                                            <td align="center">Urganch tuman hokimyatida</td>
+                                            <td align="center">Quyi tashkilotlarida</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td >Tansiflanmagan murojaatlar</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>1])?>"><?= $model->count_not_quest ?></a></td>
+                                            <td><?= $model->count_not_quest_quyi ?></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td >Jarayondaki murojaatlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td >Ko'rib chiqilgan murojaatlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td ><b>Jami:</b></td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                    </table>
 
 
+                                    <table  class="table table-bordered">
+
+                                        <tr align="center">
+                                            <td width="40%"></td>
+                                            <td>Yuqori tashkilotdan kelib tushgan</td>
+                                            <td>Murojaat etuvchilardan to`g`ridan tog`ri kelib tushgan</td>
+                                            <td>Quyi tashkilotlardan kelib tushgan</td>
+                                            <td>Quyi tashkilotlar nazoratida</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Statistika yangilangan vaqti</td>
+                                            <td colspan="4">07.03.2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Jami kelib tushgan masalalar</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><b>Jami:</b></td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Yangi</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Jarayonda</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Yopilgan</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Javob kiritilgan,o`rganilmoqda</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Bugun kelib tushgan masalalar</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><b>Jami:</b></td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Yangi</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Jarayonda</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Javobi kiritilgan,o`rganishda</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><b>Administratsiya</b></td>
+                                            <td>0</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Yuqori tashkilotlarda</td>
+                                            <td>0</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Joriy tashkilotlardan</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Quyi tashkilotlardan</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" align="center"><b>So`rovlar</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Boshqa tashkilotlardan jo`natish so`rovlari</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Muddati o`zgargan so`rovlari</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Javobi kiritilgan,o`rganishda</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Tasnif o`zgartirish so`rovlari</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Cheklovni o`zgartirish so`rovlari</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Muddati yaqinlar</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><b>Jami:</b></td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Bugun</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Ertaga</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Muddati tugaganlar</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Muddati buzilganlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>30 kunlik muddat buzilganlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Muddat buzib yopilganlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>30 kunlik muddat buzib yopilganlar</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="5" align="center"><b>Takroriylik</b></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Takroriy</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td>Duplikat</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
 
 
-                                                    $class = "";
-                                                    
-													if($ds < 0){
-														$class = "bg-danger";
-														$res = "<span class='{$class}' style='width: 100%; height: 100%; '>Муддати ўтган</span>";
-													}elseif($ds <= 5){
-														$class = "bg-warning";
-														$res = "<span class='{$class}' style='width: 100%; height: 100%; '>".$days.' кун'."</span><br>{$d->deadtime}";
-													}else{
-													    $res = "<span class='{$class}' style='width: 100%; height: 100%;'>".$days.' кун'."</span><br>{$d->deadtime}";
-													}
-
-                                                    return $res;
-                                                },
-                                                'format'=>'raw'
-                                            ],
-
-                                            [
-                                                'label'=>'Юборилган',
-                                                'value'=>function($d){
-                                                    $res = \common\models\AppealBajaruvchi::find()->where(['appeal_id'=>$d->appeal_id])
-                                                        ->andWhere(['register_id'=>$d->id])->all();
-                                                    $ret = "";
-                                                    foreach ($res as $item){
-                                                        if($item->company_id and $item->company){
-                                                            $url = Yii::$app->urlManager->createUrl(['/appeal/complist','id'=>$item->company_id]);
-                                                            $ret .= '<a href="'.$url.'"><span class="'.$item->status0->icon.'"></span>'.$item->company->name.'</a><br>';
-                                                        }
-                                                    }
-
-                                                    return $ret;
-                                                },
-                                                'format'=>'raw'
-                                            ],
-
-                                            [
-                                                'label'=>'Жавоб берган',
-                                                'value'=>function($d){
-                                                    $res = \common\models\AppealBajaruvchi::find()->where(['register_id'=>$d->id])
-                                                        ->andWhere('status = 3 or status=4')->all();
-                                                    $ret = "";
-                                                    $com = [];
-                                                    foreach ($res as $item){
-                                                        if($item->company){
-                                                            if(!in_array($item->company_id,$com)){
-                                                                $com[] = $item->company_id;
-                                                                $ret .= $item->company->name.'<br>';
-                                                            }
-                                                        }
-                                                    }
-
-                                                    return $ret;
-                                                },
-                                                'format'=>'raw'
-                                            ],
-
-                                        ],
-                                    ]); ?>
-
+                                    </table>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>

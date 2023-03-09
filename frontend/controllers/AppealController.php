@@ -6,6 +6,7 @@ use common\models\Appeal;
 use common\models\AppealAnswer;
 use common\models\AppealBajaruvchi;
 use common\models\AppealRegister;
+use common\models\MahallaView;
 use common\models\Request;
 use common\models\search\AppealBajaruvchiSearch;
 use common\models\search\AppealRegisterSearch;
@@ -14,6 +15,7 @@ use common\models\search\RequestSearch;
 use common\models\TaskEmp;
 use common\models\User;
 use common\models\VAppeal;
+use common\models\ViewFullstat;
 use common\models\VVillageProblem;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
@@ -72,11 +74,23 @@ class AppealController extends Controller
      */
     public function actionIndex($type = null)
     {
+        $model = ViewFullstat::find()->where(['comp_id'=>Yii::$app->user->identity->company_id])->one();
+        return $this->render('index',[
+            'model'=>$model
+        ]);
+    }
 
+
+    public function actionList($type = null,$status = 0)
+    {
         $searchModel = new AppealRegisterSearch();
-        $dataProvider = $searchModel->searchRegister(Yii::$app->request->queryParams,$type);
+        if($status == 0){
+            $dataProvider = $searchModel->searchRegister(Yii::$app->request->queryParams,$type);
+        }elseif($status == 1){
+            $dataProvider = $searchModel->searchRegister1(Yii::$app->request->queryParams,$type);
+        }
 
-        return $this->render('index', [
+        return $this->render('list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
