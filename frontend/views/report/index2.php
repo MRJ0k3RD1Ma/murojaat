@@ -1,7 +1,10 @@
 <?php
 
+
+use common\models\Appeal;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\VarDumper;
 
 /* @var $name string*/
 /* @var $users \common\models\User*/
@@ -59,10 +62,86 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         </thead>
                         <tbody>
+                        <?php  $user = \Yii::$app->user->identity;
+//                        $cc= common\models\Appeal::find()->all();
+                        $time = new \DateTime('now');
+                        ?>
                         <?php $n=0; foreach ($quest as $item) : $n++;?>
+                          <?php
+                            $aa=0;
+                            $at=0;
+                            $ax=0;
+                            $ao=0;
+                            $ae=0;
+                            $as=0;
+                            $ai=0;
+                            $am=0;
+                            $av=0;
+                            $apr=0;
+                            $ap=0;
+                            $ab=0;
+                            $ach=0;
+                            $ar=0;
+                            $ak=0;
+                            $ata=0;
+                            $ama=0;
+                          ?>
                             <tr>
                                 <th><?= $n?></th>
                                 <td><?= $item->name ?></td>
+                                <td>
+                                    <?php
+                                    foreach ($cc as $a)
+                                        {  if ( $a->question_id !== NULL)
+                                            { if ($a->question->group->id == $item->id)
+                                                {$aa=$aa+1;
+                                                    if ($a->appeal_shakl_id==1){$at=$at+1;}
+                                                    if ($a->appeal_shakl_id==2){$ax=$ax+1;}
+                                                    if ($a->appeal_shakl_id==3){$ao=$ao+1;}
+                                                    if ($a->appeal_shakl_id==4){$ae=$ae+1;}
+                                                    if ($a->appeal_shakl_id==5){$as=$as+1;}
+                                                    if ($a->appeal_shakl_id==6){$ai=$ai+1;}
+                                                    if ($a->appeal_shakl_id==7){$am=$am+1;}
+                                                    if ($a->appeal_shakl_id==8){$av=$av+1;}
+                                                    if ($a->appeal_shakl_id==9){$apr=$apr+1;}
+                                                    if ($a->appeal_shakl_id==10){$ap=$ap+1;}
+                                                    if ($a->status>=2 && $a->status<=4){$ab=$ab+1;}
+                                                    if ($a->status==4){$ach=$ach+1;}
+                                                    if ($a->status==5){$ar=$ar+1;}
+                                                    if ($a->status==2 || $a->status==3){$ak=$ak+1;}
+                                                    foreach ($arr as $i){
+                                                        if ( $i->appeal_id==$a->id ){
+                                                            if ($i->takroriy==1){
+                                                            $ata=$ata+1;}
+                                                            if ($i->deadtime>=$time->format('Y-m-d')){
+$ama=$ama+1;
+                                                            }
+                                                        }
+                                                    }
+                                                }}
+                                        } echo $aa;?>
+                                </td>
+
+
+
+
+                                <td><?=$at?></td>
+                                <td><?=$ax?></td>
+                                <td><?=$ao?></td>
+                                <td><?=$ae?></td>
+                                <td><?=$as?></td>
+                                <td><?=$ai?></td>
+                                <td><?=$am?></td>
+                                <td><?=$av?></td>
+                                <td><?=$apr?></td>
+                                <td><?=$ap?></td>
+                                <td><?=$ab?></td>
+                                <td><?=$ach?></td>
+                                <td>0</td>
+                                <td><?=$ar?></td>
+                                <td><?=$ak?></td>
+                                <td><?=$ata?></td>
+                                <td><?=$ama?></td>
 
                             </tr>
                         <?php endforeach;?>

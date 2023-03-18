@@ -2,7 +2,10 @@
 
 namespace frontend\controllers;
 
+use common\models\Appeal;
 use common\models\AppealQuestionGroup;
+use common\models\AppealRegister;
+use common\models\Company;
 use common\models\search\ReportSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -58,10 +61,47 @@ class ReportController extends Controller
     }
 
     public function actionIndex2(){
+        $user = \Yii::$app->user->identity;
         $quest = AppealQuestionGroup::find()->all();
-        
+        $cc=Appeal::find()->Where(['company_id'=>$user->company_id])->all();
+        $arr=AppealRegister::find()->Where(['company_id'=>$user->company_id])->all();
+
         return $this->render('index2',[
-            'quest'=>$quest
+            'quest'=>$quest,
+            'cc'=>$cc,
+            'arr'=>$arr
+        ]);
+    }
+    public function actionIndex3(){
+        $user = \Yii::$app->user->identity;
+        $quest = Company::find()
+            ->select(['company.*',
+                '(select count(appeal_register.id) from appeal_register where appeal_register.company_id = company.id) as jami',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 1) as shakl1',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 2) as shakl2',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 3) as shakl3',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 4) as shakl4',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 5) as shakl5',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 6) as shakl6',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 7) as shakl7',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 8) as shakl8',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 9) as shakl9',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal.appeal_shakl_id = 10) as shakl10',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.status > 1) as nazoratda',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=3 ) as chora',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=4 ) as tushin',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=5 ) as rad',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=1 ) as kor',
+                ])
+            ->where(['parent_id'=>$user->company_id])
+            ->all();
+        $cc=Appeal::find()->all();
+        $arr=AppealRegister::find()->all();
+
+        return $this->render('index3',[
+            'quest'=>$quest,
+            'cc'=>$cc,
+            'arr'=>$arr
         ]);
     }
 

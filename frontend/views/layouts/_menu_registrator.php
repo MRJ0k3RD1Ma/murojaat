@@ -18,7 +18,7 @@
     </a>
 </li>
 <li class="nav-item">
-    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/index'])?>" class="nav-link
+    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list'])?>" class="nav-link
                 <?=(Yii::$app->controller->id=='appeal'
         and Yii::$app->controller->action->id == 'index'
         and Yii::$app->controller->action->id != 'request'
@@ -114,6 +114,14 @@
                 <i class="nav-icon fas fa-clock"></i>
                 <p>
                     Раҳбарлар кесимида
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/report/index2'])?>" class="nav-link">
+                <i class="nav-icon fas fa-clock"></i>
+                <p>
+                    Масалалар кесимида
                 </p>
             </a>
         </li>

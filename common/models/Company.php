@@ -37,6 +37,7 @@ use Yii;
 class Company extends \yii\db\ActiveRecord
 {
     public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect,$region_id,$district_id;
+    public $shakl1,$jami,$shakl2,$shakl3,$shakl4,$shakl5,$shakl6,$shakl7,$shakl8,$shakl9,$shakl10,$nazoratda,$chora,$tushin,$rad,$kor;
     /**
      * {@inheritdoc}
      */

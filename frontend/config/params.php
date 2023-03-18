@@ -1,5 +1,6 @@
 <?php
 return [
+
     'adminEmail' => 'admin@example.com',
     'gender'=>[
         0=>'Аёл',

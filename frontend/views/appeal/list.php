@@ -6,12 +6,14 @@ $this->title = 'Мурожаатлар рўйхати';
 
 use common\models\AppealRegister;
 use yii\helpers\Html;
+use yii\helpers\url;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\AppealSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $user = Yii::$app->user->identity;
+
 ?>
 <div class="header pb-6">
     <div class="container-fluid">
@@ -138,7 +140,20 @@ $user = Yii::$app->user->identity;
                                 <?= $this->title?>
                             </h3>
                             <div class="card-tools">
+
                                 <a href="" data-method="post" class="btn btn-info"><i class="fa fa-file-excel"></i> Экспорт</a>
+<!--                                <form action="http://mur.lc/appeal/list/phpspreadsheet/export" class="excel-upl" id="excel-upl" enctype="multipart/form-data" method="post" accept-charset="utf-8">-->
+<!--                                    <div class="row padall">-->
+<!--                                        <div class="col-lg-12">-->
+<!--                                            <div class="float-right">-->
+<!--                                                <input type="radio" checked="checked" name="export_type" value="xlsx"> .xlsx-->
+<!--                                                <input type="radio" name="export_type" value="xls"> .xls-->
+<!--                                                <input type="radio" name="export_type" value="csv"> .csv-->
+<!--                                                <button type="submit" name="import" class="btn btn-primary">Export</button>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </form>-->
                                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     <span class="fa fa-search"></span> Қидирув
                                 </button>
@@ -148,7 +163,6 @@ $user = Yii::$app->user->identity;
 
 
                             <div class="table-responsive">
-
                                 <?= GridView::widget([
                                     'dataProvider' => $dataProvider,
                                     'columns' => [

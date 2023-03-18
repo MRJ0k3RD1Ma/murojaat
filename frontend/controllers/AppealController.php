@@ -17,6 +17,8 @@ use common\models\User;
 use common\models\VAppeal;
 use common\models\ViewFullstat;
 use common\models\VVillageProblem;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use yii\base\BaseObject;
@@ -26,6 +28,7 @@ use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotAcceptableHttpException;
 use yii\web\UploadedFile;
+
 
 class AppealController extends Controller
 {
@@ -75,20 +78,132 @@ class AppealController extends Controller
     public function actionIndex($type = null)
     {
         $model = ViewFullstat::find()->where(['comp_id'=>Yii::$app->user->identity->company_id])->one();
+
         return $this->render('index',[
             'model'=>$model
         ]);
+
     }
 
 
     public function actionList($type = null,$status = 0)
     {
         $searchModel = new AppealRegisterSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $user = \Yii::$app->user->identity;
+        $query = AppealRegister::find()->where(['appeal_register.company_id'=>$user->company_id])
+            ->innerJoin('appeal','appeal.id=appeal_register.appeal_id');
+        if(Yii::$app->request->isPost) {
+
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $n = 0;
+            $sheet->setCellValue('A1', '№');
+            $sheet->setCellValue('B1', 'Ташкилот номи');
+//            $sheet->setCellValue('C1', 'Логин');
+//            $sheet->setCellValue('D1', 'Парол');
+//            $sheet->setCellValue('E1', 'Тўлов ҳолати');
+//            $sheet->setCellValue('F1', 'Телефон');
+//            $sheet->setCellValue('G1', 'Туман');
+            foreach ($query->all() as $item) {
+                $n++;
+                $m = $n + 1;
+                $sheet->setCellValue('A' . $m, $n);
+                $sheet->setCellValue('B' . $m, $item->appeal->person_name);
+//                $sheet->setCellValue('C' . $m, $item->inn);
+//                $sheet->setCellValue('D' . $m, '1111');
+//                $sheet->setCellValue('E' . $m, $item->paid == 1 ? 'Тўлов қилинган' : 'Тўланмаган');
+//                $sheet->setCellValue('F' . $m, $item->phone);
+//                $sheet->setCellValue('G' . $m, $item->district_id);
+            }
+            $spreadsheet->getActiveSheet()->getStyle("A1:C".$n)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setHorizontal('center');
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setVertical('center');
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setWrapText(true);
+            $writer = new Xlsx($spreadsheet);
+//            $writer->save("php://output");
+
+            $writer->save('murojaatlar.xlsx');
+            Yii::$app->response->sendFile('murojaatlar.xlsx');
+        }
         if($status == 0){
             $dataProvider = $searchModel->searchRegister(Yii::$app->request->queryParams,$type);
         }elseif($status == 1){
             $dataProvider = $searchModel->searchRegister1(Yii::$app->request->queryParams,$type);
+        }elseif($status == 10){
+            $dataProvider = $searchModel->searchRegister10(Yii::$app->request->queryParams,$type);
+        } elseif($status == 2){
+            $dataProvider = $searchModel->searchRegister2(Yii::$app->request->queryParams,$type);
+        } elseif($status == 4){
+        $dataProvider = $searchModel->searchRegister4(Yii::$app->request->queryParams,$type);
+        }elseif($status == 4){
+            $dataProvider = $searchModel->searchRegister4(Yii::$app->request->queryParams,$type);
         }
+        elseif($status == 20){
+            $dataProvider = $searchModel->searchRegisterAll1(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 21){
+            $dataProvider = $searchModel->searchRegisterAll2(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 22){
+            $dataProvider = $searchModel->searchRegisterAll3(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 11){
+            $dataProvider = $searchModel->searchRegisterAll11(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 12){
+            $dataProvider = $searchModel->searchRegisterAll12(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 14){
+            $dataProvider = $searchModel->searchRegisterAll14(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 210){
+            $dataProvider = $searchModel->searchRegisterAll210(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 220){
+            $dataProvider = $searchModel->searchRegisterAll220(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 24){
+            $dataProvider = $searchModel->searchRegisterAll24(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 17){
+            $dataProvider = $searchModel->searchRegisterAll17(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 18){
+            $dataProvider = $searchModel->searchRegisterAll18(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 27){
+            $dataProvider = $searchModel->searchRegisterAll27(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 29){
+            $dataProvider = $searchModel->searchRegisterAll29(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 100){
+            $dataProvider = $searchModel->searchRegisterAll100(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 300){
+            $dataProvider = $searchModel->searchRegisterAll300(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 301){
+            $dataProvider = $searchModel->searchRegisterAll301(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 31){
+            $dataProvider = $searchModel->searchRegisterAll31(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 32){
+            $dataProvider = $searchModel->searchRegisterAll32(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 33){
+            $dataProvider = $searchModel->searchRegisterAll33(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 37){
+            $dataProvider = $searchModel->searchRegisterAll37(Yii::$app->request->queryParams,$type);
+        }
+        elseif($status == 38){
+            $dataProvider = $searchModel->searchRegisterAll38(Yii::$app->request->queryParams,$type);
+        }
+
+
 
         return $this->render('list', [
             'searchModel' => $searchModel,
@@ -96,6 +211,62 @@ class AppealController extends Controller
         ]);
     }
 
+    public function actionExport()
+    {
+        $model = new Request();
+        $this->db->select(['id']);
+        $this->db->from('import as e');
+        $query = $this->db->get()->result_array();
+        $extension = $model->load(Yii::$app->request->post('export_type'));
+        if(!empty($extension)){
+            $extension = $extension;
+        } else {
+            $extension = 'xlsx';
+        };
+        $query->load->helper('download');
+        $data = array();
+        $data['title'] = 'Export Excel Sheet | Coders Mag';
+        /* get employee list */
+        $empInfo = $this->site->employeeList();
+        $fileName = 'employee-'.time();
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('id', 'First_Name');
+//        $sheet->setCellValue('B1', 'Last_Name');
+//        $sheet->setCellValue('C1', 'Email');
+//        $sheet->setCellValue('D1', 'DOB');
+//        $sheet->setCellValue('E1', 'Contact_No');
+
+        $rowCount = 2;
+        foreach ($empInfo as $element) {
+            $sheet->setCellValue('id' . $rowCount, $element['id']);
+//            $sheet->setCellValue('B' . $rowCount, $element['last_name']);
+//            $sheet->setCellValue('C' . $rowCount, $element['email']);
+//            $sheet->setCellValue('D' . $rowCount, $element['dob']);
+//            $sheet->setCellValue('E' . $rowCount, $element['contact_no']);
+            $rowCount++;
+        }
+
+        if($extension == 'csv'){
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+            $fileName = $fileName.'.csv';
+        } elseif($extension == 'xlsx') {
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $fileName = $fileName.'.xlsx';
+        } else {
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+            $fileName = $fileName.'.xls';
+        }
+
+        $this->output->set_header('Content-Type: application/vnd.ms-excel');
+        $this->output->set_header("Content-type: application/csv");
+        $this->output->set_header('Cache-Control: max-age=0');
+        $writer->save(ROOT_UPLOAD_PATH.$fileName);
+        /*redirect(HTTP_UPLOAD_PATH.$fileName); */
+        $filepath = file_get_contents(ROOT_UPLOAD_PATH.$fileName);
+        force_download($fileName, $filepath);
+    }
 
     public function actionView($id,$ans = 0){
         $register = AppealRegister::findOne($id);

@@ -5,6 +5,7 @@ $this->title = 'Мурожаатлар рўйхати';
 <?php
 
 use common\models\AppealRegister;
+use yii\db\Expression;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
@@ -132,9 +133,9 @@ $user = Yii::$app->user->identity;
 
                                 <div class="table-responsive">
 
-                                    <table  class="table table-bordered">
+                                    <table  class="table table-bordered" style="font-weight: 900;">
                                         <tr>
-                                            <td colspan="3" align="center">Urganch tuman hokimligi va quyi tashkilotlarida ro`yxarga olingan murojaatlar</td>
+                                            <td colspan="3" align="center"><?= $user->company->name?> tuman hokimligi va quyi tashkilotlarida ro`yxarga olingan murojaatlar</td>
                                         </tr>
                                         <tr>
                                             <td width="40%"></td>
@@ -144,27 +145,28 @@ $user = Yii::$app->user->identity;
                                         <tr align="center">
                                             <td >Tansiflanmagan murojaatlar</td>
                                             <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>1])?>"><?= $model->count_not_quest ?></a></td>
-                                            <td><?= $model->count_not_quest_quyi ?></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>10])?>"><?= $model->count_not_quest_quyi ?></a></td>
                                         </tr>
                                         <tr align="center">
                                             <td >Jarayondaki murojaatlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>2])?>"><?= $model->count_jarayonda_quest ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>20])?>"><?= $model->count_jarayonda_quest_quyi ?></a></td>
+
                                         </tr>
                                         <tr align="center">
                                             <td >Ko'rib chiqilgan murojaatlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>4])?>"><?= $model->count_close_quest ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>40])?>"><?= $model->count_close_quest_quyi ?></a></td>
                                         </tr>
                                         <tr align="center">
                                             <td ><b>Jami:</b></td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><?php echo $model->count_not_quest + $model->count_jarayonda_quest + $model->count_close_quest?></td>
+                                            <td><?php echo $model->count_not_quest_quyi + $model->count_jarayonda_quest_quyi + $model->count_close_quest_quyi?></td>
                                         </tr>
                                     </table>
 
 
-                                    <table  class="table table-bordered">
+                                    <table  class="table table-bordered" style="font-weight: 700;">
 
                                         <tr align="center">
                                             <td width="40%"></td>
@@ -175,214 +177,218 @@ $user = Yii::$app->user->identity;
                                         </tr>
                                         <tr align="center">
                                             <td>Statistika yangilangan vaqti</td>
-                                            <td colspan="4">07.03.2023</td>
+                                            <td colspan="4"> <?= new Expression(date('m.d.Y'))?></td>
                                         </tr>
                                         <tr>
                                             <td colspan="5" align="center"><b>Jami kelib tushgan masalalar</b></td>
                                         </tr>
                                         <tr align="center">
                                             <td><b>Jami:</b></td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>20])?>"><?= $model->count_quyi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>21])?>"><?= $model->count_tugri ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>22])?>"><?= $model->count_quyi_send ?></a></td>
                                             <td>0</td>
                                         </tr>
                                         <tr align="center">
                                             <td>Yangi</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>11])?>"><?= $model->count_quyi_yangi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>210])?>"><?= $model->count_tugri_yangi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>31])?>"><?= $model->count_quyi_send_yangi ?></a></td>
+                                            <td></td>
+
                                         </tr>
                                         <tr align="center">
                                             <td>Jarayonda</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>12])?>"><?= $model->count_quyi_jarayonda ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>220])?>"><?= $model->count_tugri_jarayonda ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>32])?>"><?= $model->count_quyi_send_jarayonda_all ?></a></td>
                                             <td>0</td>
                                         </tr>
                                         <tr align="center">
                                             <td>Yopilgan</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Javob kiritilgan,o`rganilmoqda</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>14])?>"><?= $model->count_quyi_close ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>24])?>"><?= $model->count_tugri_close ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>33])?>"><?= $model->count_quyi_send_close_all ?></a></td>
                                             <td>0</td>
                                         </tr>
+<!--                                        <tr align="center">-->
+<!--                                            <td>Javob kiritilgan,o`rganilmoqda</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
                                         <tr>
                                             <td colspan="5" align="center"><b>Bugun kelib tushgan masalalar</b></td>
                                         </tr>
                                         <tr align="center">
                                             <td><b>Jami:</b></td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><?= $model->count_yuqori_today+$model->count_yuqori_today_jarayonda ?></td>
+                                            <td><?= $model->count_tugri_today+$model->count_tugri_today_jarayonda ?></td>
+                                            <td><?= $model->count_quyi_send_jarayonda+$model->count_quyi_send_today ?></td>
                                             <td>0</td>
                                         </tr>
                                         <tr align="center">
                                             <td>Yangi</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>17])?>"><?= $model->count_yuqori_today ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>27])?>"><?= $model->count_tugri_today ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>37])?>"><?= $model->count_quyi_send_today ?></a></td>
                                             <td>0</td>
                                         </tr>
                                         <tr align="center">
                                             <td>Jarayonda</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="5" align="center"><b>Javobi kiritilgan,o`rganishda</b></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td><b>Administratsiya</b></td>
-                                            <td>0</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Yuqori tashkilotlarda</td>
-                                            <td>0</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Joriy tashkilotlardan</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Quyi tashkilotlardan</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="5" align="center"><b>So`rovlar</b></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Boshqa tashkilotlardan jo`natish so`rovlari</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>18])?>"><?= $model->count_yuqori_today_jarayonda ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>28])?>"><?= $model->count_tugri_today_jarayonda ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>38])?>"><?= $model->count_quyi_send_jarayonda ?></a></td>
                                             <td>0</td>
                                         </tr>
-                                        <tr align="center">
-                                            <td>Muddati o`zgargan so`rovlari</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Javobi kiritilgan,o`rganishda</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Tasnif o`zgartirish so`rovlari</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Cheklovni o`zgartirish so`rovlari</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
+<!--                                        <tr>-->
+<!--                                            <td colspan="5" align="center"><b>Javobi kiritilgan,o`rganishda</b></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td><b>Administratsiya</b></td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Yuqori tashkilotlarda</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Joriy tashkilotlardan</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Quyi tashkilotlardan</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td></td>-->
+<!--                                            <td></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr>-->
+<!--                                            <td colspan="5" align="center"><b>So`rovlar</b></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Boshqa tashkilotlardan jo`natish so`rovlari</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Muddati o`zgargan so`rovlari</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Javobi kiritilgan,o`rganishda</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Tasnif o`zgartirish so`rovlari</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Cheklovni o`zgartirish so`rovlari</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+
                                         <tr>
                                             <td colspan="5" align="center"><b>Muddati yaqinlar</b></td>
                                         </tr>
                                         <tr align="center">
                                             <td><b>Jami:</b></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl([''])?>"><?= $model->count_date_interval_quyi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>29])?>"><?= $model->count_date_interval ?></a></td>
                                             <td>0</td>
                                             <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+
                                         </tr>
                                         <tr align="center">
                                             <td>Bugun</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>100])?>"><?= $model->count_today_interval_quyi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>300])?>"><?= $model->count_today_interval ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>300])?>"><?= $model->count_today_interval_quyi_send ?></a></td>
                                             <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+
                                         </tr>
                                         <tr align="center">
                                             <td>Ertaga</td>
                                             <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="5" align="center"><b>Muddati tugaganlar</b></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Muddati buzilganlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>30 kunlik muddat buzilganlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Muddat buzib yopilganlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>30 kunlik muddat buzib yopilganlar</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>301])?>"><?= $model->count_tomorrow_interval ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>300])?>"><?= $model->count_tomorrow_interval_quyi_send ?></a></td>
                                             <td>0</td>
                                         </tr>
 
-                                        <tr>
-                                            <td colspan="5" align="center"><b>Takroriylik</b></td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Takroriy</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr align="center">
-                                            <td>Duplikat</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-
+<!--                                        <tr>-->
+<!--                                            <td colspan="5" align="center"><b>Muddati tugaganlar</b></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Muddati buzilganlar</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>30 kunlik muddat buzilganlar</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Muddat buzib yopilganlar</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>30 kunlik muddat buzib yopilganlar</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!---->
+<!--                                        <tr>-->
+<!--                                            <td colspan="5" align="center"><b>Takroriylik</b></td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Takroriy</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr align="center">-->
+<!--                                            <td>Duplikat</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                            <td>0</td>-->
+<!--                                        </tr>-->
+<!---->
 
                                     </table>
 
