@@ -8,6 +8,7 @@ use common\models\AppealRegister;
 use common\models\Company;
 use common\models\search\ReportSearch;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -71,42 +72,109 @@ class ReportController extends Controller
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $n = 0;
-            $aa=0;
-            $at=0;
-            $ax=0;
-            $ao=0;
-            $ae=0;
-            $as=0;
-            $ai=0;
-            $am=0;
-            $av=0;
-            $apr=0;
-            $ap=0;
-            $ab=0;
-            $ach=0;
-            $ar=0;
-            $ak=0;
-            $ata=0;
-            $ama=0;
+            $m = 2;
+            $time = new \DateTime('now');
+
             $sheet->setCellValue('A1', '№');
-            $sheet->setCellValue('B1', 'Ташкилот номи');
-            $sheet->setCellValue('C1', 'Логин');
-            $sheet->setCellValue('D1', 'Парол');
-            $sheet->setCellValue('E1', 'Тўлов ҳолати');
-            $sheet->setCellValue('F1', 'Телефон');
-            $sheet->setCellValue('G1', 'Туман');
-            foreach ($dataProvider->query->all() as $item){
+            $sheet->setCellValue('B1', 'Мурожаатларда кўтарилан масалалар	');
+            $sheet->setCellValue('C1', 'Жами мурожаатлар сони	');
+            $sheet->setCellValue('D1', 'Мурожаатларни шакллари	');
+            $sheet->setCellValue('N1', '2023 йил бўйича мурожаатларни  кўриб чиқиш ҳолатлари');
+            $sheet->setCellValue('D2', 'Ёзма');
+            $sheet->setCellValue('E2', 'Хат');
+            $sheet->setCellValue('F2', 'Оғзаки (Қабул)	');
+            $sheet->setCellValue('G2', 'Электрон');
+            $sheet->setCellValue('H2', 'Сайёр қабул');
+            $sheet->setCellValue('I2', 'Ишонч телефони	');
+            $sheet->setCellValue('J2', 'МФЙ орқали	');
+            $sheet->setCellValue('K2', 'Веб сайт');
+            $sheet->setCellValue('L2', 'Президент портали');
+            $sheet->setCellValue('M2', 'Прокуратура');
+            $sheet->setCellValue('N2', 'Назоратга олинганлар');
+            $sheet->setCellValue('O2', 'чоралар  кўрилди');
+            $sheet->setCellValue('P2', 'тушунтирилди');
+            $sheet->setCellValue('Q2', 'рад этилди	');
+            $sheet->setCellValue('R2', 'кўриб чиқилмоқда');
+            $sheet->setCellValue('S2', 'такрорийлар');
+            foreach ($quest as $item) {
+
                 $n++;
-                $m = $n+1;
+                $m++;
+                $aa=0;
+                $at=0;
+                $ax=0;
+                $ao=0;
+                $ae=0;
+                $as=0;
+                $ai=0;
+                $am=0;
+                $av=0;
+                $apr=0;
+                $ap=0;
+                $ab=0;
+                $ach=0;
+                $ar=0;
+                $ak=0;
+                $ata=0;
+                $ama=0;
                 $sheet->setCellValue('A'.$m, $n);
                 $sheet->setCellValue('B'.$m, $item->name);
-                $sheet->setCellValue('C'.$m, $item->inn);
-                $sheet->setCellValue('D'.$m, '1111');
-                $sheet->setCellValue('E'.$m, $item->paid==1?'Тўлов қилинган':'Тўланмаган');
-                $sheet->setCellValue('F'.$m, $item->phone);
-                $sheet->setCellValue('G'.$m, $item->district_id);
+                foreach ($cc as $a)
+                {  if ( $a->question_id !== NULL)
+                { if ($a->question->group->id == $item->id)
+                {$aa=$aa+1;
+                    if ($a->appeal_shakl_id==1){$at=$at+1;}
+                    if ($a->appeal_shakl_id==2){$ax=$ax+1;}
+                    if ($a->appeal_shakl_id==3){$ao=$ao+1;}
+                    if ($a->appeal_shakl_id==4){$ae=$ae+1;}
+                    if ($a->appeal_shakl_id==5){$as=$as+1;}
+                    if ($a->appeal_shakl_id==6){$ai=$ai+1;}
+                    if ($a->appeal_shakl_id==7){$am=$am+1;}
+                    if ($a->appeal_shakl_id==8){$av=$av+1;}
+                    if ($a->appeal_shakl_id==9){$apr=$apr+1;}
+                    if ($a->appeal_shakl_id==10){$ap=$ap+1;}
+                    if ($a->status>=2 && $a->status<=4){$ab=$ab+1;}
+                    if ($a->status==4){$ach=$ach+1;}
+                    if ($a->status==5){$ar=$ar+1;}
+                    if ($a->status==2 || $a->status==3){$ak=$ak+1;}
+                    foreach ($arr as $i){
+                        if ( $i->appeal_id==$a->id ){
+                            if ($i->takroriy==1){
+                                $ata=$ata+1;}
+                            if ($i->deadtime>=$time->format('Y-m-d')){
+                                $ama=$ama+1;
+                            }
+                        }
+                    }
+                }}
+                }
+                $sheet->setCellValue('C'.$m, $aa);
+                $sheet->setCellValue('D'.$m, $at);
+                $sheet->setCellValue('E'.$m, $ax);
+                $sheet->setCellValue('F'.$m, $ao);
+                $sheet->setCellValue('G'.$m, $ae);
+                $sheet->setCellValue('H'.$m, $as);
+                $sheet->setCellValue('I'.$m, $ai);
+                $sheet->setCellValue('J'.$m, $am);
+                $sheet->setCellValue('K'.$m, $av);
+                $sheet->setCellValue('L'.$m, $ap);
+                $sheet->setCellValue('M'.$m, $apr);
+                $sheet->setCellValue('N'.$m, $ab);
+                $sheet->setCellValue('O'.$m, $ach);
+                $sheet->setCellValue('P'.$m, $ar);
+                $sheet->setCellValue('Q'.$m, $ak);
+                $sheet->setCellValue('R'.$m, $ata);
+                $sheet->setCellValue('S'.$m, $ama);
             }
-
+            $spreadsheet->getActiveSheet()->getStyle("A1:S".$m)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$m)->getAlignment()->setHorizontal('center');
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$m)->getAlignment()->setVertical('center');
+            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$m)->getAlignment()->setWrapText(true);
+            $sheet->mergeCells('A1:A2');
+            $sheet->mergeCells('B1:B2');
+            $sheet->mergeCells('C1:C2');
+            $sheet->mergeCells('D1:M1');
+            $sheet->mergeCells('N1:S1');
             $writer = new Xlsx($spreadsheet);
 //            $writer->save("php://output");
 
