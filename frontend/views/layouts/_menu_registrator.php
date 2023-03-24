@@ -125,6 +125,14 @@
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/report/index3'])?>" class="nav-link">
+                <i class="nav-icon fas fa-clock"></i>
+                <p style="font-size: 13px;">
+                    Қуйи ташкилотлар кесимида
+                </p>
+            </a>
+        </li>
 
 
     </ul>

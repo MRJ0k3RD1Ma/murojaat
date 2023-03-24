@@ -7,6 +7,7 @@ use common\models\AppealQuestionGroup;
 use common\models\AppealRegister;
 use common\models\Company;
 use common\models\search\ReportSearch;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -65,6 +66,53 @@ class ReportController extends Controller
         $quest = AppealQuestionGroup::find()->all();
         $cc=Appeal::find()->Where(['company_id'=>$user->company_id])->all();
         $arr=AppealRegister::find()->Where(['company_id'=>$user->company_id])->all();
+        if(Yii::$app->request->isPost){
+
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $n = 0;
+            $aa=0;
+            $at=0;
+            $ax=0;
+            $ao=0;
+            $ae=0;
+            $as=0;
+            $ai=0;
+            $am=0;
+            $av=0;
+            $apr=0;
+            $ap=0;
+            $ab=0;
+            $ach=0;
+            $ar=0;
+            $ak=0;
+            $ata=0;
+            $ama=0;
+            $sheet->setCellValue('A1', '№');
+            $sheet->setCellValue('B1', 'Ташкилот номи');
+            $sheet->setCellValue('C1', 'Логин');
+            $sheet->setCellValue('D1', 'Парол');
+            $sheet->setCellValue('E1', 'Тўлов ҳолати');
+            $sheet->setCellValue('F1', 'Телефон');
+            $sheet->setCellValue('G1', 'Туман');
+            foreach ($dataProvider->query->all() as $item){
+                $n++;
+                $m = $n+1;
+                $sheet->setCellValue('A'.$m, $n);
+                $sheet->setCellValue('B'.$m, $item->name);
+                $sheet->setCellValue('C'.$m, $item->inn);
+                $sheet->setCellValue('D'.$m, '1111');
+                $sheet->setCellValue('E'.$m, $item->paid==1?'Тўлов қилинган':'Тўланмаган');
+                $sheet->setCellValue('F'.$m, $item->phone);
+                $sheet->setCellValue('G'.$m, $item->district_id);
+            }
+
+            $writer = new Xlsx($spreadsheet);
+//            $writer->save("php://output");
+
+            $writer->save('tashkilotlar.xlsx');
+            Yii::$app->response->sendFile('tashkilotlar.xlsx');
+        }
 
         return $this->render('index2',[
             'quest'=>$quest,
@@ -74,6 +122,7 @@ class ReportController extends Controller
     }
     public function actionIndex3(){
         $user = \Yii::$app->user->identity;
+        $time = new \DateTime('now');
         $quest = Company::find()
             ->select(['company.*',
                 '(select count(appeal_register.id) from appeal_register where appeal_register.company_id = company.id) as jami',
@@ -92,6 +141,8 @@ class ReportController extends Controller
                 '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=4 ) as tushin',
                 '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=5 ) as rad',
                 '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.control_id=1 ) as kor',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.takroriy=1 ) as tak',
+                '(select count(appeal_register.id) from appeal_register inner join appeal on appeal_register.appeal_id = appeal.id where appeal_register.company_id = company.id and appeal_register.deadtime < '.$time->format('Y-m-d').' ) as date',
                 ])
             ->where(['parent_id'=>$user->company_id])
             ->all();
