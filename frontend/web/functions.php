@@ -103,6 +103,8 @@ function changeTime($id){
                 }
             }
         }else{
+
+
             $task = AppealBajaruvchi::findOne($register->parent_bajaruvchi_id);
             $task->deadtime = $model->date;
             $register->deadtime = $model->date;
@@ -112,6 +114,14 @@ function changeTime($id){
                 $register->deadtime = $model->date;
                 $register->save();
             }
+
+            if(!$task->register->parent_bajaruvchi_id){
+                if(new DateTime($appeal->deadtime) < new DateTime($register->deadtime)){
+                    $appeal->deadtime = $register->deadtime;
+                    $appeal->save();
+                }
+            }
+
         }
         return true;
     }else{

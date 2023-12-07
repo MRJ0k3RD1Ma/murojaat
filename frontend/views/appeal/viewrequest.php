@@ -325,12 +325,36 @@ $this->params['breadcrumbs'][] = $this->title;
             <hr>
             <?php if(($request->status_id == 1 or $request->status_id == 0) and $request->register->company_id != Yii::$app->user->identity->company_id){?>
             <div id="accordion">
-                <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/acceptrequest','id'=>$request->id])?>"
-                   data-method="post" data-confirm="Сиз ростдан ҳам ушбу жавобни қабул қилмоқчимисиз?"
-                   class="btn btn-success">Қабул қилиш</a>
+                <a href="#acc" class="btn btn-success" data-toggle="collapse">Қабул қилиш</a>
                 <a href="#deni" class="btn btn-danger" data-toggle="collapse">Рад этиш</a>
 
+                <div id="acc" class="collapse" style="margin-top: 20px; padding: 20px;border: 1px solid #28a745;" data-parent="#accordion">
 
+                    <?php if($request->type_id == 1){?>
+                        <?php $form = ActiveForm::begin(['id' => 'update-form','method'=>'post',
+                            'action' => ['/appeal/acceptrequest', 'id' => $request->id],]);?>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <?= $form->field($request, 'date')->textInput(['type'=>'date']) ?>
+                            </div>
+                        </div>
+
+                        <?= $form->field($request, 'id')->hiddenInput(['value'=>$request->id])->label(false) ?>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-1 col-lg-11">
+                                <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-primary']) ?>
+                            </div>
+                        </div>
+                        <?php ActiveForm::end() ?>
+                    <?php }else{?>
+
+                        <?= $this->render('view/_task_req',['register'=>$register])?>
+
+                    <?php }?>
+
+                </div>
 
                 <div id="deni" class="collapse" style="margin-top: 20px; padding: 20px;border: 1px solid #dc3545;" data-parent="#accordion">
 
@@ -354,3 +378,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     </div>
+
+
+<?= $this->render('view/_footer_req',['register'=>$register,'request'=>$request])?>

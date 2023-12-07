@@ -276,7 +276,7 @@ $user = Yii::$app->user->identity;
 
                                                 if($ds < 0){
                                                     $class = "bg-danger";
-                                                    $res = "".$days.' кун'."<br>{$baj->deadtime} <br><span class='{$class}' style='width: 100%; height: 100%; '> Муддати ўтган</span>";
+                                                    $res = "-".$days.' кун'."<br>{$baj->deadtime} <br><span class='{$class}' style='width: 100%; height: 100%; '> Муддати ўтган</span>";
                                                 }elseif($ds <= 5){
                                                     $class = "bg-warning";
                                                     $res = "<span class='{$class}' style='width: 100%; height: 100%; '>".$days.' кун'."</span><br>{$d->deadtime}";

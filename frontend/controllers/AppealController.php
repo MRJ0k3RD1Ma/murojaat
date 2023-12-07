@@ -396,6 +396,46 @@ class AppealController extends Controller
         ]);
     }
 
+    public function actionTaskreq($id,$regid,$req_id){
+        if($request  = Request::findOne($req_id)){
+            $register = AppealRegister::findOne($regid);
+
+            $model = new AppealBajaruvchi();
+            $model->register_id = $register->id;
+            $model->appeal_id = $register->appeal_id;
+            $model->company_id = $id;
+            $model->deadtime = $register->deadtime;
+
+            if(AppealBajaruvchi::find()->where(['company_id'=>$id])->andWhere(['appeal_id'=>$model->appeal_id])->andWhere(['register_id'=>$register->id])->one()){
+                return "Ушбу ташкилотга аввал мурожаат юборилган";
+            }
+            if($model->load(Yii::$app->request->post())){
+                $model->sender_id = $register->rahbar_id;
+                $model->upload();
+                if($model->save()){
+                    Yii::$app->session->setFlash('success','Топшириқ юборилди');
+                }else{
+                    Yii::$app->session->setFlash('error','Маълумотлар тўлиқ тўлдирилмаган');
+                }
+
+
+                changeCompany($req_id);
+
+
+                return $this->redirect(['view','id'=>$regid]);
+            }
+            return $this->renderAjax('view/_send_task_req',[
+                'model'=>$model,
+                'id'=>$id,
+                'regid'=>$regid,
+                'req_id'=>$req_id
+            ]);
+        }else{
+            return "Bunday talabnoma topilmadi";
+        }
+
+    }
+
     public function actionSendrequest(){
         $model = new Request();
         $model->status_id = 0;
@@ -741,6 +781,7 @@ class AppealController extends Controller
             $baj->status = 1;
             $baj->save(false);
         }
+        $model->question_id = $baj->appeal->question_id;
         $model->appeal_id = $baj->appeal_id;
         $model->parent_bajaruvchi_id = $baj->id;
         $model->company_id = $baj->company_id;
@@ -748,6 +789,9 @@ class AppealController extends Controller
         $model->deadtime = $baj->deadtime;
         $model->preview = $baj->register->preview;
         $model->scenario = 'reg';
+
+
+
         if($model->load(Yii::$app->request->post())){
 
             if($model->save()){
@@ -1063,13 +1107,19 @@ class AppealController extends Controller
 
 
     public function actionAcceptrequest($id){
+
         $model = Request::findOne($id);
+
         if($model->type_id == 1){
-            changeTime($id);
+            if($model->load($this->request->post()) and $model->save()){
+                changeTime($id);
+            }
         }else{
             changeCompany($id);
         }
         return $this->redirect(['request']);
+
+
     }
 
 

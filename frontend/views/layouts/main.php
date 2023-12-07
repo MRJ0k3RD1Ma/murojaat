@@ -310,7 +310,7 @@ AppAsset::register($this);
     <!-- /.control-sidebar -->
 
 
-<?
+<?php
 
 if (Yii::$app->user->identity->id == '55') {
     $style = 'style="opacity: 1;"';
@@ -323,6 +323,7 @@ if (Yii::$app->user->identity->id == '55') {
 
 <!-- Yandex.RTB -->
 <script>window.yaContextCb=window.yaContextCb||[]</script>
+
 <script src="https://yandex.ru/ads/system/context.js" async></script>
 
 
@@ -393,12 +394,13 @@ if (Yii::$app->user->identity->id == '55') {
         </div>
     <?php }?>
 
+
     <style>
-        <?php if(!$vil){?>
-        body.sidebar-collapse .telegram-popup{
-            display: none !important;
-        }
-        <?php }?>
+        <?php if(!$vil){ ?>
+            body.sidebar-collapse .telegram-popup{
+                display: none !important;
+            }
+        <?php } ?>
         /*Body css here just to demonstrate scrolling*/
         .telegram-popup{
             width: 291px;
@@ -447,6 +449,7 @@ if (Yii::$app->user->identity->id == '55') {
             background-color: #9c27b0 !important;
         }
     </style>
+
     <?php
     if(!$vil){
         $this->registerJs("
