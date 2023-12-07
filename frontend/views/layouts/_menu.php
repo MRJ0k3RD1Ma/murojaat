@@ -11,8 +11,8 @@ use yii\helpers\Url; ?>
              with font-awesome or any other icon font library -->
 
         <li class="nav-item has-treeview">
-            <a href="#" class="nav-link ">
-                <i class="nav-icon fas fa-filter"></i>
+            <a href="/" class="nav-link ">
+                <i class="nav-icon fas fa-user"></i>
                 <p>
                     <?= Yii::$app->user->identity->name?>
                 </p>
@@ -59,14 +59,14 @@ use yii\helpers\Url; ?>
 
 
         <?php
+
         $user = Yii::$app->user->identity;
-        if($user->access(2)){?>
-            <?= $this->render('_menu_registrator')?>
-        <?php }else{?>
-
-            <?= $this->render('_menu_user')?>
-
-        <?php }?>
+        if ($user->access(2)) {
+            echo $this->render('_menu_registrator');
+        } else {
+            echo $this->render('_menu_user');
+        }
+        ?>
 
     </ul>
 </nav>
@@ -74,7 +74,7 @@ use yii\helpers\Url; ?>
 
 <style>
     .nav-treeview{
-        background: rgb(45, 82, 163) !important;
+        background: rgb(0 0 0 / 10%) !important;
     }
 </style>
 

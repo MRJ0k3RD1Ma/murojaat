@@ -80,6 +80,13 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public function actionProfile()
+    {
+        return $this->render('profile');
+    }
+
+
     public function beforeAction($action)
     {
         if(!Yii::$app->user->isGuest and Yii::$app->user->identity->active == 0 and Yii::$app->controller->action->id != 'change'){
@@ -385,11 +392,15 @@ class SiteController extends Controller
 
         $this->layout='login.php';
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())){
+			if($model->login()){
+				return $this->goBack();
+			}else{
+				Yii::$app->session->setFlash('error','Логин ёки парол хато');
+			}
+            
         }
-
+		
         $model->password = '';
         return $this->render('login', [
             'model' => $model,

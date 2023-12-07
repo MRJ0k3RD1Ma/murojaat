@@ -1,17 +1,53 @@
-<li class="nav-item">
-    <a href="<?= Yii::$app->urlManager->createUrl(['/village/'])?>" class="nav-link">
-
+<!--<li class="nav-item">
+    <a href="<?php /*= Yii::$app->urlManager->createUrl(['/village/'])*/?>" class="nav-link">
         <p><i class="nav-icon fas fa-list"></i>
-            Сўровнома (Андижон тажрибаси)
+            Андижон тажрибаси
         </p>
     </a>
-</li>
-<li class="nav-item">
-    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregister'])?>" class="nav-link
-                <?=(Yii::$app->controller->id=='appeal'
-        and Yii::$app->controller->action->id == 'notregister'
-    )?'active':''?>">
+</li>-->
 
+
+<?php
+/*
+?>
+=(Yii::$app->controller->id=='appeal'
+    and Yii::$app->controller->action->id == 'notregister'
+)?'active':''
+*/
+?>
+
+
+<?php
+$cnt = \common\models\AppealBajaruvchi::find()->where(['<=','status',1])->andWhere(['company_id'=>Yii::$app->user->identity->company_id])->count('id');
+
+if(Yii::$app->user->identity->company_id == 1){
+    $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
+    //echo $cnt +  $cnt2;
+
+    if ($cnt > '0' or $cnt2 > '0') {
+        $style = 'faol';
+
+
+
+        echo '
+            <audio loop autoplay="autoplay" controls style="display: none;">
+                <source src="/theme/dist/murojaat.mp3" type="audio/mp3">
+            </audio>';
+    }
+}else{
+    $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
+    if ($cnt > '0') {
+        $style = 'faol';
+        echo '
+            <audio loop autoplay="autoplay" controls style="display: none;">
+                <source src="/theme/dist/murojaat.mp3" type="audio/mp3">
+            </audio>';
+    }
+}
+?>
+
+<li class="nav-item">
+    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregister'])?>" class="nav-link <? echo $style; ?>">
         <p><i class="nav-icon fas fa-registered"></i>
             Рўйхатга олинмаган
         </p>
@@ -20,7 +56,7 @@
 <li class="nav-item">
     <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list'])?>" class="nav-link
                 <?=(Yii::$app->controller->id=='appeal'
-        and Yii::$app->controller->action->id == 'index'
+        and Yii::$app->controller->action->id == 'list'
         and Yii::$app->controller->action->id != 'request'
         and Yii::$app->controller->action->id != 'notregister'
     )?'active':''?>">
@@ -43,9 +79,8 @@
 </li>
 
 <li class="nav-item">
-    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/tosayyor'])?>" class="nav-link
-                    <?=(Yii::$app->controller->id=='appeal' and Yii::$app->controller->action->id == 'tosayyor')?'active':''?>">
-
+    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/tosayyor'])?>"
+       class="nav-link <?=(Yii::$app->controller->id=='appeal' and Yii::$app->controller->action->id == 'tosayyor')?'active':''?>">
         <p><i class="nav-icon fas fa-plus"></i>
             Сайёр қабул
         </p>
@@ -62,8 +97,8 @@
 
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link ">
-
-        <p><i class="nav-icon fas fa-sync"></i>
+        <i class="nav-icon fas fa-sync"></i>
+        <p>
             Сўровлар
             <i class="right fas fa-angle-left"></i>
         </p>
@@ -130,6 +165,14 @@
                 <i class="nav-icon fas fa-clock"></i>
                 <p style="font-size: 13px;">
                     Қуйи ташкилотлар кесимида
+                </p>
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/report/index4'])?>" class="nav-link">
+                <i class="nav-icon fas fa-clock"></i>
+                <p style="font-size: 13px;">
+                    Масалалар кесимида<br>(жараёнда)
                 </p>
             </a>
         </li>

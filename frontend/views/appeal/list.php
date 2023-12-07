@@ -2,9 +2,17 @@
 
 $this->title = 'Мурожаатлар рўйхати';
 ?>
+<style>
+    span.belgilar i {
+        font-size: 50px;
+        opacity: 0.5;
+    }
+</style>
 <?php
 
 use common\models\AppealRegister;
+
+use common\models\AppealBajaruvchi;
 use yii\helpers\Html;
 use yii\helpers\url;
 use yii\grid\GridView;
@@ -31,11 +39,13 @@ $user = Yii::$app->user->identity;
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Жами топшириқлар</h5>
                                         <br />
-                                        <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0"><?= prettyNumber(AppealRegister::find()->where(['company_id'=>\Yii::$app->user->identity->company_id])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id')) ?> та</span>
+                                        <span style="color: #32325d; background: url(/theme/dist/img/link_hover_tolqin.svg); padding-bottom: 3px;" class="h4 mb-0">
+											<?= prettyNumber(AppealRegister::find()->where(['company_id'=>\Yii::$app->user->identity->company_id])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])
+															 ->count('id')) ?> та</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape">
-                                            <img src="/theme/dist/img/home.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px; height: 50px;" />
+                                            <span class="belgilar text-default"><i class="fa fa-tasks"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +69,7 @@ $user = Yii::$app->user->identity;
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape">
-                                            <img src="/theme/dist/img/home_human.png" style="color: #397fd5;font-size: 85px;float: right; height: 50px; position: absolute;right: 20px;" />
+                                            <span class="belgilar text-success"><i class="fa fa-check"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -80,9 +90,10 @@ $user = Yii::$app->user->identity;
                                         <span style="color: #32325d;background: url(/theme/dist/img/link_hover_tolqin.svg);padding-bottom: 3px;" class="h4 mb-0"><?= prettyNumber(AppealRegister::find()->where(['company_id'=>$user->company_id])
                                                 ->andWhere(['<>','status',4])->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id'))?> та</span>
                                     </div>
+
                                     <div class="col-auto">
                                         <div class="icon icon-shape">
-                                            <img src="/theme/dist/img/humans.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px;  height: 50px;" />
+                                            <span class="belgilar text-warning"><i class="fa fa-sync-alt"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +120,7 @@ $user = Yii::$app->user->identity;
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape">
-                                            <img src="/theme/dist/img/humans.png" style="color: #397fd5;font-size: 85px;float: right;position: absolute;right: 20px;  height: 50px;" />
+                                            <span class="belgilar text-danger"><i class="fa fa-history"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -165,6 +176,7 @@ $user = Yii::$app->user->identity;
                             <div class="table-responsive">
                                 <?= GridView::widget([
                                     'dataProvider' => $dataProvider,
+//                                    'filterModel' => $searchModel,
                                     'columns' => [
                                         ['class' => 'yii\grid\SerialColumn'],
 
@@ -190,6 +202,16 @@ $user = Yii::$app->user->identity;
 
                                                 $res = $d->appeal->person_name.'<br>'.$res;
                                                 return "<a href='{$url}'>{$res}</a>";
+                                            },
+                                            'format'=>'raw',
+                                        ],
+										 [
+                                             'label'=>'Туман, Шахар',
+
+                                            'value'=>function($d){
+
+
+												return $d->appeal->district;
                                             },
                                             'format'=>'raw',
                                         ],
@@ -254,7 +276,7 @@ $user = Yii::$app->user->identity;
 
                                                 if($ds < 0){
                                                     $class = "bg-danger";
-                                                    $res = "<span class='{$class}' style='width: 100%; height: 100%; '>Муддати ўтган</span>";
+                                                    $res = "".$days.' кун'."<br>{$baj->deadtime} <br><span class='{$class}' style='width: 100%; height: 100%; '> Муддати ўтган</span>";
                                                 }elseif($ds <= 5){
                                                     $class = "bg-warning";
                                                     $res = "<span class='{$class}' style='width: 100%; height: 100%; '>".$days.' кун'."</span><br>{$d->deadtime}";

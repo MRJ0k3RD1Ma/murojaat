@@ -11,14 +11,22 @@ use yii\widgets\ActiveForm;
    <?php $form = ActiveForm::begin() ?>
         <div class="row">
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">
+                        <h3 class="card-title text-dark">
                             Мурожаатчи маълумотлари
                         </h3>
                     </div>
                     <div class="card-body">
-                        <?= $form->field($model, 'person_name')->textInput(['maxlength' => true]) ?>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <b>Ф.И.О</b>
+                            </div>
+                            <div class="col-md-10">
+                                <?= $form->field($model, 'person_name')->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
 
@@ -32,36 +40,75 @@ use yii\widgets\ActiveForm;
                             </div>
                         </div>
 
-                        <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true]) ?>
 
-                        <!--manzil ma`lumotlari-->
-                        <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг']) ?>
-                        <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг']) ?>
-                        <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
-                        <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>Телефон рақами</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
 
+                            <div class="col-md-3">
+                                <b>Вилоятни танланг</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг'])->label(false) ?>
+                            </div>
 
+                            <div class="col-md-3">
+                                <b>Туманни танланг</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг'])->label(false) ?>
+                            </div>
+
+                            <div class="col-md-3">
+                                <b>Маҳаллани танланг</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2'])->label(false) ?>
+                            </div>
+
+                            <div class="col-md-3">
+                                <b>Манзилни киритинг</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'address')->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">
+                        <h3 class="card-title text-dark">
                             Мурожаат матни
                         </h3>
+                        <div class="card-tools" style="height: 20px;">
+                            <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1]) ?>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
-
-                        <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
-
-                        <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
-
-                        <?= $form->field($model, 'businessman',['options'=>['style'=>'display:none']])->textInput() ?>
-
+                        <?= $form->field($model, 'businessman',['options'=>['style'=>'display:none;margin-bottom: 20px;']])->textInput() ?>
                         <div class="row">
+                            <div class="col-md-3">
+                                <b>Мурожаат шакли</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг'])->label(false) ?>
+                            </div>
+
+                            <div class="col-md-3">
+                                <b>Мурожаат тури</b>
+                            </div>
+                            <div class="col-md-9">
+                                <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг'])->label(false) ?>
+                            </div>
+
                             <div class="col-md-6">
                                 <?= $form->field($model, 'count_applicant')->textInput(['type'=>'number']) ?>
                             </div>
@@ -70,7 +117,7 @@ use yii\widgets\ActiveForm;
                             </div>
                         </div>
 
-                        <?= $form->field($model, 'pursuit')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
+                        <?= $form->field($model, 'pursuit')->checkbox(['value' => 1]) ?>
 
                         <?= $form->field($model, 'appeal_detail')->textarea(['rows' => 6]) ?>
 
@@ -84,7 +131,7 @@ use yii\widgets\ActiveForm;
 
 
         <div class="form-group">
-            <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Мурожаатни юбориш', ['class' => 'btn btn-success btn-block']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

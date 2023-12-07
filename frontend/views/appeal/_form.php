@@ -8,25 +8,28 @@ use yii\widgets\ActiveForm;
 /* @var $register common\models\AppealRegister */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+
     <script>
         var deleteitem = function(){};
         var deletetashkilotitem = function(){};
         var tashkilotadd = function(){};
+        var removetask = function(){};
     </script>
+    <style>
+        .buttonremovetask{
+            margin-top:32px;
+        }
+    </style>
 <div class="appeal-form">
 
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">
-                Янги мурожаат қўшиш
-            </h3>
-        </div>
-        <div class="card-body">
+    <div class="card card-primary card-outline">
+        <div class="card-body" style="padding: 10px 20px;">
             <div class="row">
                 <div class="col-md-3">
                     <?= $form->field($register, 'number')->textInput(['maxlength' => true]) ?>
-                </div>                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
                     <?= $form->field($register, 'date')->textInput(['type' => 'date']) ?>
                 </div>
                 <div class="col-md-6">
@@ -39,7 +42,6 @@ use yii\widgets\ActiveForm;
                         }
                     }
                     ?>
-
                     <?= $form->field($model, 'question_id')->dropDownList($quest,['prompt'=>'Саволни танланг','class'=>'form-control js-select2']) ?>
 
                 </div>
@@ -51,36 +53,82 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        Умумий маълумотлар
+                    <h3 class="card-title text-dark">
+                        Мурожаатчи маълумотлари
                     </h3>
                 </div>
                 <div class="card-body">
-                    <?= $form->field($model, 'person_name')->textInput(['maxlength' => true]) ?>
-                    <?= $form->field($model, 'date_of_birth')->textInput(['type'=>'date']) ?>
-                    <?= $form->field($model, 'gender')->dropDownList([0=>'Аёл',1=>'Эркак'],['prompt'=>'Жинсини танланг']) ?>
-                    <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true]) ?>
-                    <?= $form->field($model, 'employment_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employment::find()->all(),'id','name')) ?>
-
+                    <div class="row label-none">
+                        <div class="col-md-3">
+                            <b>Ф.И.О</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'person_name')->textInput(['maxlength' => true])->label(false) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Туғилган санаси</b>
+                        </div>
+                        <div class="col-md-5">
+                            <?= $form->field($model, 'date_of_birth')->textInput(['type'=>'date'])->label(false) ?>
+                        </div>
+                        <div class="col-md-4">
+                            <?= $form->field($model, 'gender')->dropDownList([0=>'Аёл',1=>'Эркак'],['prompt'=>'Жинсини танланг'])->label(false) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Телефон</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'person_phone')->textInput(['maxlength' => true])->label(false) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Ижтимоий ҳолати</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'employment_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Employment::find()->all(),'id','name'))->label(false) ?>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-md-6 label-none">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        Манзил
+                    <h3 class="card-title text-dark">
+                        Мурожаатчи манзили
                     </h3>
                 </div>
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <b>Вилоятни танланг</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг'])->label(false) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Туманни танланг</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг'])->label(false) ?>
+                        </div>
 
-                    <?= $form->field($model, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг']) ?>
-                    <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>$model->region_id])->all(),'district_id','name_cyr'),['prompt'=>'Туманни танланг']) ?>
-                    <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2']) ?>
-                    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+                        <div class="col-md-3">
+                            <b>Маҳаллани танланг</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'soato_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\MahallaView::find()->where(['region_id'=>$model->region_id,'district_id'=>$model->district_id])->all(),'id','name_cyr'),['prompt'=>'Маҳаллани танланг','class'=>'form-control js-select2'])->label(false) ?>
+                        </div>
+
+                        <div class="col-md-3">
+                            <b>Манзилни киритинг</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'address')->textInput(['maxlength' => true])->label(false) ?>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -88,13 +136,17 @@ use yii\widgets\ActiveForm;
     </div>
 
 
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">
+    <div class="card card-primary card-outline xcard-collapsed collapsed-card">
+        <div class="card-header card-outline">
+            <h3 class="card-title text-dark">
                 Бошқа ташкилотдан
             </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool bg-primary" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                </button>
+            </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="padding: 10px 20px;display: none;">
             <div class="row">
                 <div class="col-md-2">
                     <?= $form->field($model,'boshqa_tashkilot')->checkbox(['value'=>1,'style'=>'margin-top:35px;'])?>
@@ -125,21 +177,37 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">
+                    <h3 class="card-title text-dark">
                         Мурожаат матни
                     </h3>
+                    <div class="card-tools" style="height: 20px;">
+                        <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1]) ?>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
+                    <div class="row">
 
-                    <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>
+                        <div class="col-md-12">
+                            <?= $form->field($model, 'businessman',['options'=>['style'=>'display:none;margin-bottom: 20px;']])->textInput() ?>
+                        </div>
 
-                    <?= $form->field($model, 'isbusinessman')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
+                        <div class="col-md-3">
+                            <b>Мурожаат шакли</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг'])->label(false) ?>
+                        </div>
 
-                    <?= $form->field($model, 'businessman',['options'=>['style'=>'display:none']])->textInput() ?>
+                        <div class="col-md-3">
+                            <b>Мурожаат тури</b>
+                        </div>
+                        <div class="col-md-9">
+                            <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг'])->label(false) ?>
+                        </div>
 
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <?= $form->field($model, 'count_applicant')->textInput(['type'=>'number']) ?>
@@ -149,7 +217,7 @@ use yii\widgets\ActiveForm;
                         </div>
                     </div>
 
-                    <?= $form->field($model, 'pursuit')->checkbox(['value' => 1,'style'=>'margin-top:20px;']) ?>
+                    <?= $form->field($model, 'pursuit')->checkbox(['value' => 1,'style'=>'margin-top:0px;']) ?>
 
                     <?= $form->field($model, 'appeal_detail')->textarea(['rows' => 6]) ?>
 
@@ -161,39 +229,49 @@ use yii\widgets\ActiveForm;
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">
+                            <h3 class="card-title text-dark">
                                 Резолюция
                             </h3>
+                            <div class="card-tools" style="height: 20px;">
+                                <?= $form->field($register, 'nazorat')->checkbox(['value' => 1,'checked'=>true]) ?>
+                            </div>
                         </div>
                         <div class="card-body">
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <?= $form->field($register, 'nazorat')->checkbox(['value' => 1,'checked'=>true]) ?>
+                                <div class="col-md-3">
+                                    <b>Раҳбарни танланг</b>
+                                </div>
+                                <div class="col-md-9">
+                                    <?= $form->field($register,'rahbar_id')->dropDownList(
+                                        \yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])
+                                            ->where(['user.company_id'=>Yii::$app->user->identity->company_id])
+                                            ->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')
+                                            ->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])->label(false)?>
                                 </div>
 
-                            </div>
+                                <div class="col-md-12">
+                                    <?= $form->field($register, 'preview')->textarea(['maxlength' => true]) ?>
+                                </div>
 
-                            <?= $form->field($register,'rahbar_id')->dropDownList(
-                                    \yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])
-                                        ->where(['user.company_id'=>Yii::$app->user->identity->company_id])
-                                        ->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')
-                                        ->all(),'id','name'),['prompt'=>'Раҳбарни танланг'])?>
 
-                            <?= $form->field($register, 'preview')->textarea(['maxlength' => true]) ?>
-
-                            <div class="row">
                                 <div class="col-md-6">
                                     <?= $form->field($register,'deadline')->textInput(['type'=>'number'])?>
                                 </div>
                                 <div class="col-md-6">
                                     <?= $form->field($register,'deadtime')->textInput(['type'=>'date'])?>
                                 </div>
+                                <div class="col-md-2">
+                                    <b>Ижрочи</b>
+                                </div>
+                                <div class="col-md-10">
+                                    <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])->label(false)?>
+                                </div>
                             </div>
 
-                            <?= $form->field($register,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->where(['company_id'=>Yii::$app->user->identity->company_id])->all(),'id','name'),['prompt'=>'Ижрочини танланг'])?>
+
 
                         </div>
                     </div>
@@ -202,9 +280,9 @@ use yii\widgets\ActiveForm;
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">
+                            <h3 class="card-title text-dark">
                                 Такрорий мурожаат маълумотлари
                             </h3>
                         </div>
@@ -228,6 +306,22 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
 
+
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p><button class="btn btn-primary" id="buttontashkilot" type="button"><span class="fa fa-plus"></span> Topshiriq qo`shish</button></p>
+                    <div id="tasks">
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -235,7 +329,7 @@ use yii\widgets\ActiveForm;
 
     </div>
     <div class="form-group">
-        <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Мурожаатни юбориш', ['class' => 'btn btn-success btn-block']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -337,7 +431,7 @@ $this->registerJs('
                 "serverSide": true,
 
                 "ajax": {
-                    "url":"/get/gettashkilot",
+                    "url":"/get/tasktashkilot",
                     "type":"post"
                 },
                 "columns": [
@@ -426,18 +520,19 @@ $(".buttonhodimadd").click(function(){
 $(".buttontashkilotadd").click(function(){
     var id = this.value;
 });
-tashkilotadd = function(id){
-    if($("#tashkilotid-"+id).length ){
+tashkilotadd = function(id,name){
+    if($("#appeal-task-company-"+id+"-name").length){
         console.log(1);
     }else{
-        var res = "<tr id=\"t"+id+"\"><td><button value=\"" + id + "\" type=\"button\" class=\"btn btn-danger\" onclick=\"deletetashkilotitem(\'"+id+"\')\"><span class=\"fa fa-trash\"></span></button></td><td>"+$(".trtashkilotlist"+id).text()+"</td></tr>"
-        $("#tablehomditashkilot").append(res);
-        this.disabled = true;
-        $("#users").append("<input type=\"text\" id=\"tashkilotid-"+id+"\" name=\"AppealRegister[tashkilot][]\" value=\""+id+"\">");
+        var res = \'<div class="row" id="task-\'+id+\'"><div class="col-md-4"><div class="form-group field-appeal-task-company-\'+id+\'-name"><label class="control-label" for="appeal-task-company-\'+id+\'-name">Ташкилот номи</label><input type="text" id="appeal-task-company-\'+id+\'-name" disabled value="\'+name+\'" class="form-control" name="Appeal[task][company][\'+id+\'][name]"></div></div><div class="col-md-7"><div class="form-group field-appeal-task-company-\'+id+\'-task"><label class="control-label" for="appeal-task-company-\'+id+\'-task">Топшириқ матни</label><input type="text" id="appeal-task-company-\'+id+\'-task" value="Мурожаатни кўриб чиқиб, кўтарилган масалани ўрнатилган тартибда ҳал қилиб, натижаси ҳақида муаллифга жавоб хати тайёрлансин." class="form-control" name="Appeal[task][company][\'+id+\'][task]"></div></div><div class="col-md-1"><button class="btn btn-danger form-control buttonremovetask" type="button" onclick="removetask(\'+id+\')"><span class="fa fa-trash"></span></button></div></div>\';
+        
+        $("#tasks").append(res);
     }
     
 }
-
+removetask = function(id){
+    $("#task-"+id).remove();
+}
 
 deleteitem = function(id){
     $("#u"+id).remove();
@@ -472,3 +567,10 @@ $this->registerJs("
     })
 ")
 ?>
+
+
+<?php if(false){?>
+
+<div class="row" id="task-\'+id+\'"><div class="col-md-5"><div class="form-group field-appeal-task-company-\'+id+\'-name"><label class="control-label" for="appeal-task-company-\'+id+\'-name">Ташкилот номи</label><input type="text" id="appeal-task-company-\'+id+\'-name" value="\'+name+\'" class="form-control" name="Appeal[task][company][\'+id+\'][name]"></div></div><div class="col-md-6"><div class="form-group field-appeal-task-company-\'+id+\'-task"><label class="control-label" for="appeal-task-company-\'+id+\'-task">Топшириқ матни</label><input type="text" id="appeal-task-company-\'+id+\'-task" value="Мурожаатни кўриб чиқиб, кўтарилган масалани ўрнатилган тартибда ҳал қилиб, натижаси ҳақида муаллифга жавоб хати тайёрлансин." class="form-control" name="Appeal[task][company][\'+id+\'][task]"></div></div><div class="col-md-1"><button class="btn btn-danger form-control buttonremovetask" type="button" onclick="removetask(\'+id+\')"><span class="fa fa-trash"></span></button></div></div>
+
+<?php }?>

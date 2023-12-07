@@ -90,42 +90,11 @@ class AppealController extends Controller
     {
         $searchModel = new AppealRegisterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$stat=new AppealBajaruvchiSearch();
         $user = \Yii::$app->user->identity;
         $query = AppealRegister::find()->where(['appeal_register.company_id'=>$user->company_id])
             ->innerJoin('appeal','appeal.id=appeal_register.appeal_id');
-        if(Yii::$app->request->isPost) {
 
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
-            $n = 0;
-            $sheet->setCellValue('A1', '№');
-            $sheet->setCellValue('B1', 'Ташкилот номи');
-//            $sheet->setCellValue('C1', 'Логин');
-//            $sheet->setCellValue('D1', 'Парол');
-//            $sheet->setCellValue('E1', 'Тўлов ҳолати');
-//            $sheet->setCellValue('F1', 'Телефон');
-//            $sheet->setCellValue('G1', 'Туман');
-            foreach ($query->all() as $item) {
-                $n++;
-                $m = $n + 1;
-                $sheet->setCellValue('A' . $m, $n);
-                $sheet->setCellValue('B' . $m, $item->appeal->person_name);
-//                $sheet->setCellValue('C' . $m, $item->inn);
-//                $sheet->setCellValue('D' . $m, '1111');
-//                $sheet->setCellValue('E' . $m, $item->paid == 1 ? 'Тўлов қилинган' : 'Тўланмаган');
-//                $sheet->setCellValue('F' . $m, $item->phone);
-//                $sheet->setCellValue('G' . $m, $item->district_id);
-            }
-            $spreadsheet->getActiveSheet()->getStyle("A1:C".$n)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setHorizontal('center');
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setVertical('center');
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN".$n)->getAlignment()->setWrapText(true);
-            $writer = new Xlsx($spreadsheet);
-//            $writer->save("php://output");
-
-            $writer->save('murojaatlar.xlsx');
-            Yii::$app->response->sendFile('murojaatlar.xlsx');
-        }
         if($status == 0){
             $dataProvider = $searchModel->searchRegister(Yii::$app->request->queryParams,$type);
         }elseif($status == 1){
@@ -208,9 +177,14 @@ class AppealController extends Controller
         return $this->render('list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'stat'=>$stat,
         ]);
     }
 
+    public function actionSupport()
+    {
+        return $this->render('support');
+    }
     public function actionExport()
     {
         $model = new Request();
@@ -270,6 +244,10 @@ class AppealController extends Controller
 
     public function actionView($id,$ans = 0){
         $register = AppealRegister::findOne($id);
+		if(!$register){
+			Yii::$app->session->setFlash('error','Bunday murojaat topilmadi.');
+			return $this->redirect(['index']);
+		}
         $model = Appeal::findOne($register->appeal_id);
         if(!$model->appeal_detail){
             $model->appeal_detail = "-";
@@ -362,17 +340,31 @@ class AppealController extends Controller
         $word->setValue('phone',strip_tags($model->person_phone));
         $word->setValue('deadline',$register->deadline.' кун '.$register->deadtime.' гача');
         $word->setValue('detail',strip_tags($model->appeal_detail));
-        $word->setValue('tocompany',Yii::$app->user->identity->company->name.'га');
-		
+        $word->setValue('tocompany',Yii::$app->user->identity->company->name);
+
+        foreach ($register->child as $item) {
+            $tashkilotga = $item->company->name;
+        }
+        $word->setValue('tashkilotga',$tashkilotga);
+
+        foreach ($register->child as $item) {
+            $tashkilotga2 = $item->company->name;
+            if ($tashkilotga == $tashkilotga2) {
+                $word->setValue('tashkilotga2','');
+            } else {
+                $word->setValue('tashkilotga2',$tashkilotga2);
+            }
+        }
+        
         $fileName = 'e-murojaat.uz_'.$register->id.'.docx';
         $fullname = Yii::$app->basePath.'/web/template/temp/e-murojaat.uz_'.$register->id.'.docx';
-		
+
         $word->saveAs($fullname);
-		
+
         //header('Content-Disposition: attachment; name=' . $fullname);
         $file = fopen($fullname, 'r+');
         Yii::$app->response->sendFile($fullname, $fileName, ['inline' => false, 'mimeType' => 'application/word'])->send();
-        
+
         exit;
     }
 
@@ -383,6 +375,7 @@ class AppealController extends Controller
         $model->appeal_id = $register->appeal_id;
         $model->company_id = $id;
         $model->deadtime = $register->deadtime;
+        
         if(AppealBajaruvchi::find()->where(['company_id'=>$id])->andWhere(['appeal_id'=>$model->appeal_id])->andWhere(['register_id'=>$register->id])->one()){
             return "Ушбу ташкилотга аввал мурожаат юборилган";
         }
@@ -572,6 +565,7 @@ class AppealController extends Controller
 
 
 
+
     public function actionAnswer($id,$ansid=0){
 
         $register = AppealRegister::findOne($id);
@@ -665,14 +659,25 @@ class AppealController extends Controller
             if(!$model->soato_id){
                 $model->soato_id = "17".$model->region_id.$model->district_id;
             }
+            Yii::$app->db->beginTransaction();
+
             if($model->save()){
 
                 $register->appeal_id = $model->id;
-                $tashkilot = isset($register->tashkilot) ? $register->tashkilot : [];
+                $tashkilot = [];
+                if($model->task){
+                    if(array_key_exists('company',$model->task)){
+                        $tashkilot = $model->task['company'];
+                    }
+                }
+
+
+
                 $register->control_id = 1;
                 $register->users = json_encode($register->users);
                 $register->tashkilot = json_encode($register->tashkilot);
                 try {
+
                     $register->save();
                     $task = new TaskEmp();
                     $task->appeal_id = $model->id;
@@ -692,31 +697,34 @@ class AppealController extends Controller
                     $task->task = '-';
                     $task->status = 0;
                     $task->save();
-                    if(count($tashkilot)>0){
-                        foreach ($tashkilot as $user) {
-                            $baj = new AppealBajaruvchi();
-                            $baj->company_id = $user;
-                            $baj->appeal_id = $model->id;
-                            $baj->register_id = $register->id;
-                            $baj->deadtime = $register->deadtime;
-                            $baj->deadline = $register->deadline;
-                            $baj->letter = $model->letter;
-                            $baj->save();
 
-                            $baj = null;
-                        }
+                    foreach ($tashkilot as $key=>$user) {
+                        $baj = new AppealBajaruvchi();
+                        $baj->company_id = $key;
+                        $baj->appeal_id = $model->id;
+                        $baj->register_id = $register->id;
+                        $baj->deadtime = $register->deadtime;
+                        $baj->deadline = $register->deadline;
+                        $baj->sender_id = $task->sender_id;
+                        $baj->letter = "";
+                        $baj->task = $user['task'];
+                        $baj->save();
+
+                        $baj = null;
                     }
+
+
+                    Yii::$app->db->transaction->commit();
                     return $this->redirect(['view','id'=>$register->id]);
                 }catch (\Exception $e){
-                    $bar = AppealBajaruvchi::find()->where(['appeal_id'=>$model->id])->all();
-                    foreach ($bar as $it){$it->delete();}
-                    $model->delete();
+                    Yii::$app->db->transaction->rollBack();
+
                 }
 
             }else{
-                echo "<pre>";
-                var_dump($model);
-                exit;
+                Yii::$app->db->transaction->rollBack();
+
+               
             }
 
         }
@@ -1228,7 +1236,7 @@ class AppealController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-	
+
 	public function actionIndexhokall(){
         $searchModel = new AppealSearch();
         $dataProvider = $searchModel->searchVillages(Yii::$app->request->queryParams);
@@ -1364,5 +1372,17 @@ class AppealController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionCancel($id){
 
+        $status=3;
+
+$model=Request::findOne($id);
+        if($model->load(Yii::$app->request->post())){
+            $model->status_id= 3;
+            $model->save();
+        }
+//        return $this->redirect(['/appeal/viewrequest','id'=>$id]);
+        return $this->redirect(['/appeal/request?do=reject']);
+
+    }
 }

@@ -9,6 +9,7 @@ use yii\widgets\DetailView;
 /* @var $register app\models\AppealRegister */
 /* @var $answer app\models\AppealAnswer */
 /* @var $ans app\models\AppealAnswer */
+/* @var $request app\models\Request */
 
 $this->title = $model->person_name;
 $this->params['breadcrumbs'][] = ['label' => 'Мурожаатлар', 'url' => ['index']];
@@ -120,19 +121,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'region_id',
                                 'value'=>function($d){
-                                    return $d->region->name;
+                                    return $d->region;
                                 }
                             ],
                             [
                                 'attribute'=>'district_id',
                                 'value'=>function($d){
-                                    return $d->district->name;
+                                    return $d->district;
                                 }
                             ],
                             [
                                 'attribute'=>'village_id',
                                 'value'=>function($d){
-                                    return @$d->village->name;
+                                    return @$d->village->name_cyr;
                                 }
                             ],
                             'address',
@@ -309,7 +310,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute'=>'status_id',
                                     'value'=>function($d){return $d->status->name;},
-                                    'filter'=>\yii\helpers\ArrayHelper::map(\app\models\RequestStatus::find()->all(),'id','name')
+                                    'filter'=>\yii\helpers\ArrayHelper::map(\common\models\RequestStatus::find()->all(),'id','name')
                                 ],
                                 //'ads',
                                 'created',
@@ -333,17 +334,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div id="deni" class="collapse" style="margin-top: 20px; padding: 20px;border: 1px solid #dc3545;" data-parent="#accordion">
 
-                    <?php
-                    $com = new \app\models\RequestIgnore();
-                    $com->request_id = $request->id;
-                    $com->status_id = 3;
-                    $form = ActiveForm::begin();?>
-                        <?= $form->field($com,'detail')->textInput()->textInput()->label('Изоҳ')?>
-                        <button class="btn btn-success" type="submit">
-                            Жавобни рад қилиш
-                        </button>
-                    <?php ActiveForm::end()?>
+                    <?php $form = ActiveForm::begin(['id' => 'update-form','method'=>'post',
+                        'action' => ['/appeal/cancel', 'id' => $request->id],]);?>
+                    <?= $form->field($request, 'ignore_ads') ?>
+                    <?= $form->field($request, 'id')->hiddenInput(['value'=>$request->id])->label(false) ?>
 
+                    <div class="form-group">
+                        <div class="col-lg-offset-1 col-lg-11">
+                            <?= Html::submitButton('Сақлаш', ['class' => 'btn btn-primary']) ?>
+                        </div>
+                    </div>
+                    <?php ActiveForm::end() ?>
                 </div>
 
             </div>

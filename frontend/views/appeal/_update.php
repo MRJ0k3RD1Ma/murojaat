@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Сақлар', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Маълумотларни сақлаш', ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

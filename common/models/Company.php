@@ -36,8 +36,9 @@ use Yii;
  */
 class Company extends \yii\db\ActiveRecord
 {
-    public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect,$region_id,$district_id;
-    public $shakl1,$jami,$shakl2,$shakl3,$shakl4,$shakl5,$shakl6,$shakl7,$shakl8,$shakl9,$shakl10,$nazoratda,$chora,$tushin,$rad,$kor,$tak,$date;
+    public $cntall,$cntzero,$cntone,$cnttwo,$cnttree,$cntfour,$cntdead,$cntwithdead,$cnt0,$cnt1,$cnt2,$cnt3,$cnt4,$cnt5,$redirect,$region_id,$district_id,$cnti,$cntt;
+    public $shakl1,$jami,$shakl2,$shakl3,$shakl4,$shakl5,$shakl6,$shakl7,$shakl8,$shakl9,$shakl10,$nazoratda,$chora,$tushin,$rad,$kor,$tak,$date,$shakl11;
+    public $cnt_6,$cnt_7,$cnt_8,$cnt_9,$cnt_10,$cnt_11,$cnt_nazorat,$cnt_dead,$cnt_done_dead;
     /**
      * {@inheritdoc}
      */
@@ -57,6 +58,7 @@ class Company extends \yii\db\ActiveRecord
             [['location', 'ads','cadastre'], 'string'],
             [['inn', 'name', 'director', 'phone', 'telegram', 'phone_director', 'address', 'lat', 'long', 'cadastre'], 'string', 'max' => 255],
             [['inn'], 'unique'],
+            [["cnt_6","cnt_7","cnt_8","cnt_9","cnt_10","cnt_11","cnt_nazorat","cnt_dead","cnt_done_dead"],'integer'],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompanyStatus::class, 'targetAttribute' => ['status_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompanyType::class, 'targetAttribute' => ['type_id' => 'id']],
@@ -94,12 +96,23 @@ class Company extends \yii\db\ActiveRecord
             'cnttwo' => 'Бажарилган',
             'cntdead' => 'Муддати бузилган',
             'cntwithdead' => 'Муддати бузилиб бажарилган',
-            'cnt0' => 'Кўрилмаган',
-            'cnt1' => 'Янги',
+            'cnt0' => 'Янги',
+            'cnt1' => 'Таснифланмаган',
             'cnt2' => 'Жараёнда',
             'cnt3' => 'Тасдиқланиши кутилмоқда',
             'cnt4' => 'Бажарилган',
-            'cnt5' => 'Рад этилган',
+            'cnt5' => 'Натижа рад этилган',
+            'cnt_5'=>'Натижаси Рад этилган',
+            'cnt_6'=>'Ижобий хал этилди',
+            'cnt_7'=>'Чоралар кўрилди',
+            'cnt_8'=>'Тушунтирилди',
+            'cnt_9'=>'Мурожаат рад этилган',
+            'cnt_10'=>'Маълумот учун',
+            'cnt_11'=>'Кўрмасдан қолдирилди',
+//            $cnt_dead,$cnt_done_dead
+            'cnt_dead'=>'Муддати ўтган',
+            'cnt_done_dead'=>'Муддати ўтиб ёпилган',
+            'cnt_nazorat'=>'Назоратга олинган',
             'paid' => 'Тўланган',
             'paid_date' => 'Тўлов санаси',
             'region_id'=>'Вилоят',

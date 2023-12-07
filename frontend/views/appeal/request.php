@@ -30,6 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'detail',
                                 'value'=>function($d){
                                     $res = mb_substr($d->detail,0,100);
+									if(!$res){
+										$res = "(qiymatlanmagan)";
+									}
                                     $url = Yii::$app->urlManager->createUrl(['/appeal/viewrequest','id'=>$d->id]);
                                     return "<a href='{$url}'>{$res}</a>";
                                 },

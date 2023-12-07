@@ -181,7 +181,7 @@ class AppealRegisterSearch extends AppealRegister
         $user = \Yii::$app->user->identity;
         $query = AppealRegister::find()->where(['appeal_register.company_id'=>$user->company_id])
             ->innerJoin('appeal','appeal.id=appeal_register.appeal_id');
-        //dead running closed;
+        
         if($type == 'running'){
             $query->andWhere(['<>','appeal_register.status',4]);
 
@@ -203,13 +203,7 @@ class AppealRegisterSearch extends AppealRegister
         ]);
 
         $this->load($params);
-        $st = "1";
-        switch ($this->sts){
-            case "2": $st = 'appeal_register.status = 2'; break;
-            case "3": $st = 'appeal_register.status <> 2'; break;
-            case "4": $st = 'appeal_register.status <> 2 and appeal_register.deadtime<date(now())'; break;
-        }
-        $query->andWhere($st);
+       
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -217,12 +211,6 @@ class AppealRegisterSearch extends AppealRegister
             return $dataProvider;
         }
 
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
 
         // grid filtering conditions
         $query->andFilterWhere([

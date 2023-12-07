@@ -43,10 +43,8 @@ class VVillageProblemSearch extends VVillageProblem
         $region_id = Yii::$app->user->identity->company->soato_id;
         $query = VVillageProblem::find()->select(['v_village_problem.*'])
             ->innerJoin('v_village','v_village.id=v_village_problem.village_id')
-            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")')
-            ->orderBy(['v_village_problem.village_id'=>SORT_DESC])
+            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")');
         ;
-
 
         // add conditions that should always apply here
 
@@ -78,48 +76,4 @@ class VVillageProblemSearch extends VVillageProblem
 
         return $dataProvider;
     }
-
-
-    public function searchNottask($params)
-    {
-        $region_id = Yii::$app->user->identity->company->soato_id;
-        $query = VVillageProblem::find()->select(['v_village_problem.*'])
-            ->innerJoin('v_village','v_village.id=v_village_problem.village_id')
-            ->where('v_village.soato_id in (select id from mahalla_view where id like "%'.$region_id.'%")')
-            ->andWhere(['<','status_id',3])
-            ->orderBy(['v_village_problem.village_id'=>SORT_DESC])
-        ;
-
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'village_id' => $this->village_id,
-            'year' => $this->year,
-            'type_id' => $this->type_id,
-            'status_id' => $this->status_id,
-            'ranges' => $this->ranges,
-        ]);
-
-        $query->andFilterWhere(['like', 'kinship', $this->kinship])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'detail', $this->detail]);
-
-        return $dataProvider;
-    }
-
 }

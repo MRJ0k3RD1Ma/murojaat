@@ -105,16 +105,34 @@ public function searchMytask($params)
         $uid = Yii::$app->user->id;
 
         $query = Company::find()->select(['company.*',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cntall',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=0 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt0',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=1 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt1',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=2 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt2',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=3 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt3',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=4 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt4',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.status=5 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cnt5',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.deadtime<date(now()) and appeal_bajaruvchi.status<>4 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cntdead',
-            '(select count(appeal_bajaruvchi.sender_id) from appeal_bajaruvchi WHERE appeal_bajaruvchi.deadtime<date(now()) and appeal_bajaruvchi.status=4 and appeal_bajaruvchi.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cntwithdead',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cntall',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=0 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt0',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=1 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt1',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=2 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt2',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=3 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt3',
+//            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=4 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt4',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.control=2 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnti',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.control=4 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cntt',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.status=5 and appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id) as cnt5',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.deadtime<date(now()) and appeal_register.status<>4 and appeal_register.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cntdead',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.deadtime<date(now()) and appeal_register.status=4 and appeal_register.sender_id ='.$uid.' and appeal_bajaruvchi.company_id=company.id) as cntwithdead',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 0) as cnt_nazorat',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 2) as cnt_6',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 3) as cnt_7',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 4) as cnt_8',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 5) as cnt_9',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 6) as cnt_10',
+            '(select count(appeal_register.sender_id) from appeal_register WHERE appeal_register.sender_id ='.$uid.' and appeal_register.company_id=company.id and appeal_register.control_id <> 7) as cnt_11',
 
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id <> 0) as cnt_nazorat',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 2) as cnt_6',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 3) as cnt_7',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 4) as cnt_8',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 5) as cnt_9',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 6) as cnt_10',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.control_id = 7) as cnt_11',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.status = 2 and deadtime<date(now())) as cnt_dead',
+//            '(select count(*) from appeal_register WHERE appeal_register.rahbar_id=user.id and appeal_register.status = 4 and deadtime<donetime ) as cnt_done_dead',
         ])
             ->orderBy(['cntall'=>SORT_DESC]);
         // add conditions that should always apply here
@@ -169,8 +187,29 @@ public function searchMytask($params)
             '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=2) AS cnt2',
             '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=3) AS cnt3',
             '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=4) AS cnt4',
+//            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_register.control_id=4 and appeal_bajaruvchi.status=4) AS cntt',
             '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status=5) AS cnt5',
-            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id WHERE appeal_bajaruvchi.company_id=company.id AND appeal_register.company_id='.$cid.' and appeal_bajaruvchi.status<>4 and appeal_bajaruvchi.deadtime<date(now())) AS cntdead',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi 
+            INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id 
+            WHERE appeal_bajaruvchi.company_id=company.id 
+            AND appeal_register.company_id='.$cid.' 
+            AND appeal_bajaruvchi.status<>4 
+            AND appeal_bajaruvchi.deadtime<date(now())) AS cntdead',
+            '(select count(appeal_bajaruvchi.id) FROM appeal_bajaruvchi 
+            INNER JOIN appeal_register ON appeal_bajaruvchi.register_id = appeal_register.id 
+            WHERE appeal_bajaruvchi.company_id=company.id 
+            AND appeal_register.company_id='.$cid.' 
+            AND appeal_bajaruvchi.status=4 
+            AND appeal_bajaruvchi.deadtime<date(now())) AS cntwithdead',
+
+            "(select count(*) FROM appeal_register WHERE appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_nazorat",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 2 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_6",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 3 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_7",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 4 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_8",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 5 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_9",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 6 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_10",
+            "(select count(*) FROM appeal_register WHERE appeal_register.control_id = 7 and appeal_register.parent_bajaruvchi_id in (select id from appeal_bajaruvchi where appeal_bajaruvchi.company_id = company.id and appeal_bajaruvchi.sender_id in (select user.id from user where user.company_id={$cid}) )) as cnt_11",
+
         ])->innerJoin('appeal_bajaruvchi ab','company.id = ab.company_id ')
         ->innerJoin('appeal_register ar','ab.register_id = ar.id')
         ->where(['ar.company_id'=>$cid])->groupBy(['company.id'])->orderBy(['cntall'=>SORT_DESC]);

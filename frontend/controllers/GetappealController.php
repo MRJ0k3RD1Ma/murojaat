@@ -93,7 +93,7 @@ class GetappealController extends Controller
         $document->setValue('${quest}', $appeal->question->group->code.' - '.$appeal->question->code);
         $document->setValue('${arizachi}', $appeal->person_name);
         $document->setValue('${jismyur}', $jism[$appeal->isbusinessman]);
-        $document->setValue('${address}', $appeal->region->name_cyr.' '.$appeal->district->name_cyr.' '.$appeal->village->name_cyr.' '.$appeal->address);
+        $document->setValue('${address}', $appeal->region.' '.$appeal->district.' '.$appeal->village->name_cyr.' '.$appeal->address);
         $document->setValue('${phone}', $appeal->person_phone);
         $document->setValue('${indate}', $reg->date);
         $document->setValue('${mc}', $appeal->count_applicant);

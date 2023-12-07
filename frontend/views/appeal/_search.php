@@ -44,14 +44,19 @@ $form = ActiveForm::begin([
     <div class="col-md-4">
         <?= $form->field($searchModel, 'address')->textInput(['maxlength' => true])->label('Манзил') ?>
     </div>
-
-
     <div class="col-md-4">
         <?= $form->field($searchModel, 'control_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealControl::find()->all(),'id','name'),[
             'prompt'=>'Назорат турини танланг'
         ]) ?>
     </div>
 
+<!--    <div class="col-md-4">-->
+<!--        --><?//= $form->field($searchModel, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг'])->label(false)?>
+<!--    </div>-->
+
+    <div class="col-md-4">
+        <?= $form->field($searchModel, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\DistrictView::find()->where(['region_id'=>33])->all(),'id','name_cyr'),['prompt'=>'Туманни танланг'])->label(false) ?>
+    </div>
 </div>
 
 <div class="form-group">

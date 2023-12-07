@@ -30,8 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute'=>'name',
                                 'value'=>function($d){
-                                    $url = Yii::$app->urlManager->createUrl(['/site/complist','id'=>$d->id]);
-                                    return "<a href='{$url}'>{$d->name}</a>";
+                                   // $url = Yii::$app->urlManager->createUrl(['/site/complist','id'=>$d->id]);
+                                    //return "<a href='{$url}'>{$d->name}</a>";
+									return $d->name;
                                 },
                                 'format'=>'raw'
                             ],

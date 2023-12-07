@@ -20,7 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <a href="" class="btn btn-danger" data-method="post"><span class="fa fa-file-excel"></span> Эхпорт</a>
                     </div>
                 </div>
-                <div class="card-body">
+<!--                --><?php
+//
+//                echo "<pre>";
+//var_dump($dataProvider);
+//exit;
+//?>
+                <div class="card-body table-responsive">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -43,6 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'cnt4',
                             'cnt5',
                             'cntdead',
+                            'cntwithdead',
+                            'cnt_nazorat',
+                            'cnt_6',
+                            'cnt_7',
+                            'cnt_8',
+                            'cnt_9',
+                            'cnt_10',
+                            'cnt_11',
                         ],
                     ]); ?>
                 </div>

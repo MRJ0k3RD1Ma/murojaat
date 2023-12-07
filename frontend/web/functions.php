@@ -144,19 +144,32 @@ function changeCompany($id){
 
 function deleteTask($tid){
     $task = AppealBajaruvchi::findOne($tid);
+
     $register = \common\models\AppealRegister::find()->where(['parent_bajaruvchi_id'=>$task->id])
         ->andWhere(['company_id'=>$task->company_id])
-    ->andWhere(['appeal_id'=>$task->appeal_id])->one();
+        ->andWhere(['appeal_id'=>$task->appeal_id])->one();
+
+
 
     foreach (AppealBajaruvchi::find()->where(['register_id'=>$register->id])->all() as $item){
         deleteTask($item->id);
     }
 
-    $ans = \common\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
-    foreach ($ans as $item){
+
+
+    // task_emp o'chirish kerak
+    foreach (TaskEmp::find()->where(['appeal_id'=>$task->appeal_id,'register_id'=>$register->id])->all() as $item){
         $item->delete();
     }
-    $register->delete();
-    $task->delete();
+
+
+    $ans = \common\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
+    foreach ($ans as $item){
+        $item->delete(false);
+    }
+    $register->delete(false);
+
+    $task->delete(false);
+
 }
 ?>

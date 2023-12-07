@@ -5,6 +5,7 @@ use common\models\Appeal;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\VarDumper;
+use yii\widgets\ActiveForm;
 
 /* @var $name string*/
 /* @var $users \common\models\User*/
@@ -12,6 +13,7 @@ use yii\helpers\VarDumper;
 /* @var $jami array*/
 $this->title = 'Ҳисоботлар шакллантириш';
 $this->params['breadcrumbs'][] = $this->title;
+$dataProvider=new \common\models\Appeal()
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -32,7 +34,33 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-body">
                 <p>2023 йил <?= Yii::$app->user->identity->company->name ?>га  жисмоний ва юридик шахслардан тушган ва назоратга олинган мурожаатларни кўриб чиқиш натижалари тўғрисида маълумот</p>
-                <a href="" data-method="post" class="btn btn-info"><i class="fa fa-file-excel"></i> Экспорт</a>
+ <?php
+
+                $form = ActiveForm::begin([
+                    'method' => 'post',
+                    'id' => 'active-form',
+                    'options' => [
+                        'class' => 'form-horizontal',
+                        'enctype' => 'multipart/form-data'
+                    ],
+                ]);
+                ?>
+                <div class="row">
+                    <div class="col-md-4">
+                        <?=$form->field($dataProvider, 'start')->textInput(['type'=>'date'])->label('boshlanish kuni');?>
+                    </div>
+                    <div class="col-md-4">
+                        <?= $form->field($dataProvider, 'end')->textInput(['type'=>'date'])->label('tugash kuni');?>
+                    </div>
+                    <div class="col-md-4" style="display: flex; padding: 29px;">
+                        <?=Html::submitButton('yuborish', ['class' => 'btn btn-primary mr-2']);?>
+                        <a href="" data-method="post" class="btn btn-info mr-3"><i class="fa fa-file-excel"></i> Экспорт</a>
+                    </div>
+                </div>
+                <?php
+                ActiveForm::end();
+?>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -86,6 +114,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $ak=0;
                             $ata=0;
                             $ama=0;
+                            $acha=0;
+                            $apk=0;
                           ?>
                             <tr>
                                 <th><?= $n?></th>
@@ -96,18 +126,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                         {  if ( $a->question_id !== NULL)
                                             { if ($a->question->group->id == $item->id)
                                                 {$aa=$aa+1;
-                                                    if ($a->appeal_shakl_id==1){$at=$at+1;}
-                                                    if ($a->appeal_shakl_id==2){$ax=$ax+1;}
-                                                    if ($a->appeal_shakl_id==3){$ao=$ao+1;}
-                                                    if ($a->appeal_shakl_id==4){$ae=$ae+1;}
-                                                    if ($a->appeal_shakl_id==5){$as=$as+1;}
-                                                    if ($a->appeal_shakl_id==6){$ai=$ai+1;}
-                                                    if ($a->appeal_shakl_id==7){$am=$am+1;}
-                                                    if ($a->appeal_shakl_id==8){$av=$av+1;}
-                                                    if ($a->appeal_shakl_id==9){$apr=$apr+1;}
-                                                    if ($a->appeal_shakl_id==10){$ap=$ap+1;}
+                                                    if ($a->appeal->appeal_shakl_id==1){$at=$at+1;}
+                                                    if ($a->appeal->appeal_shakl_id==2){$ax=$ax+1;}
+                                                    if ($a->appeal->appeal_shakl_id==3){$ao=$ao+1;}
+                                                    if ($a->appeal->appeal_shakl_id==4){$ae=$ae+1;}
+                                                    if ($a->appeal->appeal_shakl_id==5){$as=$as+1;}
+                                                    if ($a->appeal->appeal_shakl_id==6){$ai=$ai+1;}
+                                                    if ($a->appeal->appeal_shakl_id==7){$am=$am+1;}
+                                                    if ($a->appeal->appeal_shakl_id==8){$av=$av+1;}
+                                                    if ($a->appeal->appeal_shakl_id==9){$apr=$apr+1;}
+                                                    if ($a->appeal->appeal_shakl_id==10){$ap=$ap+1;}
+                                                    if ($a->appeal->appeal_shakl_id==11){$apk=$apk+1;}
                                                     if ($a->status>=2 && $a->status<=4){$ab=$ab+1;}
                                                     if ($a->status==4){$ach=$ach+1;}
+                                                    if ($a->status==3){$acha=$acha+1;}
                                                     if ($a->status==5){$ar=$ar+1;}
                                                     if ($a->status==2 || $a->status==3){$ak=$ak+1;}
                                                     foreach ($arr as $i){
@@ -136,19 +168,21 @@ $ama=$ama+1;
                                 <td><?=$av?></td>
                                 <td><?=$apr?></td>
                                 <td><?=$ap?></td>
+                                <td><?=$apk?></td>
                                 <td><?=$ab?></td>
+                                <td><?=$acha?></td>
                                 <td><?=$ach?></td>
-                                <td>0</td>
                                 <td><?=$ar?></td>
                                 <td><?=$ak?></td>
                                 <td><?=$ata?></td>
                                 <td><?=$ama?></td>
 
+
                             </tr>
                         <?php endforeach;?>
                         </tbody>
                     </table>
-    
+
 
 
                 </div>

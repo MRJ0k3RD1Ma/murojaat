@@ -37,7 +37,7 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    public $access,$cnt,$cnt_0,$cnt_1,$cnt_2,$cnt_3,$cnt_4,$cnt_5,$bulim_name,$lavozim_name;
+    public $access,$cnt,$cnt_0,$cnt_1,$cnt_2,$cnt_3,$cnt_4,$cnt_5,$bulim_name,$lavozim_name,$cnt_6,$cnt_7,$cnt_8,$cnt_9,$cnt_10,$cnt_11,$cnt_nazorat,$cnt_dead,$cnt_done_dead;
     /**
      * {@inheritdoc}
      */
@@ -101,7 +101,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'cnt_2'=>'Жараёнда',
             'cnt_3'=>'Тасдиқланиши кутилмоқда',
             'cnt_4'=>'Бажарилган',
-            'cnt_5'=>'Рад этилган',
+            'cnt_5'=>'Натижаси Рад этилган',
+            'cnt_6'=>'Ижобий хал этилди',
+            'cnt_7'=>'Чоралар кўрилди',
+            'cnt_8'=>'Тушунтирилди',
+            'cnt_9'=>'Мурожаат рад этилган',
+            'cnt_10'=>'Маълумот учун',
+            'cnt_11'=>'Кўрмасдан қолдирилди',
+//            $cnt_dead,$cnt_done_dead
+            'cnt_dead'=>'Муддати ўтган',
+            'cnt_done_dead'=>'Муддати ўтиб ёпилган',
+            'cnt_nazorat'=>'Назоратга олинган',
             'bulim_name'=>'Бўлим',
             'lavozim_name'=>'Лавозим',
         ];

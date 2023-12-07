@@ -13,6 +13,9 @@ use yii\helpers\Html;
 <html lang="<?= Yii::$app->language ?>"  style="background: #cfd2e1"  class="h-100">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="application/vnd.wap.xhtml+xml; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -305,10 +308,117 @@ use yii\helpers\Html;
                 margin-bottom: 0px;
             }
         }
+
+        .bottom{
+            text-align: center;
+
+        }
+        .bottom a{
+            padding:0 5px;
+            color: white;
+        }
+        .sign {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .sign button {
+            text-transform: capitalize;
+        }
+
+        .sign div {
+            display: inline-block;
+        }
+
+        .login-form .form {
+            width: 100%;
+        }
+
+        .login-form .form .input {
+            width: 100%;
+            position: relative;
+
+        }
+
+        .logos .text {
+            font-size: 18px;
+            color: white;
+        }
+
+        .login-form .form .input input {
+            padding-left: 50px;
+            font-size: .96rem;
+            font-weight: 400;
+            line-height: 1.25;
+            color: #4e5154;
+            background-color: transparent !important;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: 5px
+
+        }
+
+        .login-form .form .input input:focus {
+            outline: none;
+        }
+
+        .login-form .form .input span {
+            top: 50%;
+            transform: translate(-50%, -50%);
+            left: 30px;
+            position: absolute;
+            font-size: 20px;
+
+        }
+
+        .login-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            height: 100vh;
+            backdrop-filter: blur(10px);
+            background: #00000059;
+            justify-content: center;
+            background-size: cover;
+        }
+
+        .login {
+            margin-top: 10px;
+            max-width: 700px;
+
+        }
+
+        .logos {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+
+        }
+
+        .logos .img {
+            width: 100px;
+            margin-right: 20px;
+        }
+
+        .logos .img img {
+            width: 100px !important;
+            object-fit: cover;
+        }
+
+        .login-form {
+            margin-bottom: 50px;
+            padding: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0px 20px 60px #def1ff;
+        }
     </style>
 
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100" style="height: auto;background: url(/theme/dist/img/murojaat_bg.jpg);background-size: cover;">
 <?php $this->beginBody() ?>
 
 <?= $content ?>
@@ -317,7 +427,7 @@ use yii\helpers\Html;
 <?php
 if (Yii::$app->session->hasFlash('error')) {
     $txt = Yii::$app->session->getFlash('error');
-    $xato = Yii::t('reg', 'Xatolik');
+    $xato = 'Xatolik';
     $this->registerJs("
         $(document).ready(function(){
             Swal.fire({
@@ -331,7 +441,7 @@ if (Yii::$app->session->hasFlash('error')) {
 }
 if (Yii::$app->session->hasFlash('success')) {
     $txt = Yii::$app->session->getFlash('success');
-    $xato = Yii::t('reg', 'Muvvofaqiyatli');
+    $xato = 'Muvvofaqiyatli';
     $this->registerJs("
         $(document).ready(function(){
             Swal.fire({

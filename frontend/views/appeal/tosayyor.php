@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]) ?>
         <div class="row">
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">
                             Мурожаатчи маълумотлари
@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
 
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">
                             Мурожаат матни
@@ -81,7 +81,7 @@ use yii\widgets\ActiveForm;
         </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title">
                         Мурожаатни рўйхатга олиш

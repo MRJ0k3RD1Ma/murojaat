@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="card-body">
-                <p>2023 йил <?= Yii::$app->user->identity->company->name ?> раҳбарияти томонидан қабул қилинган жисмоний шахслар ва юридик шахслар вакиллари, кўриб чиқилган мурожаатлар тўғрисида маълумот</p>
+                <p>2023 йил <b><?= Yii::$app->user->identity->company->name ?></b> раҳбарияти томонидан қабул қилинган жисмоний шахслар ва юридик шахслар вакиллари, кўриб чиқилган мурожаатлар тўғрисида маълумот</p>
                 <div class="table-responsive">
 
                     <?= GridView::widget([
@@ -40,11 +40,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             'bulim_name',
                             'lavozim_name',
                             'cnt',
+                            'cnt_0',
                             'cnt_1',
                             'cnt_2',
                             'cnt_3',
                             'cnt_4',
                             'cnt_5',
+                            'cnt_nazorat',
+                            'cnt_6',
+                            'cnt_7',
+                            'cnt_8',
+                            'cnt_9',
+                            'cnt_10',
+                            'cnt_11',
+                            'cnt_dead',
+                            'cnt_done_dead',
+
                         ],
                     ]); ?>
 

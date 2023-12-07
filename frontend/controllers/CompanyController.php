@@ -49,8 +49,16 @@ class CompanyController extends Controller
             $sheet->setCellValue('F1', 'Жараёнда');
             $sheet->setCellValue('G1', 'Тасдиқланиши кутилмоқда');
             $sheet->setCellValue('H1', 'Бажарилган');
-            $sheet->setCellValue('I1', 'Рад этилган');
+            $sheet->setCellValue('I1', 'Натижа рад этилган');
             $sheet->setCellValue('J1', 'Муддати бузилган');
+            $sheet->setCellValue('K1', 'Муддати бузилиб бажарилган');
+            $sheet->setCellValue('L1', 'Назоратга олинган');
+            $sheet->setCellValue('M1', 'Ижобий хал этилди');
+            $sheet->setCellValue('N1', 'Чоралар кўрилди');
+            $sheet->setCellValue('O1', 'Тушунтирилди');
+            $sheet->setCellValue('P1', 'Мурожаат рад этилган');
+            $sheet->setCellValue('Q1', 'Маълумот учун');
+            $sheet->setCellValue('R1', 'Кўрмасдан қолдирилди');
             foreach ($dataProvider->query->all() as $item){
                 $n++;
                 $m = $n+1;
@@ -64,6 +72,15 @@ class CompanyController extends Controller
                 $sheet->setCellValue('H'.$m, $item->cnt4);
                 $sheet->setCellValue('I'.$m, $item->cnt5);
                 $sheet->setCellValue('J'.$m, $item->cntdead);
+                $sheet->setCellValue('K'.$m, $item->cntwithdead);
+                $sheet->setCellValue('L'.$m, $item->cnt_nazorat);
+                $sheet->setCellValue('M'.$m, $item->cnt_6);
+                $sheet->setCellValue('N'.$m, $item->cnt_7);
+                $sheet->setCellValue('O'.$m, $item->cnt_8);
+                $sheet->setCellValue('P'.$m, $item->cnt_9);
+                $sheet->setCellValue('Q'.$m, $item->cnt_10);
+                $sheet->setCellValue('R'.$m, $item->cnt_11);
+
             }
             $name = 'hisobot.xlsx';
             $writer = new Xlsx($speadsheet);
@@ -87,7 +104,7 @@ class CompanyController extends Controller
 
         if($com = Company::findOne($id)){
             $searchModel = new AppealBajaruvchiSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams,'company',$id);
+            $dataProvider = $searchModel->searchMy(Yii::$app->request->queryParams,'company',$id);
 
             if(Yii::$app->request->isPost){
 

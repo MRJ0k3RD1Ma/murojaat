@@ -194,6 +194,16 @@ $user = Yii::$app->user->identity;
                                             }
                                         ],
                                         [
+                                            'label'=>'Туман, Шахар',
+
+                                            'value'=>function($d){
+
+
+                                                return $d->appeal->district;
+                                            },
+                                            'format'=>'raw',
+                                        ],
+                                        [
                                             'attribute'=>'ijrochi_id',
                                             'value'=>function($d){
                                                 return isset($d->ijrochi) ? $d->ijrochi->name : '';
@@ -296,6 +306,8 @@ $user = Yii::$app->user->identity;
         </div>
     </div>
 </div>
+
+
 
 
 <style>

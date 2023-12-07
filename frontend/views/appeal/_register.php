@@ -291,8 +291,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($reg,'rahbar_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'))?>
 
                         <?= $form->field($reg,'ijrochi_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\User::find()->select(['user.*'])->where(['company_id'=>Yii::$app->user->identity->company_id])->innerJoin('user_acces_item','(user_acces_item.user_id=user.id and user_acces_item.access_id=1)')->all(),'id','name'),['prompt'=>'Масъул ижрочини танланг'])?>
-
-
                     </div>
 
                     <button class="btn btn-success">Қабул қилиш</button>

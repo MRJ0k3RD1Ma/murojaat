@@ -51,6 +51,19 @@ use yii\widgets\ActiveForm;
                         </h3>
                     </div>
                     <div class="card-body">
+
+                        <?php
+                        $quest = [];
+                        foreach (\common\models\AppealQuestionGroup::find()->all() as $item) {
+                            $quest[$item->code.'-'.$item->name] = [];
+                            foreach ($item->question as $i){
+                                $quest[$item->code.'-'.$item->name][$i->id] = $item->code.' '.$i->code.')'.$i->name;
+                            }
+                        }
+                        ?>
+                        <?= $form->field($model, 'question_id')->dropDownList($quest,['prompt'=>'Саволни танланг','class'=>'form-control js-select2']) ?>
+
+
                         <?= $form->field($model, 'appeal_shakl_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealShakl::find()->all(),'id','name'),['prompt'=>'Мурожаат шаклини танланг']) ?>
 
                         <?= $form->field($model, 'appeal_type_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\AppealType::find()->all(),'id','name'),['prompt'=>'Мурожаат турини танланг']) ?>

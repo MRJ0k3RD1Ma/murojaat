@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-body">
                 <p>2023 йил <?= Yii::$app->user->identity->company->name ?>га  жисмоний ва юридик шахслардан тушган ва назоратга олинган мурожаатларни кўриб чиқиш натижалари тўғрисида маълумот</p>
+				                <a href="" data-method="post" class="btn btn-info"><i class="fa fa-file-excel"></i> Экспорт</a>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -84,6 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><?= $item->shakl8 ?></td>
                             <td><?= $item->shakl9 ?></td>
                             <td><?= $item->shakl10 ?></td>
+                            <td><?= $item->shakl11 ?></td>
                             <td><?= $item->chora+$item->tushin+$item->rad+$item->kor ?></td>
                             <td><?= $item->chora ?></td>
                             <td><?= $item->tushin ?></td>

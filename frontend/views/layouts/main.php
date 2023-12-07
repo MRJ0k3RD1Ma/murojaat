@@ -26,7 +26,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" >
 <?php $this->beginBody() ?>
 <script>
     function filter() {
@@ -41,14 +41,13 @@ AppAsset::register($this);
     function close_export() {
 
     }
-
 </script>
 
 <div class="wrapper">
 
 
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-dark" style="background-color: #014e6c;">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -77,7 +76,7 @@ AppAsset::register($this);
 
                 <?php }?>
 
-                <li class="nav-item"><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregister'])?>" class="btn btn-success"><span class="fa fa-registered"></span> Рўйхатга олинмаган</a></li>
+                <!-- <li class="nav-item"><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregister'])?>" class="btn btn-success"><span class="fa fa-registered"></span> Рўйхатга олинмаган</a></li> -->
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -171,15 +170,14 @@ AppAsset::register($this);
                     <i class="far fa-bell"></i>
                     <span class="badge badge-warning navbar-badge mycolor"><?php
                         $cnt = \common\models\AppealBajaruvchi::find()->where(['<=','status',1])->andWhere(['company_id'=>Yii::$app->user->identity->company_id])->count('id');
-                        $cnt3 = \common\models\Appeal::find()->where(['type'=>3])->andWhere(['<','status',2])->count('id');
+
                         if(Yii::$app->user->identity->company_id == 1){
                             $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
-                            echo $cnt +  $cnt2 + $cnt3;
+                            echo $cnt +  $cnt2;
                         }else{
                             $cnt2 = \common\models\Appeal::find()->where(['type'=>1])->andWhere(['<','status',2])->count('id');
-                            echo $cnt + $cnt3;
+                            echo $cnt ;
                         }
-
                         ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -193,9 +191,6 @@ AppAsset::register($this);
                             <i class="fas fa-envelope mr-2"></i> <?= $cnt2 ?> та МФЙ орқали келган
                         </a>
                     <?php }?>
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/notregshtab'])?>" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> <?= $cnt3 ?> та штабдан келган
-                    </a>
 
                 </div>
             </li>
@@ -263,10 +258,10 @@ AppAsset::register($this);
         <!-- Brand Logo -->
         <div align="center">
             <br />
-            <img src="/logo_2.png" style="max-width: 80%;width: 100px;" alt="logo" />
+            <a href="/"><img src="/theme/dist/img/gerb_uzb.png" width="100" style="max-width: 80%;" alt="logo" title="Bosh sahifa" /></a>
             <br />
             <div style="padding: 10px;" class="brand-text text-white">
-                "E-MUROJAAT.UZ" автоматлаштирилган мурожаатлар мониторинги ахборот тизими
+                <b>E-MUROJAAT.UZ</b> автоматлаштирилган мурожаатлар мониторинги ахборот тизими
             </div>
         </div>
         <hr />
@@ -275,6 +270,21 @@ AppAsset::register($this);
         <div class="sidebar">
 
             <?=$this->render('_menu')?>
+
+            <hr />
+            <div class="nav-header text-center">Тел: +998 (62) 223-18-78</div>
+
+            <div  align="center">
+                <a href="https://t.me/emurojaatuz" target="_blank" class="telegram-button-link"><div class="telegram-button">
+                    <p>
+                        <i class="fab fa-telegram-plane"></i>
+                        Телеграм гуруҳга аъзо бўлинг
+                    </p>
+                </a>
+            </div>
+
+            </div>
+
         </div>
         <!-- /.sidebar -->
     </aside>
@@ -299,10 +309,70 @@ AppAsset::register($this);
     </aside>
     <!-- /.control-sidebar -->
 
+
+<?
+
+if (Yii::$app->user->identity->id == '55') {
+    $style = 'style="opacity: 1;"';
+} else {
+    $style = 'style="opacity: 0;"';
+}
+
+?>
+
+
+<!-- Yandex.RTB -->
+<script>window.yaContextCb=window.yaContextCb||[]</script>
+<script src="https://yandex.ru/ads/system/context.js" async></script>
+
+
     <!-- Main Footer -->
     <footer class="main-footer hidden-sm hidden-xs" style="position: relative">
         <strong>&copy; "E-MUROJAAT.UZ" ахборот тизими <a href="http://raqamli.uz">"Рақамли иқтисодиётни ривожлантириш" МЧЖ</a> томонидан ишлаб чиқарилган.</strong>
         Барча ҳуқуқлар ҳимояланган.
+        <div class="float-right" <? echo $style; ?>>
+            <!--LiveInternet counter-->
+            <a href="https://www.liveinternet.ru/click" target="_blank">
+                <img
+                        id="licntE6DF"
+                        width="88"
+                        height="31"
+                        style="border: 0;"
+                        title="LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня"
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                        alt=""
+                />
+            </a>
+            <script>
+                (function (d, s) {
+                    d.getElementById("licntE6DF").src =
+                        "https://counter.yadro.ru/hit?t16.6;r" +
+                        escape(d.referrer) +
+                        (typeof s == "undefined" ? "" : ";s" + s.width + "*" + s.height + "*" + (s.colorDepth ? s.colorDepth : s.pixelDepth)) +
+                        ";u" +
+                        escape(d.URL) +
+                        ";h" +
+                        escape(d.title.substring(0, 150)) +
+                        ";" +
+                        Math.random();
+                })(document, screen);
+            </script>
+            <!--/LiveInternet-->
+
+
+
+            <!-- Yandex.RTB R-A-2503530-1 -->
+            <div id="yandex_rtb_R-A-2503530-1"></div>
+            <script>window.yaContextCb.push(()=>{
+                    Ya.Context.AdvManager.render({
+                        "blockId": "R-A-2503530-1",
+                        "renderTo": "yandex_rtb_R-A-2503530-1"
+                    })
+                })
+            </script>
+
+
+        </div>
 
     </footer>
 </div>
@@ -321,21 +391,8 @@ AppAsset::register($this);
                 </div></a>
 
         </div>
-    <?php }else{ ?>
-        <div class="telegram-popup" align="center">
+    <?php }?>
 
-            <p style="margin-bottom:-5px;">Тел: +998(62)223-18-78</p>
-            <!-- Telegram icon. I like to use font-awesome but dont want to effect your imports too much.-->
-            <a href="https://t.me/joinchat/DyZIXpPeovI5NmVi" target="_blank" class="telegram-button-link"><div class="telegram-button">
-                    <p>
-                        <i class="fab fa-telegram-plane"></i>
-                        Телеграм гуруҳга аъзо бўлинг
-                    </p>
-
-                </div></a>
-
-        </div>
-    <?php } ?>
     <style>
         <?php if(!$vil){?>
         body.sidebar-collapse .telegram-popup{
@@ -364,8 +421,7 @@ AppAsset::register($this);
 
         .telegram-button{
             background-color: #1682FB;
-            width: 80%;
-            border-radius: 25px;
+            margin-top: 20px;
         }
 
         .telegram-button:hover{
@@ -428,7 +484,7 @@ if(Yii::$app->session->hasFlash('error')){
 }
 if(Yii::$app->session->hasFlash('success')){
     $txt = Yii::$app->session->getFlash('success');
-    $xato = 'Muvvofaqiyatli';
+    $xato = 'Муваффақиятли';
     $this->registerJs("
         $(document).ready(function(){
             Swal.fire({

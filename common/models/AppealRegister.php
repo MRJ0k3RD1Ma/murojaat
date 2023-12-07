@@ -93,7 +93,7 @@ class AppealRegister extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'number' => 'Рақами',
-            'date' => 'Санаси',
+            'date' => 'Келиб тушган санаси',
             'question_id' => 'Масаласи',
             'appeal_id' => 'Мурожаат',
             'rahbar_id' => 'Раҳбар',

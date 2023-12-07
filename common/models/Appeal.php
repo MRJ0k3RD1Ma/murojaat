@@ -75,7 +75,7 @@ use yii\web\UploadedFile;
 class Appeal extends \yii\db\ActiveRecord
 {
     public $region_id,$district_id;
-    public $letter,$task_txt;
+    public $letter,$task_txt,$start,$end,$task;
     /**
      * {@inheritdoc}
      */
@@ -91,7 +91,7 @@ class Appeal extends \yii\db\ActiveRecord
     {
         return [
             [['region_id','district_id','pursuit', 'person_id', 'gender', 'soato_id', 'isbusinessman', 'question_id', 'appeal_type_id', 'appeal_shakl_id', 'appeal_control_id', 'count_applicant', 'count_list', 'status', 'boshqa_tashkilot', 'boshqa_tashkilot_id', 'answer_reply_send', 'company_id', 'register_id', 'register_company_id', 'type', 'number', 'year', 'employment_id'], 'integer'],
-            [['person_name', 'person_phone','gender',  'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id'], 'required'],
+            [['person_name', 'person_phone',  'address', 'appeal_detail', 'appeal_type_id', 'register_id', 'register_company_id', 'appeal_shakl_id'], 'required'],
             [['date_of_birth', 'deadtime', 'created', 'updated', 'boshqa_tashkilot_date', 'answer_date'], 'safe'],
             [['person_name', 'person_phone','gender',  'address', 'appeal_detail',],'required','on'=>'v_district'],
             [['appeal_preview', 'appeal_detail', 'executor_files', 'answer_detail'], 'string'],
@@ -109,6 +109,7 @@ class Appeal extends \yii\db\ActiveRecord
             [['register_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['register_id' => 'id']],
             [['soato_id'], 'exist', 'skipOnError' => true, 'targetClass' => Soato::class, 'targetAttribute' => ['soato_id' => 'id']],
             ['letter','file'],
+            [['start','end','task'],'safe'],
 
         ];
     }
@@ -154,13 +155,13 @@ class Appeal extends \yii\db\ActiveRecord
             'boshqa_tashkilot_number' => 'Рақами',
             'boshqa_tashkilot_date' => 'Санаси',
             'boshqa_tashkilot_id' => 'Ташкилот',
-            'answer_name' => 'Ҳужжат номи',
+            'answer_name' => 'Бажарувчи',
             'answer_file' => 'Файл',
             'answer_preview' => 'Ҳужжат номи',
             'answer_detail' => 'Мазмуни',
             'answer_reply_send' => 'Жавоб мурожаатчига юборилди',
             'answer_number' => 'Рақами',
-            'answer_date' => 'Санаси',
+            'answer_date' => 'Ёпилган санаси',
             'company_id' => 'Ташкилот',
             'register_id' => 'Register ID',
             'register_company_id' => 'Рўйхатга олувчи ташкилот',
