@@ -12,17 +12,17 @@ function debug($data){
 }
 function exportToExcel($label=null,$data=null){
 
-	ini_set('memory_limit', '2048M');
-	ini_set('max_execution_time ', '200');
+    ini_set('memory_limit', '2048M');
+    ini_set('max_execution_time ', '200');
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->fromArray($data,null,'B2');
     $sheet->fromArray($label,null,'A1');
 
-$tr=[];
-$tr[0][0]='Т\р';
-for ($i=1;$i<=sizeof($data);$i++)
-    $tr[$i][0]=$i;
+    $tr=[];
+    $tr[0][0]='Т\р';
+    for ($i=1;$i<=sizeof($data);$i++)
+        $tr[$i][0]=$i;
     $sheet->fromArray($tr,'A3');
 
     $writer = new Xlsx($spreadsheet);
@@ -58,7 +58,7 @@ function getColor($status){
 
 // type some code
 function closeAppeal($id,$reg_id,$c_id){
-    $reg = \common\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>','id',$reg_id])->all();
+    $reg = \common\models\AppealRegister::find()->where(['appeal_id'=>$id])->andWhere(['>=','id',$reg_id])->all();
 
     foreach ($reg as $item){
         $item->status = 4;
@@ -119,6 +119,9 @@ function changeTime($id){
                 if(new DateTime($appeal->deadtime) < new DateTime($register->deadtime)){
                     $appeal->deadtime = $register->deadtime;
                     $appeal->save();
+                    $reg = \common\models\AppealRegister::findOne($task->register_id);
+                    $reg->deadtime = $register->deadtime;
+                    $reg->save(false);
                 }
             }
 
@@ -128,7 +131,6 @@ function changeTime($id){
         return false;
     }
 }
-
 function changeCompany($id){
     $model = \common\models\Request::findOne($id);
     $model->status_id = 2;
@@ -154,32 +156,22 @@ function changeCompany($id){
 
 function deleteTask($tid){
     $task = AppealBajaruvchi::findOne($tid);
-
     $register = \common\models\AppealRegister::find()->where(['parent_bajaruvchi_id'=>$task->id])
         ->andWhere(['company_id'=>$task->company_id])
         ->andWhere(['appeal_id'=>$task->appeal_id])->one();
-
-
-
+    foreach (TaskEmp::find()->where(['register_id'=>$register->id])->all() as $item){
+        $item->delete();
+    }
+    $ans = \common\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
+    foreach ($ans as $item){
+        $item->delete();
+    }
     foreach (AppealBajaruvchi::find()->where(['register_id'=>$register->id])->all() as $item){
         deleteTask($item->id);
     }
 
 
-
-    // task_emp o'chirish kerak
-    foreach (TaskEmp::find()->where(['appeal_id'=>$task->appeal_id,'register_id'=>$register->id])->all() as $item){
-        $item->delete();
-    }
-
-
-    $ans = \common\models\AppealAnswer::find()->where(['register_id'=>$register->id])->all();
-    foreach ($ans as $item){
-        $item->delete(false);
-    }
-    $register->delete(false);
-
-    $task->delete(false);
-
+    $register->delete();
+    $task->delete();
 }
 ?>
