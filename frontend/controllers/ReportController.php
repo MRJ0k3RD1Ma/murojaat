@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Appeal;
+use common\models\AppealControl;
 use common\models\AppealQuestionGroup;
 use common\models\AppealRegister;
 use common\models\Company;
@@ -71,170 +72,53 @@ class ReportController extends Controller
         $quest = AppealQuestionGroup::find()->all();
         $cc = AppealRegister::find()->Where(['company_id' => $user->company_id])->all();
         $arr = AppealRegister::find()->Where(['company_id' => $user->company_id])->all();
-        $model = new Appeal();
-        if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post())) {
-                if ($model->start != Null) {
-                    $cc = AppealRegister::find()->Where(['company_id' => $user->company_id])
-                        ->andWhere((['between', 'created', $model->start, $model->end]))->all();
-                    $spreadsheet = new Spreadsheet();
-                    $sheet = $spreadsheet->getActiveSheet();
-                    $n = 0;
-                    $m = 2;
-                    $time = new \DateTime('now');
 
-                    $sheet->setCellValue('A1', '№');
-                    $sheet->setCellValue('B1', 'Мурожаатларда кўтарилан масалалар	');
-                    $sheet->setCellValue('C1', 'Жами мурожаатлар сони	');
-                    $sheet->setCellValue('D1', 'Мурожаатларни шакллари	');
-                    $sheet->setCellValue('N1', '2023 йил бўйича мурожаатларни  кўриб чиқиш ҳолатлари');
-                    $sheet->setCellValue('D2', 'Ёзма');
-                    $sheet->setCellValue('E2', 'Хат');
-                    $sheet->setCellValue('F2', 'Оғзаки (Қабул)	');
-                    $sheet->setCellValue('G2', 'Электрон');
-                    $sheet->setCellValue('H2', 'Сайёр қабул');
-                    $sheet->setCellValue('I2', 'Ишонч телефони	');
-                    $sheet->setCellValue('J2', 'МФЙ орқали	');
-                    $sheet->setCellValue('K2', 'Веб сайт');
-                    $sheet->setCellValue('L2', 'Президент портали');
-                    $sheet->setCellValue('M2', 'Прокуратура');
-                    $sheet->setCellValue('N2', 'Назоратга олинганлар');
-                    $sheet->setCellValue('O2', 'чоралар  кўрилди');
-                    $sheet->setCellValue('P2', 'тушунтирилди');
-                    $sheet->setCellValue('Q2', 'рад этилди	');
-                    $sheet->setCellValue('R2', 'кўриб чиқилмоқда');
-                    $sheet->setCellValue('S2', 'такрорийлар');
-                    $sheet->setCellValue('T2', 'такрорийлар');
-                    foreach ($quest as $item) {
+        $user = \Yii::$app->user->identity;
+        $type = AppealQuestionGroup::find()->all();
+        $tp = [];
+        $shakl = AppealShakl::find()->all();
+        foreach ($type as $item){
+            $tp[$item->id]['jami'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                ->where(['appeal_register.company_id'=>$user->company_id])
+                ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                ->count('*');
 
-                        $n++;
-                        $m++;
-                        $aa = 0;
-                        $at = 0;
-                        $ax = 0;
-                        $ao = 0;
-                        $ae = 0;
-                        $as = 0;
-                        $ai = 0;
-                        $am = 0;
-                        $av = 0;
-                        $apr = 0;
-                        $ap = 0;
-                        $ab = 0;
-                        $ach = 0;
-                        $acha = 0;
-                        $ar = 0;
-                        $ak = 0;
-                        $ata = 0;
-                        $ama = 0;
-                        $sheet->setCellValue('A' . $m, $n);
-                        $sheet->setCellValue('B' . $m, $item->name);
-                        foreach ($cc as $a) {
-                            if ($a->question_id !== NULL) {
-                                if ($a->question->group->id == $item->id) {
-                                    $aa = $aa + 1;
-                                    if ($a->appeal->appeal_shakl_id == 1) {
-                                        $at = $at + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 2) {
-                                        $ax = $ax + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 3) {
-                                        $ao = $ao + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 4) {
-                                        $ae = $ae + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 5) {
-                                        $as = $as + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 6) {
-                                        $ai = $ai + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 7) {
-                                        $am = $am + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 8) {
-                                        $av = $av + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 9) {
-                                        $apr = $apr + 1;
-                                    }
-                                    if ($a->appeal->appeal_shakl_id == 10) {
-                                        $ap = $ap + 1;
-                                    }
-                                    if ($a->status >= 2 && $a->status <= 4) {
-                                        $ab = $ab + 1;
-                                    }
-                                    if ($a->status == 4) {
-                                        $ach = $ach + 1;
-                                    }
-                                    if ($a->status == 3) {
-                                        $acha = $acha + 1;
-                                    }
-                                    if ($a->status == 5) {
-                                        $ar = $ar + 1;
-                                    }
-                                    if ($a->status == 2 || $a->status == 3) {
-                                        $ak = $ak + 1;
-                                    }
-                                    foreach ($arr as $i) {
-                                        if ($i->appeal_id == $a->id) {
-                                            if ($i->takroriy == 1) {
-                                                $ata = $ata + 1;
-                                            }
-                                            if ($i->deadtime >= $time->format('Y-m-d')) {
-                                                $ama = $ama + 1;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $sheet->setCellValue('C' . $m, $aa);
-                        $sheet->setCellValue('D' . $m, $at);
-                        $sheet->setCellValue('E' . $m, $ax);
-                        $sheet->setCellValue('F' . $m, $ao);
-                        $sheet->setCellValue('G' . $m, $ae);
-                        $sheet->setCellValue('H' . $m, $as);
-                        $sheet->setCellValue('I' . $m, $ai);
-                        $sheet->setCellValue('J' . $m, $am);
-                        $sheet->setCellValue('K' . $m, $av);
-                        $sheet->setCellValue('L' . $m, $ap);
-                        $sheet->setCellValue('M' . $m, $apr);
-                        $sheet->setCellValue('N' . $m, $ab);
-                        $sheet->setCellValue('O' . $m, $acha);
-                        $sheet->setCellValue('P' . $m, $ach);
-                        $sheet->setCellValue('Q' . $m, $ar);
-                        $sheet->setCellValue('R' . $m, $ak);
-                        $sheet->setCellValue('S' . $m, $ata);
-                        $sheet->setCellValue('T' . $m, $ama);
-                    }
-                    $spreadsheet->getActiveSheet()->getStyle("A1:T" . $m)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                    $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setHorizontal('center');
-                    $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setVertical('center');
-                    $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setWrapText(true);
-                    $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-                    $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-
-
-                    $sheet->mergeCells('A1:A2');
-                    $sheet->mergeCells('B1:B2');
-                    $sheet->mergeCells('C1:C2');
-                    $sheet->mergeCells('D1:M1');
-                    $sheet->mergeCells('N1:T1');
-                    $writer = new Xlsx($spreadsheet);
-//            $writer->save("php://output");
-
-                    $writer->save('tashkilotlar.xlsx');
-                    Yii::$app->response->sendFile('tashkilotlar.xlsx');
-                    return $this->render('index2', [
-                        'quest' => $quest,
-                        'cc' => $cc,
-                        'arr' => $arr]);
-                }
-
+            foreach ($shakl as $i){
+                $tp[$item->id]['shakl'][$i->id] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                    ->where(['appeal_register.company_id'=>$user->company_id])
+                    ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                    ->andWhere(['appeal.appeal_shakl_id'=>$i->id])
+                    ->count('*');
             }
+            $tp[$item->id]['nazorat']=AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                ->where(['appeal_register.company_id'=>$user->company_id])
+                ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere(['appeal_register.nazorat'=>1])
+                ->count('*');
+            foreach (AppealControl::find()->all() as $i){
+                $tp[$item->id]['control'][$i->id] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                    ->where(['appeal_register.company_id'=>$user->company_id])
+                    ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere(['appeal_register.control_id'=>$i->id])
+                    ->count('*');
+            }
+            $tp[$item->id]['dead'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                ->where(['appeal_register.company_id'=>$user->company_id])
+                ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                ->andWhere('appeal_register.status = 2 and appeal_register.deadtime<date(now())')
+                ->count('*');
+
+
+            $tp[$item->id]['dead_done'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
+                ->where(['appeal_register.company_id'=>$user->company_id])
+                ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere('appeal_register.status = 4 and appeal_register.deadtime<appeal_register.donetime')
+                ->count('*');
+        }
+
+        // $modelga period yozib yuklab olinadi va shu perioddagi murojaatlar ekranga chiqariladi.
+        $model = new Appeal();
+
+
+        if (Yii::$app->request->isPost) {
+
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $n = 0;
@@ -263,111 +147,8 @@ class ReportController extends Controller
             $sheet->setCellValue('R2', 'кўриб чиқилмоқда');
             $sheet->setCellValue('S2', 'такрорийлар');
             $sheet->setCellValue('T2', 'такрорийлар');
-            foreach ($quest as $item) {
 
-                $n++;
-                $m++;
-                $aa = 0;
-                $at = 0;
-                $ax = 0;
-                $ao = 0;
-                $ae = 0;
-                $as = 0;
-                $ai = 0;
-                $am = 0;
-                $av = 0;
-                $apr = 0;
-                $ap = 0;
-                $ab = 0;
-                $ach = 0;
-                $acha = 0;
-                $ar = 0;
-                $ak = 0;
-                $ata = 0;
-                $ama = 0;
-                $sheet->setCellValue('A' . $m, $n);
-                $sheet->setCellValue('B' . $m, $item->name);
-                foreach ($cc as $a) {
-                    if ($a->question_id !== NULL) {
-                        if ($a->question->group->id == $item->id) {
-                            $aa = $aa + 1;
-                            if ($a->appeal->appeal_shakl_id == 1) {
-                                $at = $at + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 2) {
-                                $ax = $ax + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 3) {
-                                $ao = $ao + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 4) {
-                                $ae = $ae + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 5) {
-                                $as = $as + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 6) {
-                                $ai = $ai + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 7) {
-                                $am = $am + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 8) {
-                                $av = $av + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 9) {
-                                $apr = $apr + 1;
-                            }
-                            if ($a->appeal->appeal_shakl_id == 10) {
-                                $ap = $ap + 1;
-                            }
-                            if ($a->status >= 2 && $a->status <= 4) {
-                                $ab = $ab + 1;
-                            }
-                            if ($a->status == 4) {
-                                $ach = $ach + 1;
-                            }
-                            if ($a->status == 3) {
-                                $acha = $acha + 1;
-                            }
-                            if ($a->status == 5) {
-                                $ar = $ar + 1;
-                            }
-                            if ($a->status == 2 || $a->status == 3) {
-                                $ak = $ak + 1;
-                            }
-                            foreach ($arr as $i) {
-                                if ($i->appeal_id == $a->id) {
-                                    if ($i->takroriy == 1) {
-                                        $ata = $ata + 1;
-                                    }
-                                    if ($i->deadtime >= $time->format('Y-m-d')) {
-                                        $ama = $ama + 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                $sheet->setCellValue('C' . $m, $aa);
-                $sheet->setCellValue('D' . $m, $at);
-                $sheet->setCellValue('E' . $m, $ax);
-                $sheet->setCellValue('F' . $m, $ao);
-                $sheet->setCellValue('G' . $m, $ae);
-                $sheet->setCellValue('H' . $m, $as);
-                $sheet->setCellValue('I' . $m, $ai);
-                $sheet->setCellValue('J' . $m, $am);
-                $sheet->setCellValue('K' . $m, $av);
-                $sheet->setCellValue('L' . $m, $ap);
-                $sheet->setCellValue('M' . $m, $apr);
-                $sheet->setCellValue('N' . $m, $ab);
-                $sheet->setCellValue('O' . $m, $acha);
-                $sheet->setCellValue('P' . $m, $ach);
-                $sheet->setCellValue('Q' . $m, $ar);
-                $sheet->setCellValue('R' . $m, $ak);
-                $sheet->setCellValue('S' . $m, $ata);
-                $sheet->setCellValue('T' . $m, $ama);
-            }
+
             $spreadsheet->getActiveSheet()->getStyle("A1:T" . $m)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setHorizontal('center');
             $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setVertical('center');
@@ -391,7 +172,8 @@ class ReportController extends Controller
         return $this->render('index2', [
             'quest' => $quest,
             'cc' => $cc,
-            'arr' => $arr
+            'arr' => $arr,
+            'tp'=>$tp,
         ]);
     }
 

@@ -26,51 +26,13 @@ use yii\helpers\Url; ?>
                 </p>
             </a>
         </li>
-
-
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link ">
+        <li class="nav-item">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem'])?>" class="nav-link <?=(Yii::$app->controller->id=='v-village-problem')?'active':''?>">
                 <i class="nav-icon fas fa-list"></i>
                 <p>
                     Муаммолар
                 </p>
             </a>
-
-            <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
-                        <p>
-                            Муаммолар
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem/nottask'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
-                        <p>
-                            Топшириқ берилмаган
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem/answered'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
-                        <p>
-                            Жавоби келган
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/district/v-village-problem/closed'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
-                        <p>
-                            Ёпилган
-                        </p>
-                    </a>
-                </li>
-            </ul>
         </li>
 
 
@@ -85,7 +47,7 @@ use yii\helpers\Url; ?>
             <ul class="nav nav-treeview" style="display: none;">
                 <li class="nav-item">
                     <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statmahalla'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
+                        <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Маҳалла
                         </p>
@@ -93,7 +55,7 @@ use yii\helpers\Url; ?>
                 </li>
                 <li class="nav-item">
                     <a href="<?= Yii::$app->urlManager->createUrl(['/district/default/statproblem'])?>" class="nav-link">
-                        <i class="nav-icon fas fa-circle-notch"></i>
+                        <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Муаммолар
                         </p>

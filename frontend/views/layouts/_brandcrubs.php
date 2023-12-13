@@ -2,7 +2,7 @@
 
 use yii\widgets\Breadcrumbs; ?>
 <div class="content-header">
-    <? if ($_SERVER['REQUEST_URI'] != '/appeal/index') { ?>
+    <?php if ($_SERVER['REQUEST_URI'] != '/appeal/index') { ?>
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
@@ -21,7 +21,7 @@ use yii\widgets\Breadcrumbs; ?>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
-    <? } // agar bosh sahifa bo'lmasa ?>
+    <?php } // agar bosh sahifa bo'lmasa ?>
 </div>
 <!-- /.content-header -->
 

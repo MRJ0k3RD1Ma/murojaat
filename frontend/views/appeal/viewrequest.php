@@ -325,7 +325,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <hr>
             <?php if(($request->status_id == 1 or $request->status_id == 0) and $request->register->company_id != Yii::$app->user->identity->company_id){?>
             <div id="accordion">
-                <a href="#acc" class="btn btn-success" data-toggle="collapse">Қабул қилиш</a>
+                <a href="#acc" class="btn btn-success" data-toggle="collapse"><?= $request->type_id == 2 ? 'Қуйи ташкилотга юбориш' : 'Муддат узайтириш'?></a>
                 <a href="#deni" class="btn btn-danger" data-toggle="collapse">Рад этиш</a>
 
                 <div id="acc" class="collapse" style="margin-top: 20px; padding: 20px;border: 1px solid #28a745;" data-parent="#accordion">

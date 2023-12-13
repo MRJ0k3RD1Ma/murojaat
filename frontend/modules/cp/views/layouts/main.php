@@ -54,9 +54,10 @@ AppAsset::register($this);
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block align-center">
+            <li class="nav-item d-none d-sm-inline-block align-center" style="line-height: 17px;margin-top: -5px;">
                 <a href="/" class="nav-link">
-                    "E-PILLA" axborot tizimi
+                    "E-PILLA" axborot tizimi<br />
+                    Shartnoma muddati: 31.12.22 gacha
                 </a>
             </li>
 

@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <p>
                 <?= Html::a('Сўровнома қўшиш', ['create'], ['class' => 'btn btn-success']) ?>
-                <a href="" data-method="post" class="btn btn-primary"><span class="fa fa-file-excel"></span> Экспорт қилиш</a>
             </p>
 
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

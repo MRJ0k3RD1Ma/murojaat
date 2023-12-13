@@ -1111,7 +1111,7 @@ class AppealController extends Controller
         $model = Request::findOne($id);
 
         if($model->type_id == 1){
-            if($model->load($this->request->post()) and $model->save()){
+            if($model->load(Yii::$app->request->post()) and $model->save()){
                 changeTime($id);
             }
         }else{
@@ -1160,8 +1160,6 @@ class AppealController extends Controller
         $register = AppealRegister::findOne($model->register_id);
         $appeal = Appeal::findOne($model->appeal_id);
 
-
-        $appeal->scenario = 'close';
 
         return $this->render('viewrequest',[
             'model'=>$appeal,

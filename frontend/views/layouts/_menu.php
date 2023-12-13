@@ -59,7 +59,6 @@ use yii\helpers\Url; ?>
 
 
         <?php
-
         $user = Yii::$app->user->identity;
         if ($user->access(2)) {
             echo $this->render('_menu_registrator');

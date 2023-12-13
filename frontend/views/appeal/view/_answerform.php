@@ -6,6 +6,9 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\AppealAnswer */
 /* @var $form yii\widgets\ActiveForm */
+if($model->isNewRecord){
+	$model->scenario = "send";
+}
 ?>
 
 <div class="appeal-answer-form">
@@ -40,7 +43,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?php if($model->isNewRecord){?>
+    <?php if($model->isNewRecord){  ?>
         <?= $form->field($model, 'file')->fileInput() ?>
     <?php }else{?>
         <p><?php if($model->file){?><a target="_blank" href="/upload/<?= $model->file?>"><span class="fa fa-download"></span> Иловани юклаб олиш</a><?php }else{?>Илова мавжуд эмас<?php }?></p>

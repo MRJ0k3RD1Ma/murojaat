@@ -11,8 +11,13 @@ use yii\widgets\ActiveForm;
 <div class="appeal-question-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'group_id')->textInput() ?>
+    <?php
+        $data =[];
+        foreach (\common\models\AppealQuestionGroup::find()->all() as $item){
+            $data[$item->id] = $item->code.'-'.$item->name;
+        }
+    ?>
+    <?= $form->field($model, 'group_id')->dropDownList($data) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 

@@ -50,7 +50,8 @@ class AppealAnswer extends \yii\db\ActiveRecord
         return [
             [['appeal_id', 'register_id', 'detail', 'bajaruvchi_id'], 'required'],
             [['appeal_id', 'register_id', 'parent_id', 'bajaruvchi_id', 'reaply_send', 'status', 'status_boshqa','n_olish'], 'integer'],
-            [['detail','ignore_ads'], 'string'],
+            [['detail','ignore_ads',], 'string'],
+			[[ 'file','detail', 'number','date','n_olish','preview','name'],'required','on'=>'send'],
             [['date', 'tarqatma_date', 'created', 'updated'], 'safe'],
             [['preview', 'number', 'tarqatma_number', 'name', 'file'], 'string', 'max' => 255],
             [['appeal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appeal::class, 'targetAttribute' => ['appeal_id' => 'id']],

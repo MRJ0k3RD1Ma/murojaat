@@ -4,7 +4,7 @@ use common\models\AppealControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+$model->scenario = "close";
 /* @var $this yii\web\View */
 /* @var $model common\models\AppealAnswer */
 /* @var $form yii\widgets\ActiveForm */

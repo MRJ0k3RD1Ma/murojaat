@@ -29,8 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'group_id',
+//            'id',
+//            'group_id',
+            [
+                'attribute'=>'group_id',
+                'value'=>function($d){
+                    $gr = $d->group;
+                    return  $gr->code.'-'.$gr->name;
+                },
+                'filter'=>\yii\helpers\ArrayHelper::map(\common\models\AppealQuestionGroup::find()->all(),'id','name')
+            ],
             'code',
             'name',
             [

@@ -113,7 +113,7 @@ class CompanyController extends Controller
     public function actionPaid($id,$url=0){
 
         $model = Company::findOne($id);
-        $model->scenario = 'paidtime';
+       // $model->scenario = 'paidtime';
         $model->redirect = $url;
         $model->paid_date = "";
         $model->paid = 1;

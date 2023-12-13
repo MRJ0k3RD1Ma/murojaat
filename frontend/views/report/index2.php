@@ -2,6 +2,8 @@
 
 
 use common\models\Appeal;
+use common\models\AppealControl;
+use common\models\AppealQuestionGroup;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\VarDumper;
@@ -10,6 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $name string*/
 /* @var $users \common\models\User*/
 /* @var $report array*/
+/* @var $tp array*/
 /* @var $jami array*/
 $this->title = 'Ҳисоботлар шакллантириш';
 $this->params['breadcrumbs'][] = $this->title;
@@ -68,117 +71,48 @@ $dataProvider=new \common\models\Appeal()
                                 <th rowspan="6">№</th>
                                 <th rowspan="6">Мурожаатларда кўтарилан масалалар</th>
                                 <th rowspan="5">Жами мурожаатлар сони</th>
-                                <th colspan="<?= \common\models\AppealShakl::find()->count('*')+7?>">Шу жумладан</th>
+                                <th colspan="<?= \common\models\AppealShakl::find()->count('*')+3+AppealControl::find()->count('*')?>">Шу жумладан</th>
                             </tr>
                         <tr>
                             <th colspan="<?= \common\models\AppealShakl::find()->count('*')?>">Мурожаатларни шакллари</th>
-                            <th colspan="7">2023 йил бўйича мурожаатларни  кўриб чиқиш ҳолатлари</th>
+                            <th colspan="<?= 3+AppealControl::find()->count('*') ?>">Мурожаатларни  кўриб чиқиш ҳолатлари</th>
                         </tr>
                         <tr>
                             <?php foreach (\common\models\AppealShakl::find()->orderBy(['id'=>SORT_ASC])->all() as $item):?>
                                 <th rowspan="3"><?= $item->name ?></th>
                             <?php endforeach;?>
                             <th rowspan="4">Назоратга олинганлар</th>
-                            <th colspan="4">Жумладан</th>
+                            <th colspan="<?= AppealControl::find()->count('*')?>">Жумладан</th>
                             <th rowspan="4">такрорийлар</th>
                             <th rowspan="4">муддати бузилганлар</th>
                         </tr>
                         <tr>
-                            <th rowspan="3">чоралар  кўрилди</th>
-                            <th rowspan="3">тушунтирилди</th>
-                            <th rowspan="3">рад этилди</th>
-                            <th rowspan="3">кўриб чиқилмоқда</th>
+                            <?php foreach (AppealControl::find()->all() as $item):?>
+                            <th rowspan="3"><?= $item->name?></th>
+                            <?php endforeach;?>
+
                         </tr>
                         </thead>
                         <tbody>
-                        <?php  $user = \Yii::$app->user->identity;
-//                        $cc= common\models\Appeal::find()->all();
-                        $time = new \DateTime('now');
-                        ?>
-                        <?php $n=0; foreach ($quest as $item) : $n++;?>
-                          <?php
-                            $aa=0;
-                            $at=0;
-                            $ax=0;
-                            $ao=0;
-                            $ae=0;
-                            $as=0;
-                            $ai=0;
-                            $am=0;
-                            $av=0;
-                            $apr=0;
-                            $ap=0;
-                            $ab=0;
-                            $ach=0;
-                            $ar=0;
-                            $ak=0;
-                            $ata=0;
-                            $ama=0;
-                            $acha=0;
-                            $apk=0;
-                          ?>
-                            <tr>
-                                <th><?= $n?></th>
-                                <td><?= $item->name ?></td>
-                                <td>
-                                    <?php
-                                    foreach ($cc as $a)
-                                        {  if ( $a->question_id !== NULL)
-                                            { if ($a->question->group->id == $item->id)
-                                                {$aa=$aa+1;
-                                                    if ($a->appeal->appeal_shakl_id==1){$at=$at+1;}
-                                                    if ($a->appeal->appeal_shakl_id==2){$ax=$ax+1;}
-                                                    if ($a->appeal->appeal_shakl_id==3){$ao=$ao+1;}
-                                                    if ($a->appeal->appeal_shakl_id==4){$ae=$ae+1;}
-                                                    if ($a->appeal->appeal_shakl_id==5){$as=$as+1;}
-                                                    if ($a->appeal->appeal_shakl_id==6){$ai=$ai+1;}
-                                                    if ($a->appeal->appeal_shakl_id==7){$am=$am+1;}
-                                                    if ($a->appeal->appeal_shakl_id==8){$av=$av+1;}
-                                                    if ($a->appeal->appeal_shakl_id==9){$apr=$apr+1;}
-                                                    if ($a->appeal->appeal_shakl_id==10){$ap=$ap+1;}
-                                                    if ($a->appeal->appeal_shakl_id==11){$apk=$apk+1;}
-                                                    if ($a->status>=2 && $a->status<=4){$ab=$ab+1;}
-                                                    if ($a->status==4){$ach=$ach+1;}
-                                                    if ($a->status==3){$acha=$acha+1;}
-                                                    if ($a->status==5){$ar=$ar+1;}
-                                                    if ($a->status==2 || $a->status==3){$ak=$ak+1;}
-                                                    foreach ($arr as $i){
-                                                        if ( $i->appeal_id==$a->id ){
-                                                            if ($i->takroriy==1){
-                                                            $ata=$ata+1;}
-                                                            if ($i->deadtime>=$time->format('Y-m-d')){
-$ama=$ama+1;
-                                                            }
-                                                        }
-                                                    }
-                                                }}
-                                        } echo $aa;?>
-                                </td>
+
+                        <?php foreach (AppealQuestionGroup::find()->all() as $key=>$item):?>
+
+                        <tr>
+                            <td><?= $key+1?></td>
+                            <td><?= $item->name ?></td>
+                            <td><?= $tp[$item->id]['jami']?></td>
+                            <?php foreach (\common\models\AppealShakl::find()->all() as $i): ?>
+                                <td><?= $tp[$item->id]['shakl'][$i->id] ?></td>
+                            <?php endforeach;?>
+                            <td><?= $tp[$item->id]['nazorat'] ?></td>
+                            <?php foreach (AppealControl::find()->all() as $i):?>
+                                <td><?= $tp[$item->id]['control'][$i->id] ?></td>
+                            <?php endforeach;?>
+                            <td><?=  $tp[$item->id]['dead']?></td>
+                            <td><?=  $tp[$item->id]['dead_done']?></td>
+                        </tr>
 
 
-
-
-                                <td><?=$at?></td>
-                                <td><?=$ax?></td>
-                                <td><?=$ao?></td>
-                                <td><?=$ae?></td>
-                                <td><?=$as?></td>
-                                <td><?=$ai?></td>
-                                <td><?=$am?></td>
-                                <td><?=$av?></td>
-                                <td><?=$apr?></td>
-                                <td><?=$ap?></td>
-                                <td><?=$apk?></td>
-                                <td><?=$ab?></td>
-                                <td><?=$acha?></td>
-                                <td><?=$ach?></td>
-                                <td><?=$ar?></td>
-                                <td><?=$ak?></td>
-                                <td><?=$ata?></td>
-                                <td><?=$ama?></td>
-
-
-                            </tr>
                         <?php endforeach;?>
                         </tbody>
                     </table>

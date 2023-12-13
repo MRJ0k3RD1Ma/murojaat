@@ -38,10 +38,11 @@ class AppAsset extends AssetBundle
         '/theme/plugins/datatables/jquery.dataTables.min.css',
         '/theme/plugins/datatables-buttons/css/buttons.dataTables.min.css',
         '/theme/plugins/sweetalert2/sweetalert2.min.css',
-        '/theme/dist/css/style.css',
+        '/theme/dist/css/style.css?v=0.0.11',
         '/theme/dist/css/adminlte.css',
     ];
     public $js = [
+//        '/theme/plugins/jquery/jquery.min.js',
         '/theme/plugins/bootstrap/js/bootstrap.bundle.min.js',
         '/theme/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
         '/theme/dist/js/adminlte.js',
@@ -50,6 +51,10 @@ class AppAsset extends AssetBundle
         '/theme/plugins/raphael/raphael.min.js',
         '/theme/plugins/jquery-mapael/jquery.mapael.min.js',
         '/theme/plugins/jquery-mapael/maps/usa_states.min.js',
+//        '/theme/plugins/chart.js/Chart.min.js',
+//        '/theme/dist/js/pages/dashboard2.js',
+        '/theme/dist/js/pages/dashboard3.js',
+//        '/theme/plugins/select2/js/select2.full.min.js',
         '/theme/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js',
         '/theme/plugins/jquery.svg.pan.zoom/jquery.svg.pan.zoom.js',
         '/theme/plugins/select2/js/select2.min.js',
@@ -62,6 +67,11 @@ class AppAsset extends AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js',
         '/theme/plugins/datatables-buttons/js/buttons.html5.min.js',
         '/theme/plugins/datatables-buttons/js/buttons.print.min.js',
+//        '/theme/plugins/moment/moment.min.js',
+//        '/theme/plugins/inputmask/min/jquery.inputmask.bundle.min.js',
+//        '/theme/plugins/daterangepicker/daterangepicker.js',
+//        '/theme/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js',
+//        '/theme/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
         '/theme/plugins/sweetalert2/sweetalert2.min.js',
 
     ];

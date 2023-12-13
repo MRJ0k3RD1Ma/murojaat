@@ -323,7 +323,6 @@ if (Yii::$app->user->identity->id == '55') {
 
 <!-- Yandex.RTB -->
 <script>window.yaContextCb=window.yaContextCb||[]</script>
-
 <script src="https://yandex.ru/ads/system/context.js" async></script>
 
 
@@ -331,7 +330,7 @@ if (Yii::$app->user->identity->id == '55') {
     <footer class="main-footer hidden-sm hidden-xs" style="position: relative">
         <strong>&copy; "E-MUROJAAT.UZ" ахборот тизими <a href="http://raqamli.uz">"Рақамли иқтисодиётни ривожлантириш" МЧЖ</a> томонидан ишлаб чиқарилган.</strong>
         Барча ҳуқуқлар ҳимояланган.
-        <div class="float-right" <? echo $style; ?>>
+        <div class="float-right" <?php echo $style; ?>>
             <!--LiveInternet counter-->
             <a href="https://www.liveinternet.ru/click" target="_blank">
                 <img
@@ -394,13 +393,12 @@ if (Yii::$app->user->identity->id == '55') {
         </div>
     <?php }?>
 
-
     <style>
-        <?php if(!$vil){ ?>
-            body.sidebar-collapse .telegram-popup{
-                display: none !important;
-            }
-        <?php } ?>
+        <?php if(!$vil){?>
+        body.sidebar-collapse .telegram-popup{
+            display: none !important;
+        }
+        <?php }?>
         /*Body css here just to demonstrate scrolling*/
         .telegram-popup{
             width: 291px;
@@ -449,7 +447,6 @@ if (Yii::$app->user->identity->id == '55') {
             background-color: #9c27b0 !important;
         }
     </style>
-
     <?php
     if(!$vil){
         $this->registerJs("
