@@ -189,7 +189,7 @@ class AppealRegisterSearch extends AppealRegister
             $query->andWhere(['=','appeal_register.status',4]);
 
         }elseif($type == 'dead'){
-            $sql = "appeal_register.deadtime<date(now())";
+            $sql = "if(appeal_register.parent_bajaruvchi_id is null, appeal_register.deadtime = (select appeal.deadtime from appeal where appeal.id = appeal_register.appeal_id), appeal_register.deadtime = (select appeal_bajaruvchi.deadtime from appeal_bajaruvchi where appeal_bajaruvchi.id = appeal_register.parent_bajaruvchi_id)) and appeal_register.deadtime<date(now())";
             $query->andWhere(['<>','appeal_register.status',4])->andWhere($sql);
         }
 

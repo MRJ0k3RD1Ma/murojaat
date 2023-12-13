@@ -334,12 +334,19 @@ class Appeal extends \yii\db\ActiveRecord
 
 
     public function getRegion(){
-        $soato = $this->soato;
-        return Soato::findOne($soato->res_id.$soato->region_id)->name_cyr;
+        if($soato = Soato::findOne($this->soato_id)){
+            return Soato::findOne($soato->res_id.$soato->region_id)->name_cyr;
+        }else{
+            return null;
+        }
     }
     public function getDistrict(){
-        $soato = $this->soato;
-        return Soato::findOne($soato->res_id.$soato->region_id.$soato->district_id)->name_cyr;
+        if($soato = Soato::findOne($this->soato_id)){
+            return Soato::findOne($soato->res_id.$soato->region_id.$soato->district_id)->name_cyr;
+        }else{
+            return null;
+        }
+
     }
     public function getVillage(){
         return $this->hasOne(Soato::class, ['id' => 'soato_id']);
