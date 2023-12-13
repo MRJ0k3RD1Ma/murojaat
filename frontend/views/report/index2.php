@@ -40,7 +40,7 @@ $dataProvider=new \common\models\Appeal()
  <?php
 
                 $form = ActiveForm::begin([
-                    'method' => 'post',
+                    'method' => 'get',
                     'id' => 'active-form',
                     'options' => [
                         'class' => 'form-horizontal',
@@ -50,13 +50,21 @@ $dataProvider=new \common\models\Appeal()
                 ?>
                 <div class="row">
                     <div class="col-md-4">
-                        <?=$form->field($dataProvider, 'start')->textInput(['type'=>'date'])->label('boshlanish kuni');?>
+                        <div class="form-group field-appeal-start">
+                            <label class="control-label">Бошлаш куни</label>
+                            <input type="date" class="form-control" name="start">
+
+                            <div class="help-block"></div>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <?= $form->field($dataProvider, 'end')->textInput(['type'=>'date'])->label('tugash kuni');?>
+                        <div class="form-group field-appeal-start">
+                            <label class="control-label" for="end">Тугаш куни</label>
+                            <input type="date" class="form-control" name="end">
+                        </div>
                     </div>
                     <div class="col-md-4" style="display: flex; padding: 29px;">
-                        <?=Html::submitButton('yuborish', ['class' => 'btn btn-primary mr-2']);?>
+                        <?=Html::submitButton('Юбориш', ['class' => 'btn btn-primary mr-2']);?>
                         <a href="" data-method="post" class="btn btn-info mr-3"><i class="fa fa-file-excel"></i> Экспорт</a>
                     </div>
                 </div>
@@ -90,7 +98,6 @@ $dataProvider=new \common\models\Appeal()
                             <?php foreach (AppealControl::find()->all() as $item):?>
                             <th rowspan="3"><?= $item->name?></th>
                             <?php endforeach;?>
-
                         </tr>
                         </thead>
                         <tbody>

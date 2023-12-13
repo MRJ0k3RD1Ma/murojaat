@@ -66,13 +66,22 @@ class ReportController extends Controller
         ]);
     }
 
-    public function actionIndex2()
+    public function actionIndex2($start=null,$end=null)
     {
         $user = \Yii::$app->user->identity;
         $quest = AppealQuestionGroup::find()->all();
         $cc = AppealRegister::find()->Where(['company_id' => $user->company_id])->all();
         $arr = AppealRegister::find()->Where(['company_id' => $user->company_id])->all();
-
+        if($start){
+            $sql_start = ' appeal_register.date >= "'.date('Y-m-d',strtotime($start)).'" ';
+        }else{
+            $sql_start = ' 1 ';
+        }
+        if($end){
+            $sql_end = ' appeal_register.date <= "'.date('Y-m-d',strtotime($end)).'" ';
+        }else{
+            $sql_end = " 1 ";
+        }
         $user = \Yii::$app->user->identity;
         $type = AppealQuestionGroup::find()->all();
         $tp = [];
@@ -81,28 +90,33 @@ class ReportController extends Controller
             $tp[$item->id]['jami'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                 ->where(['appeal_register.company_id'=>$user->company_id])
                 ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                ->andWhere($sql_start.' and '.$sql_end)
                 ->count('*');
 
             foreach ($shakl as $i){
                 $tp[$item->id]['shakl'][$i->id] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                     ->where(['appeal_register.company_id'=>$user->company_id])
                     ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                    ->andWhere($sql_start.' and '.$sql_end)
                     ->andWhere(['appeal.appeal_shakl_id'=>$i->id])
                     ->count('*');
             }
             $tp[$item->id]['nazorat']=AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                 ->where(['appeal_register.company_id'=>$user->company_id])
                 ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere(['appeal_register.nazorat'=>1])
+                ->andWhere($sql_start.' and '.$sql_end)
                 ->count('*');
             foreach (AppealControl::find()->all() as $i){
                 $tp[$item->id]['control'][$i->id] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                     ->where(['appeal_register.company_id'=>$user->company_id])
                     ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere(['appeal_register.control_id'=>$i->id])
+                    ->andWhere($sql_start.' and '.$sql_end)
                     ->count('*');
             }
             $tp[$item->id]['dead'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                 ->where(['appeal_register.company_id'=>$user->company_id])
                 ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')
+                ->andWhere($sql_start.' and '.$sql_end)
                 ->andWhere('appeal_register.status = 2 and appeal_register.deadtime<date(now())')
                 ->count('*');
 
@@ -110,63 +124,42 @@ class ReportController extends Controller
             $tp[$item->id]['dead_done'] = AppealRegister::find()->select(['appeal.*'])->innerJoin('appeal','appeal.id = appeal_register.appeal_id')
                 ->where(['appeal_register.company_id'=>$user->company_id])
                 ->andWhere('appeal.question_id in (select id from appeal_question where group_id = '.$item->id.')')->andWhere('appeal_register.status = 4 and appeal_register.deadtime<appeal_register.donetime')
+                ->andWhere($sql_start.' and '.$sql_end)
                 ->count('*');
         }
-
-        // $modelga period yozib yuklab olinadi va shu perioddagi murojaatlar ekranga chiqariladi.
-        $model = new Appeal();
-
 
         if (Yii::$app->request->isPost) {
 
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
-            $n = 0;
-            $m = 2;
-            $time = new \DateTime('now');
-
-            $sheet->setCellValue('A1', '№');
-            $sheet->setCellValue('B1', 'Мурожаатларда кўтарилан масалалар	');
-            $sheet->setCellValue('C1', 'Жами мурожаатлар сони	');
-            $sheet->setCellValue('D1', 'Мурожаатларни шакллари	');
-            $sheet->setCellValue('N1', '2023 йил бўйича мурожаатларни  кўриб чиқиш ҳолатлари');
-            $sheet->setCellValue('D2', 'Ёзма');
-            $sheet->setCellValue('E2', 'Хат');
-            $sheet->setCellValue('F2', 'Оғзаки (Қабул)	');
-            $sheet->setCellValue('G2', 'Электрон');
-            $sheet->setCellValue('H2', 'Сайёр қабул');
-            $sheet->setCellValue('I2', 'Ишонч телефони	');
-            $sheet->setCellValue('J2', 'МФЙ орқали	');
-            $sheet->setCellValue('K2', 'Веб сайт');
-            $sheet->setCellValue('L2', 'Президент портали');
-            $sheet->setCellValue('M2', 'Прокуратура');
-            $sheet->setCellValue('N2', 'Назоратга олинганлар');
-            $sheet->setCellValue('O2', 'чоралар  кўрилди');
-            $sheet->setCellValue('P2', 'тушунтирилди');
-            $sheet->setCellValue('Q2', 'рад этилди	');
-            $sheet->setCellValue('R2', 'кўриб чиқилмоқда');
-            $sheet->setCellValue('S2', 'такрорийлар');
-            $sheet->setCellValue('T2', 'такрорийлар');
 
 
-            $spreadsheet->getActiveSheet()->getStyle("A1:T" . $m)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setHorizontal('center');
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setVertical('center');
-            $spreadsheet->getActiveSheet()->getStyle("A1:AN" . $m)->getAlignment()->setWrapText(true);
-            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-            $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $sheet->setCellValueByColumnAndRow(1,1, '№');
+            $sheet->setCellValueByColumnAndRow(2,1, 'Мурожаатларда кўтарилан масалалар	');
+            $sheet->setCellValueByColumnAndRow(3,1, 'Жами мурожаатлар сони	');
+
+            foreach (\common\models\AppealShakl::find()->orderBy(['id'=>SORT_ASC])->all() as $key=>$item):
+                $sheet->setCellValueByColumnAndRow($key+4,1, $item->name);
+            endforeach;
+            $cnt_shakl = AppealShakl::find()->count('*');
+
+            $sheet->setCellValueByColumnAndRow(4+$cnt_shakl,1, 'Назоратга олинганлар');
+            foreach (\common\models\AppealControl::find()->orderBy(['id'=>SORT_ASC])->all() as $key=>$item):
+                $sheet->setCellValueByColumnAndRow($key+5+$cnt_shakl, 1,$item->name);
+            endforeach;
+
+            $sheet->setCellValueByColumnAndRow(4+$cnt_shakl, 1,'такрорийлар');
+            $sheet->setCellValueByColumnAndRow(4+$cnt_shakl,1, 'муддати бузилганлар');
 
 
-            $sheet->mergeCells('A1:A2');
-            $sheet->mergeCells('B1:B2');
-            $sheet->mergeCells('C1:C2');
-            $sheet->mergeCells('D1:M1');
-            $sheet->mergeCells('N1:T1');
+
             $writer = new Xlsx($spreadsheet);
 //            $writer->save("php://output");
 
             $writer->save('tashkilotlar.xlsx');
             Yii::$app->response->sendFile('tashkilotlar.xlsx');
+
+
         }
 
         return $this->render('index2', [
