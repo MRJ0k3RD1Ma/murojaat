@@ -144,7 +144,7 @@ class Appeal extends \yii\db\ActiveRecord
             'appeal_file_extension' => 'Appeal File Extension',
             'appeal_type_id' => 'Мурожаат тури',
             'appeal_shakl_id' => 'Мурожаат шакли',
-            'appeal_control_id' => 'Ҳолати',
+            'appeal_control_id' => 'Кўриб чиқиш натижаси',
             'count_applicant' => 'Мурожаатчилар',
             'count_list' => 'Варақлар сони',
             'status' => 'Статус',
@@ -160,8 +160,8 @@ class Appeal extends \yii\db\ActiveRecord
             'answer_preview' => 'Ҳужжат номи',
             'answer_detail' => 'Мазмуни',
             'answer_reply_send' => 'Жавоб мурожаатчига юборилди',
-            'answer_number' => 'Рақами',
-            'answer_date' => 'Ёпилган санаси',
+            'answer_number' => 'Юборилшан хатнинг рақами',
+            'answer_date' => 'Юборилган хатнинг санаси',
             'company_id' => 'Ташкилот',
             'register_id' => 'Register ID',
             'register_company_id' => 'Рўйхатга олувчи ташкилот',
@@ -334,19 +334,12 @@ class Appeal extends \yii\db\ActiveRecord
 
 
     public function getRegion(){
-        if($soato = Soato::findOne($this->soato_id)){
-            return Soato::findOne($soato->res_id.$soato->region_id)->name_cyr;
-        }else{
-            return null;
-        }
+        $soato = $this->soato;
+        return Soato::findOne($soato->res_id.$soato->region_id)->name_cyr;
     }
     public function getDistrict(){
-        if($soato = Soato::findOne($this->soato_id)){
-            return Soato::findOne($soato->res_id.$soato->region_id.$soato->district_id)->name_cyr;
-        }else{
-            return null;
-        }
-
+        $soato = $this->soato;
+        return Soato::findOne($soato->res_id.$soato->region_id.$soato->district_id)->name_cyr;
     }
     public function getVillage(){
         return $this->hasOne(Soato::class, ['id' => 'soato_id']);

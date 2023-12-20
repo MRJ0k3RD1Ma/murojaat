@@ -21,7 +21,7 @@ use yii\widgets\Breadcrumbs; ?>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
-    <?php } // agar bosh sahifa bo'lmasa ?>
+    <?php }  ?>
 </div>
 <!-- /.content-header -->
 

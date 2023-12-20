@@ -7,7 +7,7 @@
         <a class="dropdown-item" data-toggle="collapse" href="#taskemp">Ҳодимларга топшириқ бериш</a>
     </div>
 </div>
-<a href="#answer" class="btn btn-success" data-toggle="collapse">Жавоб юбориш</a>
+<a href="#answer" class="btn btn-success" data-toggle="collapse">Натижани киритиш</a>
 
 <div class="dropdown" style="float: right; margin-left:5px;">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

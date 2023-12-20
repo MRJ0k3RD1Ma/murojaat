@@ -51,7 +51,7 @@ $form = ActiveForm::begin([
     </div>
 
 <!--    <div class="col-md-4">-->
-<!--        --><?php //= $form->field($searchModel, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг'])->label(false)?>
+<!--        --><?//= $form->field($searchModel, 'region_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\RegionView::find()->all(),'region_id','name_cyr'),['prompt'=>'Вилоятни танланг'])->label(false)?>
 <!--    </div>-->
 
     <div class="col-md-4">

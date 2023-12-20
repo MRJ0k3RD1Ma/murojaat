@@ -342,20 +342,12 @@ class AppealController extends Controller
         $word->setValue('detail',strip_tags($model->appeal_detail));
         $word->setValue('tocompany',Yii::$app->user->identity->company->name);
 
-        foreach ($register->child as $item) {
-            $tashkilotga = $item->company->name;
+        foreach ($register->child as $key=>$item) {
+            $word->setValue('tashkilotga'.$key,$item->company->name);
         }
-        $word->setValue('tashkilotga',$tashkilotga);
-
-        foreach ($register->child as $item) {
-            $tashkilotga2 = $item->company->name;
-            if ($tashkilotga == $tashkilotga2) {
-                $word->setValue('tashkilotga2','');
-            } else {
-                $word->setValue('tashkilotga2',$tashkilotga2);
-            }
-        }
-        
+        $word->setValue('tashkilotga1','');
+		$word->setValue('tashkilotga2','');
+		$word->setValue('tashkilotga3','');
         $fileName = 'e-murojaat.uz_'.$register->id.'.docx';
         $fullname = Yii::$app->basePath.'/web/template/temp/e-murojaat.uz_'.$register->id.'.docx';
 
@@ -700,7 +692,7 @@ class AppealController extends Controller
                 $model->soato_id = "17".$model->region_id.$model->district_id;
             }
             Yii::$app->db->beginTransaction();
-
+			
             if($model->save()){
 
                 $register->appeal_id = $model->id;
@@ -716,6 +708,7 @@ class AppealController extends Controller
                 $register->control_id = 1;
                 $register->users = json_encode($register->users);
                 $register->tashkilot = json_encode($register->tashkilot);
+				//$register->date = date('Y-m-d',strtotime($register->date));
                 try {
 
                     $register->save();

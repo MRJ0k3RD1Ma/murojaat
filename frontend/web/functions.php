@@ -10,6 +10,23 @@ function debug($data){
     print_r($data);
     echo '</pre>';
 }
+function prettyNumber($num){
+    $num = "{$num}";
+    $n="";
+    $t=strlen($num);
+    for($i=0; $i<$t; $i++){
+        if($i!=0 and $i%3==0){
+            $n.=' ';
+        }
+        $n .= $num[$t-$i-1];
+    }
+    $res = "";
+    $t = strlen($n);
+    for ($i=0; $i<$t; $i++){
+        $res .= $n[$t-$i-1];
+    }
+    return $res;
+}
 function exportToExcel($label=null,$data=null){
 
     ini_set('memory_limit', '2048M');

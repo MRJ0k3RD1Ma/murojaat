@@ -64,7 +64,7 @@ $user = Yii::$app->user->identity;
                                 <span class="info-box-text">Муддати ўтган мурожаатлар</span>
                                 <span class="info-box-number ">
                                 <span style="color: #32325d;background: url(/theme/dist/img/link_hover_tolqin.svg);padding-bottom: 3px;" class="h4 mb-0"><?php
-                                    $sql = "if(appeal_register.parent_bajaruvchi_id is null, deadtime = (select appeal.deadtime from appeal where appeal.id = appeal_register.appeal_id), deadtime = (select appeal_bajaruvchi.deadtime from appeal_bajaruvchi where appeal_bajaruvchi.id = appeal_register.parent_bajaruvchi_id)) and appeal_register.deadtime<date(now())";
+                                     $sql = "if(appeal_register.parent_bajaruvchi_id is null, deadtime = (select appeal.deadtime from appeal where appeal.id = appeal_register.appeal_id), deadtime = (select appeal_bajaruvchi.deadtime from appeal_bajaruvchi where appeal_bajaruvchi.id = appeal_register.parent_bajaruvchi_id)) and appeal_register.deadtime<date(now())";
                                     $query = AppealRegister::find()->where(['company_id'=>$user->company_id])
                                         ->andWhere(['<>','status',4])->andWhere($sql)->orderBy(['status'=>SORT_ASC,'deadtime'=>SORT_ASC])->count('id');
                                     echo prettyNumber($query)?> та</span></span>
