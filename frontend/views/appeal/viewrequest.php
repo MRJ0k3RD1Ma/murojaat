@@ -351,7 +351,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php }else{?>
 
                         <?= $this->render('view/_task_req',['register'=>$register])?>
-
+                        <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/acceptrequest','id'=>$request->id])?>" data-confirm="Сиз ростдан ҳам ушбу сўровни қабул қилмоқчимисиз?" class="btn btn-primary"><span class="fa fa-check"></span> Қуйи ташкилотга топшириқ юбормасдан қабул қилиш</a>
                     <?php }?>
 
                 </div>
