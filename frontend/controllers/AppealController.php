@@ -320,7 +320,11 @@ class AppealController extends Controller
 
         $register = AppealRegister::findOne($id);
         $model = Appeal::findOne($register->appeal_id);
+        $register = AppealRegister::find()->where(['appeal_id'=>$model->id,'company_id'=>$model->company_id])->one();
+
         $address = $model->region->name_cyr.' '.$model->district->name_cyr.' '.@$model->village->name_cyr.' '.$model->address;
+
+
         $word = new TemplateProcessor(Yii::$app->basePath.'/web/template/getappeal.docx');
         $word->setValue('companyup',mb_strtoupper(\common\models\Company::findOne(1)->name));
         $word->setValue('number',strip_tags($register->number));
