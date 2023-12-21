@@ -1139,6 +1139,10 @@ class AppealController extends Controller
     public function actionViewrequest($id){
 
         $request = Request::findOne($id);
+        if(!$request){
+            Yii::$app->session->setFlash("error",'Бундай сўров топилмади.');
+            return $this->redirect(['request']);
+        }
         if($request->status_id == 0){
             $request->status_id = 1;
             $request->save();
@@ -1150,21 +1154,35 @@ class AppealController extends Controller
                 ->andWhere(['reciever_id'=>$request->sender_id])->one();
             $type = 1;
         }else{
-            $model = AppealBajaruvchi::findOne($request->register->parent_bajaruvchi_id);
+            if($request->register){
+                $model = AppealBajaruvchi::findOne($request->register->parent_bajaruvchi_id);
+            }else{
+                $model = null;
+            }
             $type = 2;
         }
+        $register = null;
+        $appeal = null;
+        if($model){
+            $register = AppealRegister::findOne($model->register_id);
+            $appeal = Appeal::findOne($model->appeal_id);
+        }
 
-        $register = AppealRegister::findOne($model->register_id);
-        $appeal = Appeal::findOne($model->appeal_id);
 
+        if($register and $appeal and $model and $request){
+            return $this->render('viewrequest',[
+                'model'=>$appeal,
+                'register'=>$register,
+                'bajaruvchi'=>$model,
+                'request'=>$request,
+                'type'=>$type
+            ]);
+        }else{
+            $request->delete();
+            Yii::$app->session->setFlash("error",'Бундай сўров топилмади.');
+            return $this->redirect(['request']);
+        }
 
-        return $this->render('viewrequest',[
-            'model'=>$appeal,
-            'register'=>$register,
-            'bajaruvchi'=>$model,
-            'request'=>$request,
-            'type'=>$type
-        ]);
 
     }
 

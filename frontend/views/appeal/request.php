@@ -48,7 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'label'=>'Рақами ва санаси',
                                 'value'=>function($d){
-                                    return "<b>№ {$d->register->number}</b> <br> {$d->register->date}";
+                                    if($d->register){
+                                        return "<b>№ {$d->register->number}</b> <br> {$d->register->date}";
+                                    }
                                 },
                                 'format'=>'raw'
                             ],
@@ -57,20 +59,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute'=>'appeal_id',
                                 'value'=>function($d){
 
-                                    if($q = $d->appeal->question){
-                                        $res = $q->group->code.'-'.$q->code.'.'.$q->name;
+                                    if($q = @$d->appeal->question){
+                                        $res = @$q->group->code.'-'.@$q->code.'.'.@$q->name;
                                     }else{
                                         $res = "Савол белгиланмаган";
                                     }
 
-                                    if($d->register->parent_bajaruvchi_id){
-                                        $url = Yii::$app->urlManager->createUrl(['/appeal/view','id'=>$d->register->parent->register_id]);
+                                    if(@$d->register->parent_bajaruvchi_id){
+                                        $url = Yii::$app->urlManager->createUrl(['/appeal/view','id'=>@$d->register->parent->register_id]);
 
                                     }else{
-                                        $url = Yii::$app->urlManager->createUrl(['/appeal/view','id'=>$d->register->id]);
+                                        $url = Yii::$app->urlManager->createUrl(['/appeal/view','id'=>@$d->register->id]);
                                     }
 
-                                    $res = $d->appeal->person_name.'<br>'.$res;
+                                    $res = @$d->appeal->person_name.'<br>'.$res;
                                     return "<a href='{$url}'>{$res}</a>";
                                 },
                                 'format'=>'raw',
