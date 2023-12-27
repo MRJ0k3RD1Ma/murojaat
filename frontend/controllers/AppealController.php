@@ -77,12 +77,7 @@ class AppealController extends Controller
      */
     public function actionIndex($type = null)
     {
-        $model = ViewFullstat::find()->where(['comp_id'=>Yii::$app->user->identity->company_id])->one();
-
-        return $this->render('index',[
-            'model'=>$model
-        ]);
-
+        return $this->render('index');
     }
 
 
@@ -257,9 +252,21 @@ class AppealController extends Controller
             $model->status = 2;
             $model->save();
         }
+        if($register->status < 2){
+            $register->status = 2;
+            $register->save(false);
+        }
+
+        if($parent = $register->parent){
+            if($parent->status == 4){
+                $register->status = 4;
+                $register->save(false);
+            }
+        }
+
         if($model->status == 4){
             $register->status = 4;
-            $register->save();
+            $register->save(false);
             if($register->parent_bajaruvchi_id){
                 $parent = $register->parent;
                 $parent->status = 4;

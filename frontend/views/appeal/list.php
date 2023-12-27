@@ -27,7 +27,6 @@ $user = Yii::$app->user->identity;
     <div class="container-fluid">
         <div class="header-body">
 
-
             <!-- Card stats -->
             <div class="row">
                 <div class="col-xl-3 col-md-6">
@@ -154,18 +153,6 @@ $user = Yii::$app->user->identity;
                             <div class="card-tools">
 
                                 <a href="" data-method="post" class="btn btn-info"><i class="fa fa-file-excel"></i> Экспорт</a>
-<!--                                <form action="http://mur.lc/appeal/list/phpspreadsheet/export" class="excel-upl" id="excel-upl" enctype="multipart/form-data" method="post" accept-charset="utf-8">-->
-<!--                                    <div class="row padall">-->
-<!--                                        <div class="col-lg-12">-->
-<!--                                            <div class="float-right">-->
-<!--                                                <input type="radio" checked="checked" name="export_type" value="xlsx"> .xlsx-->
-<!--                                                <input type="radio" name="export_type" value="xls"> .xls-->
-<!--                                                <input type="radio" name="export_type" value="csv"> .csv-->
-<!--                                                <button type="submit" name="import" class="btn btn-primary">Export</button>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </form>-->
                                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     <span class="fa fa-search"></span> Қидирув
                                 </button>
@@ -210,9 +197,7 @@ $user = Yii::$app->user->identity;
                                              'label'=>'Туман, Шахар',
 
                                             'value'=>function($d){
-
-
-												return $d->appeal->district;
+												return @$d->appeal->district;
                                             },
                                             'format'=>'raw',
                                         ],
@@ -232,6 +217,7 @@ $user = Yii::$app->user->identity;
                                         [
                                             'attribute'=>'control_id',
                                             'value'=>function($d){
+                                                return $d->status0->name;
                                                 if($d->parent_bajaruvchi_id){
                                                     return $d->parent->status0->name;
                                                 }else{
@@ -239,11 +225,10 @@ $user = Yii::$app->user->identity;
                                                 }
                                             }
                                         ],
-
                                         [
                                             'attribute'=>'deadtime',
                                             'value'=>function($d){
-                                                if($d->parent_bajaruvchi_id>0){
+                                                /*if($d->parent_bajaruvchi_id>0){
                                                     $baj = $d->parent;
                                                     if($baj->status == 4){
                                                         return "<span class='bg-success' style='display: block;text-align: center'>Бажарилган</span>".
@@ -268,10 +253,20 @@ $user = Yii::$app->user->identity;
                                                     $days = $interval->format('%a ');
                                                     $ds = $interval->format('%R%a ');
                                                     $dead = date('d-m-Y',strtotime($baj->deadtime));
+                                                }*/
+
+
+                                                $baj = $d;
+                                                if($baj->status == 4){
+                                                    return "<span class='bg-success' style='display: block;text-align: center'>Бажарилган</span>".
+                                                        $d->donetime;
                                                 }
-
-
-
+                                                $datetime2 = date_create($baj->deadtime);
+                                                $datetime1 = date_create(date('Y-m-d'));
+                                                $interval = date_diff($datetime1, $datetime2);
+                                                $days = $interval->format('%a ');
+                                                $ds = $interval->format('%R%a ');
+                                                $dead = date('d-m-Y',strtotime($baj->deadtime));
 
                                                 $class = "";
 

@@ -97,32 +97,59 @@ $user = Yii::$app->user->identity;
                                             <td align="center"><?= $user->company->name?>да</td>
                                             <td align="center">Қуйи ташкилотларида</td>
                                         </tr>
+                                        <?php $company_id = Yii::$app->user->identity->company_id;?>
                                         <tr align="center">
                                             <td>Таснифланмаган мурожаатлар</td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>1])?>"><?= $model->count_not_quest ?></a></td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>10])?>"><?= $model->count_not_quest_quyi ?></a></td>
+                                            <td>
+                                                <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>1])?>">
+                                                    <?= prettyNumber(\common\models\Appeal::find()->innerJoin('appeal_register','appeal_register.company_id = '.$company_id.' and appeal_register.appeal_id = appeal.id')->where('appeal.question_id is null or appeal.question_id = 0')->count('*'))?>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>10])?>">
+                                                    <?= prettyNumber(\common\models\Appeal::find()->innerJoin('appeal_register','appeal_register.appeal_id = appeal.id')->where('appeal.question_id is null or appeal.question_id = 0')->andWhere('appeal_register.company_id in (select id from company where company.parent_id = '.$company_id.')')->count('*'))?>
+                                                </a>
+                                            </td>
                                         </tr>
                                         <tr align="center">
                                             <td>Жараёндаги мурожаатлар</td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>2])?>"><?= $model->count_jarayonda_quest ?></a></td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>20])?>"><?= $model->count_jarayonda_quest_quyi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>2])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where(['company_id'=>$company_id])->andWhere(['<>','status','4'])->count('*'))?>
+                                                </a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>20])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where('company_id in (select id from company where parent_id = '.$company_id.')')->andWhere(['<>','status','4'])->count('*'))?>
+                                                </a></td>
 
                                         </tr>
                                         <tr align="center">
                                             <td >Кўриб чиқилган мурожаатлар</td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>4])?>"><?= $model->count_close_quest ?></a></td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>40])?>"><?= $model->count_close_quest_quyi ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>4])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where(['company_id'=>$company_id])->andWhere(['status'=>'4'])->count('*'))?>
+
+                                                </a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>40])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where('company_id in (select id from company where parent_id = '.$company_id.')')->andWhere(['status'=>'4'])->count('*'))?>
+
+                                                </a></td>
                                         </tr>
                                         <tr align="center">
                                             <td>Янги мурожаатлар</td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>17])?>"><?= $model->count_yuqori_today ?></a></td>
-                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>37])?>"><?= $model->count_quyi_send_today ?></a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>17])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where(['company_id'=>$company_id])->andWhere(['<','status','2'])->count('*'))?>
+                                                </a></td>
+                                            <td><a href="<?= Yii::$app->urlManager->createUrl(['/appeal/list','status'=>37])?>">
+                                                    <?= prettyNumber(AppealRegister::find()->where('company_id in (select id from company where parent_id = '.$company_id.')')->andWhere(['<','status','2'])->count('*'))?>
+                                                </a></td>
                                         </tr>
 
                                         <tr align="center">
                                             <td ><b>Жами:</b></td>
-                                            <td><?php echo $model->count_jarayonda_quest + $model->count_close_quest?></td>
-                                            <td><?php echo $model->count_jarayonda_quest_quyi + $model->count_close_quest_quyi?></td>
+                                            <td>
+                                                    <?= prettyNumber(AppealRegister::find()->where(['company_id'=>$company_id])->count('*'))?>
+                                            </td>
+                                            <td>
+                                                    <?= prettyNumber(AppealRegister::find()->where('company_id in (select id from company where parent_id = '.$company_id.')')->count('*'))?>
+                                            </td>
                                         </tr>
                                     </table>
 
