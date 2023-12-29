@@ -260,16 +260,25 @@ class AppealController extends Controller
         if($parent = $register->parent){
             if($parent->status == 4){
                 $register->status = 4;
+                if(!$register->donetime){
+                    $register->donetime = date('Y-m-d',strtotime($parent->updated));
+                }
                 $register->save(false);
             }
         }
 
         if($model->status == 4){
             $register->status = 4;
+            if(!$register->donetime){
+                $register->donetime = date('Y-m-d',strtotime($model->updated));
+            }
             $register->save(false);
             if($register->parent_bajaruvchi_id){
                 $parent = $register->parent;
                 $parent->status = 4;
+                if(!$register->donetime){
+                    $register->donetime = date('Y-m-d',strtotime($parent->updated));
+                }
                 $parent->save();
             }
             $emp = TaskEmp::find()->where(['appeal_id'=>$model->id])->andWhere(['register_id'=>$register->id])->all();
